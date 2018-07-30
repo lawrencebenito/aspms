@@ -32,10 +32,6 @@ class PagesController extends Controller
         return view('job_orders.index');
     }
 
-    public function quotations(){
-        return view('quotations.index');
-    }
-
     public function about(){
         $title = "About Us";
         return view('pages.about')->with('title', $title);

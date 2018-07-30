@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Client;
 use Illuminate\Http\Request;
-use DB;
-use App\Quotation;
 
 class ClientController extends Controller
 {
