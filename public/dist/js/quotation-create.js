@@ -113,7 +113,7 @@ $(document).ready(function(){
   
   
   $('.row_add_product').click(function () {
-    $('tbody').append(`<tr>${td_garment} ${td_space} ${td_delete_product}</tr>`);
+    $('tbody').append(`<tr class="prod_start">${td_garment} ${td_space} ${td_delete_product}</tr>`);
     $('tbody').append(`<tr>${td_fabric} ${td_price} ${opt3}</tr>`);
     $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
     $('tbody').append(`<tr class="prod_end">${td_space} ${td_space} ${td_space}</tr>`);
@@ -136,11 +136,15 @@ $(document).ready(function(){
   });
 
   $('tbody').on('click','.delete_product', function () {
-    row = $(this).parent().parent();
-    to_be_deleted_rows = $(row).nextUntil('prod_end');
-    //console.log(to_be_deleted_rows);
-    $(row).remove();
-    $(to_be_deleted_rows).remove();
+    row = $(this).closest('.prod_start');
+    
+    $(row).nextUntil('tr.prod_start').fadeOut('slow', function() {
+      console.log(this);
+      $(this).remove();
+    });
+    $(row).fadeOut('slow', function() {
+      $(row).remove();
+    });
   })
 
 } ); //end of document.ready
