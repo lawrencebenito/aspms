@@ -1,6 +1,4 @@
-```html
-<h1 style="color: #dd4b39;">Apparel Sales and Production Management System</h1>   
-```
+<h1>Apparel Sales and Production Management System</h1>   
 
 ## About ASPMS
 //Insert paragraphs and description about the project here...
