@@ -21,7 +21,8 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form">
+        <form class="form" method="POST" action="{{ url('/quotations') }}" onsubmit="return validate(this);">
+          @CSRF
           <div class="box-body">
             <div class="row">
               <div class="form-group col-lg-2">
@@ -30,7 +31,7 @@
               </div>
               <div class="form-group col-lg-3">
                 <label>Client Name</label>
-                <select id="client" class="form-control select2" style="width: 100%;"></select>
+                <select id="client" class="form-control select2" style="width: 100%;" name="client" required></select>
               </div>
               <div class="form-group col-lg-3" id="help">
                 <label> </label>
@@ -47,8 +48,8 @@
             </div>
             <div class="form-group">
               <div id="myTable" class="table-responsive">
-                <table class="table table-hover table-bordered">
-                  <tr>
+                <table class="table table-bordered">
+                  <tr bgcolor="#f5f5f5">
                     <th style="width: 1%">Product Description</th>
                     <th style="width: 25%">Unit Price</th>
                     <th style="width: 20%"> </th>
@@ -60,8 +61,8 @@
           </div>
           <!-- /.box-body -->
           <div class="box-footer">
-            <button type="button" class="btn btn-default close-add-form">Cancel</button>
-            <button type="button" class="btn btn-primary pull-right close-add-form">Save</button>
+            <button type="button" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary pull-right">Save</button>
           </div>
           <!-- /.box-footer -->
         </form>
