@@ -8,7 +8,7 @@ $(document).ready(function(){
     placeholder: "Search a client",
     ajax: {
       method: 'get',
-      url: './get_client_list',
+      url: '../get_client_list',
       dataType: 'json',
       delay: 250,
       processResults: function (data) {
@@ -28,7 +28,7 @@ $(document).ready(function(){
     //console.log(client.id +" "+ client.text);
 
     $.ajax({
-      url: "./get_client_info",
+      url: "../get_client_info",
       type: "get",
       data: { 
         id: client.id
@@ -48,7 +48,7 @@ $(document).ready(function(){
         $('#address_group').fadeIn(700);
       },
       error: function(xhr) {
-        alert(xhr);
+        alert(xhr.responseText);
       }
     });
   });
@@ -76,7 +76,7 @@ $(document).ready(function(){
       placeholder: "Select or search a garment",
       ajax: {
         method: 'get',
-        url: './get_fabric_list',
+        url: '../get_fabric_list',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
@@ -93,7 +93,7 @@ $(document).ready(function(){
       placeholder: "Select or search a fabric",
       ajax: {
         method: 'get',
-        url: './get_garment_list',
+        url: '../get_garment_list',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {

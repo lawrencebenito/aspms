@@ -15,7 +15,10 @@ class QuotationsController extends Controller
      */
     public function index()
     {
-        return view('quotations.index');
+        $quotations = Quotation::select(
+            'id','client','date_created')
+            ->get();
+        return view('quotations.index')->with('quotations', $quotations);
     }
 
     /**
@@ -25,7 +28,7 @@ class QuotationsController extends Controller
      */
     public function create()
     {
-        //return view('quotations.index');
+        return view('quotations.create');
     }
 
     /**
