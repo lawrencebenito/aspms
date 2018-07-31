@@ -64,10 +64,10 @@ $(document).ready(function(){
   var opt1 = `<td>${td_delete}</td>`;
   var opt2 = `<td>${td_add_fabric} ${td_delete}</td>`;
   var opt3 = `<td>${td_add_fabric}</td>`;
-  var td_price = '<td><input type="text" class="form-control" placeholder="Enter unit price" name="price[]" required autocomplete="off"></td>';
+  var td_price = '<td><input type="number" class="form-control price" placeholder="Enter unit price" name="price[]" required autocomplete="off" min=1 max=10000></td>';
   var td_space = '<td></td>';
   var tr_prod_end= '<tr class="prod_end" bgcolor="#f5f5f5"><td colspan="3"></td></tr>';
-  var td_fabric_counter = '<td><input type="hidden" disabled class="fabric_counter form-control" name="fabric_count[]" value="1"></td>';
+  var td_fabric_counter = '<td><input type="hidden" class="fabric_counter form-control" name="fabric_count[]" value="1"></td>';
   //<input type="hidden" id="custId" name="custId" value="3487">
   var td_desc = '<td colspan="2"><textarea rows="3" class="form-control" name="description[]" placeholder="(Optional) Enter product description here" maxlength="200" style="resize:none;"></textarea></td>';
   

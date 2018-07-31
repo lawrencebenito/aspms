@@ -10,3 +10,18 @@ function get_full_date (){
     
     return monthNames[month] + " " + day + ", " + year;
 }
+$(document).ready(function(){
+  
+  // disable mousewheel on a input number field when in focus
+  $('form').on('focus', 'input[type=number]', function (e) {
+    $(this).on('mousewheel.disableScroll', function (e) {
+      e.preventDefault()
+    })
+  })
+
+  // (to prevent Cromium browsers change the value when scrolling)
+  $('form').on('blur', 'input[type=number]', function (e) {
+    $(this).off('mousewheel.disableScroll')
+  })
+
+});//end of document.ready
