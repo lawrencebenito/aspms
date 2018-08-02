@@ -66,8 +66,8 @@
 $(document).ready(function() {
   var dataSet = [];
   
-  @if(count($clients) > 0)
-    var dataSet = @json($clients);
+  @if(count($client) > 0)
+    var dataSet = @json($client);
   @endif
   //console.log(dataSet);
 
@@ -98,19 +98,16 @@ $(document).ready(function() {
 
   $('#data_table').on('dblclick','td',function(e){
     var id = $(this).parent().attr('id');
-    //alert("double clicked!\n" + id);
     window.location.href = "{{ url('/clients') }}"+"\/"+id;
   });
 
   $('.row_view').click(function(e){
     var id = $(this).parent().parent().attr('id');
-    //alert("button view clicked \n" + id);
     window.location.href = "{{ url('/clients') }}"+"\/"+id;
   });
   
   $('.row_edit').click(function(e){
     var id = $(this).parent().parent().attr('id');
-    //alert("button view clicked \n" + id);
     window.location.href = "{{ url('/clients') }}"+"\/"+id+"/edit";
   });
 
