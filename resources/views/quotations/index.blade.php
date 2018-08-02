@@ -23,7 +23,7 @@
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-    New quotation, {{ session()->get('new_quotation') }} has been added to the list.
+    New quotation has been added to the list.
   </div>
 @endif
 
@@ -37,7 +37,7 @@
             <div class="input-group-btn">
               <a class="btn btn-flat btn-primary pull-right" href="./quotations/create">
                 <i class="fa fa-plus"> </i>  
-                Add New Quotation
+                Create New Quotation
               </a>
             </div>
           </div>
@@ -73,7 +73,7 @@ $(document).ready(function() {
 
   var option1 = "<button class='btn btn-xs row_view' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></button> ";
   var option2 = "<button class='btn btn-xs row_edit' data-toggle='tooltip' title='Edit'><i class='fa fa-edit'></i></button> ";
-  var option3 = "<button class='btn btn-xs row_delete' data-toggle='tooltip' title='Delete'><i class='fa fa-delete'></i></button> ";
+  var option3 = "<button class='btn btn-xs row_delete' data-toggle='tooltip' title='Delete'><i class='fa fa-trash-o'></i></button> ";
 
   $('#data_table').DataTable( {
       data: dataSet,
@@ -82,6 +82,7 @@ $(document).ready(function() {
           { title: "First Name", data:"first_name"},
           { title: "Company Name", data:"company_name"},
           { title: "Date Created", data:"date_created"},
+          { title: "Number of Products", data:"product_count"},
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
@@ -89,7 +90,7 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: option1+option2,
+          defaultContent: option1+option2+option3,
           sortable: false,
           "targets": -1
         }

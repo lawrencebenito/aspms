@@ -103,8 +103,16 @@ class GarmentsController extends Controller
      */
     public function get_garment_list(Request $request)
     {
-        $garment = \App\Garment::select('id','name AS text')->get();
+        if ($request->has('q')) {
+            $q = $request->input('q');
 
+            $garment = \App\Garment::select('id','name AS text')
+                        ->where('name', 'like', '%' .$q. '%')
+                        ->get();
+        }else{
+            $garment = \App\Garment::select('id','name AS text')->get();
+        }
+        
         return response()->json($garment);
     }
 }

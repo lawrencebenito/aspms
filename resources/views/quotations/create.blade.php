@@ -26,14 +26,11 @@
               <div class="form-group col-lg-2">
                 <label>Date</label>
                 <p id="date"></p>
+                <input id="date_form" type="hidden" class="fabric_counter form-control" name="date_created">
               </div>
               <div class="form-group col-lg-3">
                 <label>Client Name</label>
                 <select id="client" class="form-control select2" style="width: 100%;" name="client" required></select>
-              </div>
-              <div class="form-group col-lg-3" id="help">
-                <label> </label>
-                <h4>&#8678; Search a client here</h4>
               </div>
               <div class="form-group col-lg-3" id="company_group" style="display:none">
                 <label>Company Name</label>
@@ -79,4 +76,18 @@
 <script src="{{ asset("dist/js/helper-functions.js")}}"></script>
 <script src="{{ asset("dist/js/quotation-create.js")}}"></script>
 
+<script>
+function validate(form) {
+    valid = true;
+    // validation code here ...
+      
+    if(!valid) {
+        alert('Please correct the errors in the form!');
+        return false;
+    }
+    else {
+        return confirm('Do you really want to submit the form?');
+    }
+}
+</script>
 @endpush

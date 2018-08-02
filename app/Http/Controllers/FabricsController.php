@@ -102,7 +102,16 @@ class FabricsController extends Controller
      */
     public function get_fabric_list(Request $request)
     {
-        $fabric = \App\Fabric::select('id','name AS text')->get();
+        
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $fabric = \App\Fabric::select('id','name AS text')
+                        ->where('name', 'like', '%' .$q. '%')
+                        ->get();
+        }else{
+            $fabric = \App\Fabric::select('id','name AS text')->get();
+        }
 
         return response()->json($fabric);
     }
