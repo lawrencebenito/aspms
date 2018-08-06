@@ -3,14 +3,27 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 ];
 
 function get_full_date (){
-    date_object =  new Date();
-    year = date_object.getFullYear();
-    month = date_object.getMonth();// + 1 if will be using number
-    day = date_object.getDate();
+  date_object =  new Date();
+  year = date_object.getFullYear();
+  month = date_object.getMonth();// + 1 if will be using number
+  day = date_object.getDate();
+  
+  return { 
+    text:  monthNames[month] + " " + day + ", " + year,
+    numeric: `${year}-${month + 1}-${day}`
+  }
+}
+
+function validate(form) {
+  valid = true;
+  // validation code here ...
     
-    return { 
-      text:  monthNames[month] + " " + day + ", " + year,
-      numeric: `${year}-${month + 1}-${day}`
+  if(!valid) {
+    alert('Please correct the errors in the form!');
+    return false;
+  }
+  else {
+    return confirm('Do you really want to submit the form?');
   }
 }
 
@@ -28,4 +41,6 @@ $(document).ready(function(){
     $(this).off('mousewheel.disableScroll')
   })
 
+  // animation for the alert
+  $('.alert').slideDown(700).delay(5000).slideUp(700);
 });//end of document.ready

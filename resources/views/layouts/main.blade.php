@@ -99,6 +99,8 @@
 <script src="{{ asset("/dist/js/toggle-forms.js")}}"></script>
 <!-- Set Active Class -->
 <script src="{{ asset("/dist/js/set-active.js")}}"></script>
+<!-- Custom Scripts for global function-->
+<script src="{{ asset("/dist/js/helper-functions.js")}}"></script>
 
 @stack('extra_scripts')
 

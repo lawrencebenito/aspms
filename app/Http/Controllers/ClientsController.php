@@ -6,7 +6,7 @@ use DB;
 use App\Client;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -116,7 +116,7 @@ class ClientController extends Controller
     }
 
     /**
-     * List get request with possible query
+     * Get request with possible query
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -128,7 +128,7 @@ class ClientController extends Controller
 
             $client = Client::select('id',DB::raw("CONCAT(last_name,', ',first_name,' ',IF( ISNULL(middle_name),'', CONCAT(LEFT(middle_name, 1),'.'))) AS text"))
                         ->where('active', '1')
-                        ->where(function ($query) use( &$q) {
+                        ->where(function ($query) use(&$q) {
                             $query->where('last_name', 'like', '%' .$q. '%')
                                   ->orwhere('first_name', 'like', '%' .$q. '%')
                                   ->orwhere('middle_name', 'like', '%' .$q. '%');
@@ -145,7 +145,7 @@ class ClientController extends Controller
     }
 
     /**
-     * Get the list of active clients
+     * Get request with possible query
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
