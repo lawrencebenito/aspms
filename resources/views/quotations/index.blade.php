@@ -71,10 +71,6 @@ $(document).ready(function() {
   @endif
   //console.log(dataSet);
 
-  var option1 = "<button class='btn btn-xs row_view' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></button> ";
-  var option2 = "<button class='btn btn-xs row_edit' data-toggle='tooltip' title='Edit'><i class='fa fa-edit'></i></button> ";
-  var option3 = "<button class='btn btn-xs row_delete' data-toggle='tooltip' title='Delete'><i class='fa fa-trash-o'></i></button> ";
-
   $('#data_table').DataTable( {
       data: dataSet,
       columns: [
@@ -90,29 +86,25 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: option1+option2+option3,
+          defaultContent: btn_view + btn_edit + btn_delete,
           sortable: false,
           "targets": -1
         }
       ]
   } );
 
+  var source_ref = "{{ url('/quotations') }}" + "/";
+  
   $('#data_table').on('dblclick','td',function(e){
-    var id = $(this).parent().attr('id');
-    //alert("double clicked!\n" + id);
-    window.location.href = "{{ url('/quotations') }}"+"\/"+id;
+    window.location.href = source_ref + $(this).closest('tr').attr('id');
   });
 
-  $('.row_view').click(function(e){
-    var id = $(this).parent().parent().attr('id');
-    //alert("button view clicked \n" + id);
-    window.location.href = "{{ url('/quotations') }}"+"\/"+id;
+  $('.btn_view').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id');
   });
   
-  $('.row_edit').click(function(e){
-    var id = $(this).parent().parent().attr('id');
-    //alert("button view clicked \n" + id);
-    window.location.href = "{{ url('/quotations') }}"+"\/"+id+"/edit";
+  $('.btn_edit').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
   });
 
 } ); //end of document.ready

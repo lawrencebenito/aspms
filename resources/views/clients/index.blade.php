@@ -71,9 +71,6 @@ $(document).ready(function() {
   @endif
   //console.log(dataSet);
 
-  var option1 = "<button class='btn btn-xs row_view' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></button> ";
-  var option2 = "<button class='btn btn-xs row_edit' data-toggle='tooltip' title='Edit'><i class='fa fa-edit'></i></button> ";
-
   $('#data_table').DataTable( {
       data: dataSet,
       columns: [
@@ -89,26 +86,26 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: option1+option2,
+          defaultContent: btn_view + btn_edit + btn_delete,
           sortable: false,
           "targets": -1
         }
       ]
   } );
 
+  //TODO: Look for a way to stop warping reponsive table of bootstrap, how to make it one liner.
+  var source_ref = "{{ url('/clients') }}" + "/";
+  
   $('#data_table').on('dblclick','td',function(e){
-    var id = $(this).parent().attr('id');
-    window.location.href = "{{ url('/clients') }}"+"\/"+id;
+    window.location.href = source_ref + $(this).closest('tr').attr('id');
   });
 
-  $('.row_view').click(function(e){
-    var id = $(this).parent().parent().attr('id');
-    window.location.href = "{{ url('/clients') }}"+"\/"+id;
+  $('.btn_view').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id');
   });
   
-  $('.row_edit').click(function(e){
-    var id = $(this).parent().parent().attr('id');
-    window.location.href = "{{ url('/clients') }}"+"\/"+id+"/edit";
+  $('.btn_edit').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
   });
 
 } ); //end of document.ready
