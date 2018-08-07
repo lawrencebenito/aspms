@@ -1,14 +1,16 @@
 $(document).ready(function(){
   
   //Initialize Today's date
-  $('#date').text(get_full_date());
+  var date = get_full_date();
+  $('#date').text(date.text);
+  $('#date_form').val(date.numeric);
   
   //Initialize Select2 Elements
   $('#client.select2').select2({
     placeholder: "Search a client",
     ajax: {
       method: 'get',
-      url: './get_client_list',
+      url: '../get_client_list',
       dataType: 'json',
       delay: 250,
       processResults: function (data) {
@@ -28,7 +30,7 @@ $(document).ready(function(){
     //console.log(client.id +" "+ client.text);
 
     $.ajax({
-      url: "./get_client_info",
+      url: "../get_client_info",
       type: "get",
       data: { 
         id: client.id
@@ -48,7 +50,7 @@ $(document).ready(function(){
         $('#address_group').fadeIn(700);
       },
       error: function(xhr) {
-        alert(xhr);
+        alert(xhr.responseText);
       }
     });
   });
@@ -64,19 +66,18 @@ $(document).ready(function(){
   var opt1 = `<td>${td_delete}</td>`;
   var opt2 = `<td>${td_add_fabric} ${td_delete}</td>`;
   var opt3 = `<td>${td_add_fabric}</td>`;
-  var td_price = '<td><input type="number" class="form-control price" placeholder="Enter unit price" name="price[]" required autocomplete="off" min=1 max=10000></td>';
+  var td_price = '<td><input type="number" class="form-control price" placeholder="Enter unit price" name="unit_price[]" required autocomplete="off" min=1 max=10000></td>';
   var td_space = '<td></td>';
   var tr_prod_end= '<tr class="prod_end" bgcolor="#f5f5f5"><td colspan="3"></td></tr>';
   var td_fabric_counter = '<td><input type="hidden" class="fabric_counter form-control" name="fabric_count[]" value="1"></td>';
-  //<input type="hidden" id="custId" name="custId" value="3487">
   var td_desc = '<td colspan="2"><textarea rows="3" class="form-control" name="description[]" placeholder="(Optional) Enter product description here" maxlength="200" style="resize:none;"></textarea></td>';
   
   function initFabricSelect() {
     return {
-      placeholder: "Select or search a garment",
+      placeholder: "Select or search a fabric",
       ajax: {
         method: 'get',
-        url: './get_fabric_list',
+        url: '../get_fabric_list',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
@@ -90,10 +91,10 @@ $(document).ready(function(){
 
   function initGarmentSelect() {
     return {
-      placeholder: "Select or search a fabric",
+      placeholder: "Select or search a garment",
       ajax: {
         method: 'get',
-        url: './get_garment_list',
+        url: '../get_garment_list',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {

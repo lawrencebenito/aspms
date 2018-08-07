@@ -8,8 +8,12 @@ function get_full_date (){
     month = date_object.getMonth();// + 1 if will be using number
     day = date_object.getDate();
     
-    return monthNames[month] + " " + day + ", " + year;
+    return { 
+      text:  monthNames[month] + " " + day + ", " + year,
+      numeric: `${year}-${month + 1}-${day}`
+  }
 }
+
 $(document).ready(function(){
   
   // disable mousewheel on a input number field when in focus

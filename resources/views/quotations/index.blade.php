@@ -3,85 +3,119 @@
 @push('extra_links')
 <!-- DataTables -->
 <link rel="stylesheet" href="{{ asset("bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css")}}">
-<!-- Select2 -->
-<link rel="stylesheet" href="{{ asset("bower_components/select2/dist/css/select2.min.css")}}">
-
 @endpush
 
 @section('page_header')
   @include('quotations.header')
 @endsection
 
+@section('breadcrumb')
+  <ol class="breadcrumb">
+    <li><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li>Sales</a></li>
+    <li class="active">Quotations</li>
+  </ol>
+@endsection
+
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-      <div class="box box-primary add-form box-solid">
-        <div class="box-header with-border">
-          <h3 class="box-title">Create New Quotation</h3>
-        </div>
-        <!-- /.box-header -->
-        <!-- form start -->
-        <form class="form" method="POST" action="{{ url('/quotations') }}" onsubmit="return validate(this);">
-          @CSRF
-          <div class="box-body">
-            <div class="row">
-              <div class="form-group col-lg-2">
-                <label>Date</label>
-                <p id="date"></p>
-              </div>
-              <div class="form-group col-lg-3">
-                <label>Client Name</label>
-                <select id="client" class="form-control select2" style="width: 100%;" name="client" required></select>
-              </div>
-              <div class="form-group col-lg-3" id="help">
-                <label> </label>
-                <h4>&#8678; Search a client here</h4>
-              </div>
-              <div class="form-group col-lg-3" id="company_group" style="display:none">
-                <label>Company Name</label>
-                <p id="company_name"></p>
-              </div>
-              <div class="form-group col-lg-4" id="address_group" style="display:none">
-                <label>Client Address</label>
-                <p id="address"></p>
-              </div>
-            </div>
-            <div class="form-group">
-              <div id="myTable" class="table-responsive">
-                <table class="table table-bordered">
-                  <tr bgcolor="#f5f5f5">
-                    <th style="width: 1%">Product Description</th>
-                    <th style="width: 25%">Unit Price</th>
-                    <th style="width: 20%"> </th>
-                  </tr>
-                </table>
-                <input class="btn btn-success row_add_product" type="button" value="+ Product">
-              </div>
-            </div>
-          </div>
-          <!-- /.box-body -->
-          <div class="box-footer">
-            <button type="button" class="btn btn-default">Cancel</button>
-            <button type="submit" class="btn btn-primary pull-right">Save</button>
-          </div>
-          <!-- /.box-footer -->
-        </form>
-        <!-- /.add-form -->
-      </div>
-    </div>
-    <!-- /.col-->
+
+@if (session()->has('new_quotation'))
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
+    New quotation has been added to the list.
   </div>
-  <!-- /.row-->
+@endif
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="box box-solid box-primary">
+      <div class="box-header">
+        <h3 class="box-title">List of Quotations</h3>
+        <div class="box-tools">
+          <div class="input-group input-group-md" style="width: 150px;">
+            <div class="input-group-btn">
+              <a class="btn btn-flat btn-primary pull-right" href="./quotations/create">
+                <i class="fa fa-plus"> </i>  
+                Create New Quotation
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive">
+        <table id="data_table" class="table table-bordered table-hover" data-toggle='tooltip' title='Double click the row to view.' width="100%"></table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
 @endsection
 
 @push('extra_scripts')
-<!-- Select2 -->
-<script src="{{ asset("bower_components/select2/dist/js/select2.full.min.js")}}"></script>
 <!-- DataTables -->
 <script src="{{ asset("bower_components/datatables.net/js/jquery.dataTables.min.js")}}"></script>
 <script src="{{ asset("bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")}}"></script>
 
-<script src="{{ asset("dist/js/helper-functions.js")}}"></script>
-<script src="{{ asset("dist/js/quotation-create.js")}}"></script>
+<script>
 
+$(document).ready(function() {
+  var dataSet = [];
+  
+  @if(count($quotations) > 0)
+    var dataSet = @json($quotations);
+  @endif
+  //console.log(dataSet);
+
+  var option1 = "<button class='btn btn-xs row_view' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></button> ";
+  var option2 = "<button class='btn btn-xs row_edit' data-toggle='tooltip' title='Edit'><i class='fa fa-edit'></i></button> ";
+  var option3 = "<button class='btn btn-xs row_delete' data-toggle='tooltip' title='Delete'><i class='fa fa-trash-o'></i></button> ";
+
+  $('#data_table').DataTable( {
+      data: dataSet,
+      columns: [
+          { title: "Last Name", data:"last_name"},
+          { title: "First Name", data:"first_name"},
+          { title: "Company Name", data:"company_name"},
+          { title: "Date Created", data:"date_created"},
+          { title: "Number of Products", data:"product_count"},
+          { title: " "}
+      ],
+      "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+        $(nRow).attr('id', aData['id']);
+      },
+      "columnDefs": [
+        {
+          defaultContent: option1+option2+option3,
+          sortable: false,
+          "targets": -1
+        }
+      ]
+  } );
+
+  $('#data_table').on('dblclick','td',function(e){
+    var id = $(this).parent().attr('id');
+    //alert("double clicked!\n" + id);
+    window.location.href = "{{ url('/quotations') }}"+"\/"+id;
+  });
+
+  $('.row_view').click(function(e){
+    var id = $(this).parent().parent().attr('id');
+    //alert("button view clicked \n" + id);
+    window.location.href = "{{ url('/quotations') }}"+"\/"+id;
+  });
+  
+  $('.row_edit').click(function(e){
+    var id = $(this).parent().parent().attr('id');
+    //alert("button view clicked \n" + id);
+    window.location.href = "{{ url('/quotations') }}"+"\/"+id+"/edit";
+  });
+
+} ); //end of document.ready
+
+</script>
 @endpush

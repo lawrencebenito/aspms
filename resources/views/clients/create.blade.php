@@ -87,7 +87,7 @@
 <!-- /.row -->
 @endsection
 
-@section('extra_scripts')
+@push('extra_scripts')
 <script>
 function validate(form) {
     valid = true;
@@ -102,4 +102,4 @@ function validate(form) {
     }
 }
 </script>
-@endsection
+@endpush
