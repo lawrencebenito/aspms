@@ -68,20 +68,3 @@
 </div>
 <!-- /.row -->
 @endsection
-
-@section('extra_scripts')
-<script>
-  function validate(form) {
-      valid = true;
-      // validation code here ...
-        
-      if(!valid) {
-          alert('Please correct the errors in the form!');
-          return false;
-      }
-      else {
-          return confirm('Do you really want to save the following changes?');
-      }
-  }
-</script>
-@endsection

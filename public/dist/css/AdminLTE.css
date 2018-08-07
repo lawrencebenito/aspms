@@ -2411,6 +2411,9 @@ a:focus {
 .alert-info {
   border-color: #00acd6;
 }
+.alert.alert-success.alert-dismissible{
+  display: none;
+}
 /*
  * Component: Nav
  * --------------

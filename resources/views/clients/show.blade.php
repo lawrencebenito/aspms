@@ -116,9 +116,7 @@
           <!-- /.row inner -->   
         <div>
         <!-- /.box-body -->
-        <div class="box-footer">
-
-        </div>
+        <div class="box-footer"></div>
         <!-- /.box-footer -->
       </form>
       <!-- /.form-horizontal -->

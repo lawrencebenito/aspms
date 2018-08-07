@@ -20,31 +20,30 @@
               <div class="col-sm-6">
                <div class="col-sm-12 form-group">
                   <label class="control-label">Last Name</label>
-                  <input type="text" class="form-control" value="{{$worker->last_name}}" name="last_name" required></input>
+                  <input type="text" class="form-control" value="{{$worker->last_name}}" name="last_name" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">First Name</label>
-                  <input type="text" class="form-control" value="{{$worker->first_name}}" name="first_name" required></input>
+                  <input type="text" class="form-control" value="{{$worker->first_name}}" name="first_name" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Middle Name</label>
-                  <input type="text" class="form-control" value="{{$worker->middle_name}}" name="middle_name"></input>
+                  <input type="text" class="form-control" value="{{$worker->middle_name}}" name="middle_name" autocomplete="off"></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Contact Number</label>
-                  <input type="text" class="form-control" value="{{$worker->contact_number}}" name="contact_number" required></input>
+                  <input type="text" class="form-control" value="{{$worker->contact_number}}" name="contact_number" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Email Address</label>
-                  <input type="email" class="form-control" value="{{$worker->email_address}}" name="email_address"></input>
+                  <input type="email" class="form-control" value="{{$worker->email_address}}" name="email_address" autocomplete="off"></input>
                 </div>
               </div>
               <!-- /.col -->
               <div class="col-sm-6">
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Address</label>
-                  <textarea rows="3" class="form-control" name="address" maxlength="200" style="resize:none;">{{$worker->address}}
-                  </textarea>
+                  <textarea rows="3" class="form-control" name="address" maxlength="200" style="resize:none;">{{$worker->address}}</textarea>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Account Status</label>
@@ -91,21 +90,4 @@
     <!-- /.col -->
 </div>
 <!-- /.row -->
-@endsection
-
-@section('extra_scripts')
-<script>
-  function validate(form) {
-      valid = true;
-      // validation code here ...
-        
-      if(!valid) {
-          alert('Please correct the errors in the form!');
-          return false;
-      }
-      else {
-          return confirm('Do you really want to save the following changes?');
-      }
-  }
-</script>
 @endsection

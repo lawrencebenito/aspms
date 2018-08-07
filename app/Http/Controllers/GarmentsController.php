@@ -96,7 +96,7 @@ class GarmentsController extends Controller
     }
 
     /**
-     * Get the list
+     * Get request with possible query
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

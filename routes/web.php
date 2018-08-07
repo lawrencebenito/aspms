@@ -42,7 +42,7 @@ Route::get('/orders', 'PagesController@orders');
 Route::get('/job_orders', 'PagesController@job_orders');
 
 // !!!! Check the routes using > php artisan route:list
-Route::resource('clients', 'ClientController');
+Route::resource('clients', 'ClientsController');
 Route::resource('workers', 'WorkersController');
 Route::resource('garments', 'GarmentsController');
 Route::resource('operations', 'OperationsController');
@@ -51,7 +51,7 @@ Route::resource('status', 'StatusController');
 Route::resource('quotations', 'QuotationsController');
 
 //RESPONE CONTROLLERS FOR AJAX
-Route::get('/get_client_list', 'ClientController@get_client_list');
-Route::get('/get_client_info', 'ClientController@get_client_info');
+Route::get('/get_client_list', 'ClientsController@get_client_list');
+Route::get('/get_client_info', 'ClientsController@get_client_info');
 Route::get('/get_fabric_list', 'FabricsController@get_fabric_list');
 Route::get('/get_garment_list', 'GarmentsController@get_garment_list');

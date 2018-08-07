@@ -6,7 +6,7 @@ use DB;
 use App\Client;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::select(
+        $client = Client::select(
                     'id','company_name','last_name','first_name','contact_num','email_address')
                     ->get();
-        return view('clients.index')->with('clients', $clients);
+        return view('clients.index')->with('client', $client);
     }
 
     /**
@@ -59,30 +59,22 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Client $client)
     {
-        // get the client
-        $client = Client::find($id);
-
-        // show the view and pass the client to it
         return view('clients.show')->with('client', $client);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $id)
+    public function edit(Client $client)
     {
-        // get the client
-        $client = Client::find($id);
-
-        // show the view and pass the client to it
         return view('clients.edit')->with('client', $client);
     }
 
@@ -90,14 +82,11 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int $id
+     * @param  Client $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
-    {
-        // get the client
-        $client = Client::find($id);
-            
+    public function update(Request $request, Client $client)
+    {    
         $client->company_name = $request->get('company_name');
         $client->last_name = $request->get('last_name');
         $client->first_name = $request->get('first_name');
@@ -112,7 +101,7 @@ class ClientController extends Controller
         $client->save();
         $edited_client = "$client->first_name $client->last_name";
 
-        return redirect("clients/$id")->with('edited_client', $edited_client);
+        return redirect("clients/$client->id")->with('edited_client', $edited_client);
     }
 
     /**
@@ -127,22 +116,19 @@ class ClientController extends Controller
     }
 
     /**
-     * Get the list of active clients
+     * Get request with possible query
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function get_client_list(Request $request)
     {
-        $client = [];
-        //CONCAT_WS()
-        //IFNULL
         if ($request->has('q')) {
             $q = $request->input('q');
 
             $client = Client::select('id',DB::raw("CONCAT(last_name,', ',first_name,' ',IF( ISNULL(middle_name),'', CONCAT(LEFT(middle_name, 1),'.'))) AS text"))
                         ->where('active', '1')
-                        ->where(function ($query) use( &$q) {
+                        ->where(function ($query) use(&$q) {
                             $query->where('last_name', 'like', '%' .$q. '%')
                                   ->orwhere('first_name', 'like', '%' .$q. '%')
                                   ->orwhere('middle_name', 'like', '%' .$q. '%');
@@ -159,7 +145,7 @@ class ClientController extends Controller
     }
 
     /**
-     * Get the list of active clients
+     * Get request with possible query
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

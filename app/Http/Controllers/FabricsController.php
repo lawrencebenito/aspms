@@ -95,14 +95,13 @@ class FabricsController extends Controller
     }
 
     /**
-     * Get the list
+     * Get request with possible query
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function get_fabric_list(Request $request)
     {
-        
         if ($request->has('q')) {
             $q = $request->input('q');
 

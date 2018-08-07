@@ -73,21 +73,5 @@
 <!-- Select2 -->
 <script src="{{ asset("bower_components/select2/dist/js/select2.full.min.js")}}"></script>
 
-<script src="{{ asset("dist/js/helper-functions.js")}}"></script>
 <script src="{{ asset("dist/js/quotation-create.js")}}"></script>
-
-<script>
-function validate(form) {
-    valid = true;
-    // validation code here ...
-      
-    if(!valid) {
-        alert('Please correct the errors in the form!');
-        return false;
-    }
-    else {
-        return confirm('Do you really want to submit the form?');
-    }
-}
-</script>
 @endpush

@@ -29,42 +29,42 @@
               <div class="col-sm-6">
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Company Name</label>
-                  <input type="text" class="form-control" placeholder="Name of the client's company" name="company_name"></input>
+                  <input type="text" class="form-control" placeholder="Name of the client's company" name="company_name" autocomplete="off"</input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Last Name</label>
-                  <input type="text" class="form-control" placeholder="Client's last name" name="last_name" required></input>
+                  <input type="text" class="form-control" placeholder="Client's last name" name="last_name" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">First Name</label>
-                  <input type="text" class="form-control" placeholder="Client's first name" name="first_name" required></input>
+                  <input type="text" class="form-control" placeholder="Client's first name" name="first_name" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Middle Name</label>
-                  <input type="text" class="form-control" placeholder="Client's middle name" name="middle_name"></input>
+                  <input type="text" class="form-control" placeholder="Client's middle name" name="middle_name" autocomplete="off"></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Contact Number</label>
-                  <input type="text" class="form-control" placeholder="Client's contact number" name="contact_num" required></input>
+                  <input type="text" class="form-control" placeholder="Client's contact number" name="contact_num" autocomplete="off" required></input>
                 </div>
               </div>
               <!-- /.col -->
               <div class="col-sm-6">
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Email Address</label>
-                  <input type="email" class="form-control" placeholder="Client's email address" name="email_address" required></input>
+                  <input type="email" class="form-control" placeholder="Client's email address" name="email_address" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Address Line</label>
-                  <input type="text" class="form-control" placeholder="Block #, Lot #, Bldg #, Street, Subdivision" name="address_line" required></input>
+                  <input type="text" class="form-control" placeholder="Block #, Lot #, Bldg #, Street, Subdivision" name="address_line" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Address Municipality</label>
-                  <input type="text" class="form-control" placeholder="City or Municipality eg. Manila, Makati, Cainta" name="address_municipality" required></input>
+                  <input type="text" class="form-control" placeholder="City or Municipality eg. Manila, Makati, Cainta" name="address_municipality" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Address Province</label>
-                  <input type="text" class="form-control" placeholder="Region or Province eg. Metro Manila, Cavite, Rizal" name="address_province" required></input>
+                  <input type="text" class="form-control" placeholder="Region or Province eg. Metro Manila, Cavite, Rizal" name="address_province" autocomplete="off" required></input>
                 </div>
               </div>
               <!-- /.col-lg -->
@@ -86,20 +86,3 @@
 </div>
 <!-- /.row -->
 @endsection
-
-@push('extra_scripts')
-<script>
-function validate(form) {
-    valid = true;
-    // validation code here ...
-      
-    if(!valid) {
-        alert('Please correct the errors in the form!');
-        return false;
-    }
-    else {
-        return confirm('Do you really want to submit the form?');
-    }
-}
-</script>
-@endpush
