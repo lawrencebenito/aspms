@@ -29,13 +29,13 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <div class="box box-solid box-primary">
+    <div class="box box-solid box-success">
       <div class="box-header">
         <h3 class="box-title">List of Quotations</h3>
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
-              <a class="btn btn-flat btn-primary pull-right" href="./quotations/create">
+              <a class="btn btn-flat btn-success pull-right" href="./quotations/create">
                 <i class="fa fa-plus"> </i>  
                 Create New Quotation
               </a>

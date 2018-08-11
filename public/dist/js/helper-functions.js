@@ -2,8 +2,34 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 
-function get_full_date (){
+function get_full_date(){
   date_object =  new Date();
+  year = date_object.getFullYear();
+  month = date_object.getMonth();// + 1 if will be using number
+  day = date_object.getDate();
+  
+  return { 
+    text:  monthNames[month] + " " + day + ", " + year,
+    numeric: `${year}-${month + 1}-${day}`
+  }
+}
+
+function get_mysql_date(mysql_string){ 
+  var t, result = null;
+
+   if( typeof mysql_string === 'string' )
+   {
+      t = mysql_string.split(/[- :]/);
+
+      //when t[3], t[4] and t[5] are missing they defaults to zero
+      result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);          
+   }
+
+   return result;   
+}
+
+function parse_date(mysql_date){
+  date_object = get_mysql_date(mysql_date);
   year = date_object.getFullYear();
   month = date_object.getMonth();// + 1 if will be using number
   day = date_object.getDate();
