@@ -59,11 +59,11 @@
                   <input type="text" class="form-control" placeholder="Block #, Lot #, Bldg #, Street, Subdivision" name="address_line" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
-                  <label class="control-label">Address Municipality</label>
+                  <label class="control-label">Address City or Municipality</label>
                   <input type="text" class="form-control" placeholder="City or Municipality eg. Manila, Makati, Cainta" name="address_municipality" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
-                  <label class="control-label">Address Province</label>
+                  <label class="control-label">Address Region or Province</label>
                   <input type="text" class="form-control" placeholder="Region or Province eg. Metro Manila, Cavite, Rizal" name="address_province" autocomplete="off" required></input>
                 </div>
               </div>

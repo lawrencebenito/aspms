@@ -103,7 +103,7 @@ class QuotationsController extends Controller
      */
     public function show(Quotation $quotation)
     {
-        //
+        return view('quotations.show')->with('quotation', $quotation);
     }
 
     /**

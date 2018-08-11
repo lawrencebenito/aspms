@@ -51,11 +51,11 @@
                   <input type="text" class="form-control" value="{{$client->address_line}}" name="address_line" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
-                  <label class="control-label">Address Municipality</label>
+                  <label class="control-label">Address City or Municipality</label>
                   <input type="text" class="form-control" value="{{$client->address_municipality}}" name="address_municipality" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">
-                  <label class="control-label">Address Province</label>
+                  <label class="control-label">Address Region or Province</label>
                   <input type="text" class="form-control" value="{{$client->address_province}}" name="address_province" autocomplete="off" required></input>
                 </div>
                 <div class="col-sm-12 form-group">

@@ -1,24 +1,36 @@
 @extends('layouts.main')
 
 @section('page_header')
-  @include('clients.header')
+  @include('quotations.header')
 @endsection
 
 @section('content')
 
-@if (session()->has('edited_client'))
+@if (session()->has('edited_quotation'))
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-    Changes made for this client: {{ session()->get('edited_client') }}.
+    Changes made for this quotation: {{ session()->get('edited_quotation') }}.
   </div>
 @endif
 
 <div class="row">
-  <div class="col-md-9">
-    <div class="box box-success">
+  <div class="col-md-12">
+    <div class="box box-primary box-solid">
       <div class="box-header with-border">
-        <h3 class="box-title">View Client Profile</h3>
+        <h3 class="box-title">View Quotation</h3>
+        <div class="box-tools">
+          <div class="input-group input-group-md" style="width: 150px;">
+            <div class="input-group-btn">
+              <a class="btn pull-right" href="./quotations/create">
+                <i class="fa fa-edit"></i> Edit
+              </a>
+              <a class="btn pull-right" href="./quotations/create">
+                <i class="fa fa-trash-o"></i> Delete 
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- /.box-header -->
       <!-- form start -->
@@ -29,54 +41,54 @@
             <div class="col-sm-6">
               <div class="col-sm-12 form-group">
                 <label>Company Name</label>
-                <p>{{$client->company_name ? : 'N/A'}}</p>
+                <p>{{$quotation->company_name ? : 'N/A'}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Last Name</label>
-                <p>{{$client->last_name}}</p>
+                <p>{{$quotation->last_name}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>First Name</label>
-                <p>{{$client->first_name}}</p>
+                <p>{{$quotation->first_name}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Middle Name</label>
-                <p>{{$client->middle_name ? : 'N/A'}}</p>
+                <p>{{$quotation->middle_name ? : 'N/A'}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Contact Number</label>
-                <p>{{$client->contact_num}}</p>
+                <p>{{$quotation->contact_num}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Email Address</label>
-                <p>{{$client->email_address}}</p>
+                <p>{{$quotation->email_address}}</p>
               </div>
             </div>
             <!-- /.col -->
             <div class="col-sm-6">
               <div class="col-sm-12 form-group">
                 <label>Address Line</label>
-                <p>{{$client->address_line}}</p>
+                <p>{{$quotation->address_line}}</p>
               </div>
               <div class="col-sm-12 form-group">
-                <label>Address City or Municipality</label>
-                <p>{{$client->address_municipality}}</p>
+                <label>Address Municipality</label>
+                <p>{{$quotation->address_municipality}}</p>
               </div>
               <div class="col-sm-12 form-group">
-                <label>Address Region or Province</label>
-                <p>{{$client->address_province}}</p>
+                <label>Address Province</label>
+                <p>{{$quotation->address_province}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Account Status</label>
-                <p>{{($client->active == 1 ? 'Active':'Inactive')}}</p>
+                <p>{{($quotation->active == 1 ? 'Active':'Inactive')}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Date Created</label>
-                <p>{{$client->date_created}}</p>
+                <p>{{$quotation->date_created}}</p>
               </div>
               <div class="col-sm-12 form-group">
                 <label>Date Modified</label>
-                <p>{{$client->date_modified}}</p>
+                <p>{{$quotation->date_modified}}</p>
               </div>
             </div>
             <!-- /.col-lg -->
@@ -85,44 +97,17 @@
         <div>
         <!-- /.box-body -->
         <div class="box-footer">
-          <a type="button" class="btn btn-default" href="{{url('/clients')}}">Back to List</a>
+          <a type="button" class="btn btn-default" href="{{url('/quotations')}}">Back to List</a>
         </div>
         <!-- /.box-footer -->
       </form>
       <!-- /.form-horizontal -->
     </div>
-    <!-- /.box box-success -->
+    <!-- /.box box-primary -->
   </div>
   <!-- /.col -->
   </div>
-  </div>  
-  <div class="col-md-3">
-    <div class="box box-success">
-      <div class="box-header with-border">
-        <h3 class="box-title">Options</h3>
-      </div>
-      <!-- /.box-header -->
-        <div class="box-body">
-          <div class="row">
-            <div class="col-sm-12">
-              <a type="button" class="btn btn-success btn-block" href="{{ url('./clients')}}/{{$client->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
-              <a type="button" class="btn btn-success btn-block" href="{{ url('./clients')}}/{{$client->id}}/ed"><i class="fa fa-trash-o"></i> Delete</a>
-              <a type="button" class="btn btn-success btn-block">View Contracts</a>
-              <a type="button" class="btn btn-success btn-block">View Quotations</a>
-            </div>
-            <!-- /.col -->
-          </div> 
-          <!-- /.row inner -->   
-        <div>
-        <!-- /.box-body -->
-        <div class="box-footer"></div>
-        <!-- /.box-footer -->
-      </form>
-      <!-- /.form-horizontal -->
-    </div>
-    <!-- /.box box-success -->
   </div>
-  <!-- /.col -->
 </div>
 <!-- /.row -->
 @endsection
