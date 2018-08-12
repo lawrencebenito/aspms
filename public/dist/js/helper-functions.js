@@ -53,6 +53,23 @@ function validate(form) {
   }
 }
 
+function set_select_value(selector, text, id){
+  // Fetch the preselected item, and add to the control
+  var Select = $(selector).closest('select');
+  
+  // create the option and append to Select2
+  var option = new Option(text, id, true, true);
+  Select.append(option).trigger('change');
+
+  // manually trigger the `select2:select` event
+  Select.trigger({
+    type: 'select2:select',
+    params: {
+      data: { id:id }      
+    }
+  });
+}
+
 var btn_view = "<button class='btn btn-xs btn_view' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></button> ";
 var btn_edit = "<button class='btn btn-xs btn_edit' data-toggle='tooltip' title='Edit'><i class='fa fa-edit'></i></button> ";
 var btn_delete = "<button class='btn btn-xs btn_delete' data-toggle='tooltip' title='Delete'><i class='fa fa-trash-o'></i></button> ";

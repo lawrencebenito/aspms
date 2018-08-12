@@ -53,13 +53,7 @@
                 <th style="width: 25%">Unit Price</th>
               </tr>
               @foreach($products as $key => $product)
-                @if($key == 0)
-                  <tr>
-                    <td style="font-weight:bold">{{$product->garment}}</td>
-                    <td></td>
-                  </tr>  
-                @endif
-                @if($key > 0 && $products[$key]->garment != $products[$key-1]->garment)
+                @if($key == 0 || ($key > 0 && $products[$key]->garment != $products[$key-1]->garment))
                   <tr>
                     <td style="font-weight:bold">{{$product->garment}}</td>
                     <td></td>
@@ -69,13 +63,9 @@
                   <td>{{$product->fabric}}</td>
                   <td>{{$product->unit_price}}</td>
                 </tr>
-                @if($key < count($products)-1 && $products[$key]->garment != $products[$key+1]->garment && !is_null($product->description))
+                @if(($key == count($products)-1 || ($key < count($products)-1 && $products[$key]->garment != $products[$key+1]->garment)) && !is_null($product->description))
                   <tr><td colspan="2">{{$product->description}}</td></tr>
                 @endif
-                @if($key == count($products)-1 && !is_null($product->description))
-                  <tr><td colspan="2">{{$product->description}}</td></tr>
-                @endif
-
               @endforeach
             </table>
           </div>
@@ -99,8 +89,8 @@
           <div class="box-body">
             <div class="row">
               <div class="col-sm-12">
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./clients')}}/{{$quotation->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./clients')}}/{{$quotation->id}}/ed"><i class="fa fa-trash-o"></i> Delete</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
                 <a type="button" class="btn btn-success btn-block">Print</a>
               </div>
               <!-- /.col -->
