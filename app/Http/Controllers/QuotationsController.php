@@ -167,4 +167,33 @@ class QuotationsController extends Controller
     {
         //
     }
+
+    /**
+     * Show the form for ordering the quotation.
+     *
+     * @param  \App\Quotation  $quotation
+     * @return \Illuminate\Http\Response
+     */
+    public function order(Quotation $quotation)
+    {
+        $id = $quotation->id;
+        $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
+            ->select('quotation.*',
+                    DB::raw("
+                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
+                        client.company_name,
+                        CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
+                    "))
+            ->where('quotation.id', '=', $id)
+            ->get();
+
+        $products = Product::join('garment', 'garment.id', '=', 'product.garment')
+            ->join('fabric', 'fabric.id', '=', 'product.fabric')
+            ->select('product.id', 'garment.name as garment', 'fabric.name as fabric', 'product.unit_price', 'product.description')
+            ->where('product.quotation', '=', $id)
+            ->get();
+
+        // return view('quotations.edit')->with('quotation', $quotation[0])->with('products',$products);
+        return "Ordering the cool quotation -> $quotation with its products <br /> $products";
+    }
 }
