@@ -25,6 +25,11 @@
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
     New quotation has been added to the list.
   </div>
+@elseif (session()->has('new_order'))
+  <div class="callout callout-warning">
+    <h4><i class="icon fa fa-info"></i> Creating Order</h4>
+    <p><b>Create</b> or <b>pick</b> a quotation from the list then <b>choose</b> the create order option.</p>  
+  </div>
 @endif
 
 <div class="row">
@@ -74,19 +79,20 @@ $(document).ready(function() {
   $('#data_table').DataTable( {
       data: dataSet,
       columns: [
+          { title: "Date Created", data:"date_created"},
           { title: "Last Name", data:"last_name"},
           { title: "First Name", data:"first_name"},
           { title: "Company Name", data:"company_name"},
-          { title: "Date Created", data:"date_created"},
           { title: "Number of Products", data:"product_count"},
           { title: " "}
       ],
+      "order": [[ 0,"desc"]],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
         $(nRow).attr('id', aData['id']);
       },
       "columnDefs": [
         {
-          defaultContent: btn_view + btn_edit + btn_delete,
+          defaultContent: btn_view + btn_edit + btn_delete + btn_order,
           sortable: false,
           "targets": -1
         }
@@ -105,6 +111,10 @@ $(document).ready(function() {
   
   $('.btn_edit').click(function(e){
     window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
+  });
+
+  $('.btn_order').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/order";
   });
 
 } ); //end of document.ready

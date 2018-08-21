@@ -25,7 +25,7 @@ class PagesController extends Controller
     }
 
     public function orders(){
-        return view('orders.index');
+        return view('orders.mockindex');
     }
 
     public function job_orders(){
