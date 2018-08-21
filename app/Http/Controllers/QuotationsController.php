@@ -46,10 +46,8 @@ class QuotationsController extends Controller
             $quotation->client = $request->get('client');
             $quotation->date_created = $request->get('date_created');
             $quotation->product_count = count($request->get('garment'));
-            
-            $temp_array = array();
         
-            $products = DB::transaction(function()  use ($request, $quotation, $temp_array) {
+            $products = DB::transaction(function()  use ($request, $quotation) {
                 
                 $quotation->save();
                 $quotation_id = $quotation->id;
@@ -67,7 +65,6 @@ class QuotationsController extends Controller
                     $product->description = $request->get('description')[$garment_index];
                     
                     $fcount = $request->get('fabric_count')[$garment_index];
-                    //array_push($temp_array, [$product, $fcount_index, $fcount]);
                     $product->save();
                     
 
@@ -77,11 +74,8 @@ class QuotationsController extends Controller
 
                     }
                 }
-                return $temp_array;
             }); //end of transaction
 
-            //$temp = json_encode($products);
-            //return "$quotation $temp";
             $new_quotation = true;
             return redirect('quotations')->with('new_quotation', $new_quotation);
         }
@@ -103,7 +97,24 @@ class QuotationsController extends Controller
      */
     public function show(Quotation $quotation)
     {
-        return view('quotations.show')->with('quotation', $quotation);
+        $id = $quotation->id;
+        $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
+            ->select('quotation.*',
+                    DB::raw("
+                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
+                        client.company_name,
+                        CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
+                    "))
+            ->where('quotation.id', '=', $id)
+            ->get();
+
+        $products = Product::join('garment', 'garment.id', '=', 'product.garment')
+            ->join('fabric', 'fabric.id', '=', 'product.fabric')
+            ->select('product.id', 'garment.name as garment', 'fabric.name as fabric', 'product.unit_price', 'product.description')
+            ->where('product.quotation', '=', $id)
+            ->get();
+
+        return view('quotations.show')->with('quotation', $quotation[0])->with('products',$products);
     }
 
     /**
@@ -114,7 +125,24 @@ class QuotationsController extends Controller
      */
     public function edit(Quotation $quotation)
     {
-        //
+        $id = $quotation->id;
+        $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
+            ->select('quotation.*',
+                    DB::raw("
+                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
+                        client.company_name,
+                        CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
+                    "))
+            ->where('quotation.id', '=', $id)
+            ->get();
+
+        $products = Product::join('garment', 'garment.id', '=', 'product.garment')
+            ->join('fabric', 'fabric.id', '=', 'product.fabric')
+            ->select('product.garment as garment_id','garment.name as garment', 'product.fabric as fabric_id','fabric.name as fabric', 'product.unit_price', 'product.description')
+            ->where('product.quotation', '=', $id)
+            ->get();
+
+        return view('quotations.edit')->with('quotation', $quotation[0])->with('products',$products);
     }
 
     /**
@@ -126,7 +154,7 @@ class QuotationsController extends Controller
      */
     public function update(Request $request, Quotation $quotation)
     {
-        //
+        return "trying to update the form";
     }
 
     /**
