@@ -14,7 +14,7 @@ class FabricsController extends Controller
      */
     public function index()
     {
-        return redirect('/fabrics_and_status');
+        return redirect('/garments_and_fabrics');
     }
 
     /**
@@ -41,7 +41,7 @@ class FabricsController extends Controller
         $fabric->save();
         $new_fabric = "$fabric->name";
         
-        return redirect('/fabrics_and_status')->with('new_fabric', $new_fabric);
+        return redirect('/garments_and_fabrics')->with('new_fabric', $new_fabric);
     }
 
     /**
@@ -80,7 +80,7 @@ class FabricsController extends Controller
         $fabric->save();
         $edited_fabric = "$fabric->name";
 
-        return redirect('/fabrics_and_status')->with('edited_fabric', $edited_fabric);
+        return redirect('/garments_and_fabrics')->with('edited_fabric', $edited_fabric);
     }
 
     /**

@@ -14,7 +14,7 @@ class GarmentsController extends Controller
      */
     public function index()
     {
-        return redirect('/garments_and_operations');
+        return redirect('/garments_and_fabrics');
     }
 
     /**
@@ -41,7 +41,7 @@ class GarmentsController extends Controller
         $garment->save();
         $new_garment = "$garment->name";
         
-        return redirect('/garments_and_operations')->with('new_garment', $new_garment);
+        return redirect('/garments_and_fabrics')->with('new_garment', $new_garment);
     }
 
     /**
@@ -81,7 +81,7 @@ class GarmentsController extends Controller
         $garment->save();
         $edited_garment = "$garment->name";
 
-        return redirect('/garments_and_operations')->with('edited_garment', $edited_garment);
+        return redirect('/garments_and_fabrics')->with('edited_garment', $edited_garment);
     }
 
     /**

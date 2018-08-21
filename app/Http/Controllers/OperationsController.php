@@ -14,7 +14,7 @@ class OperationsController extends Controller
      */
     public function index()
     {
-        return redirect('/garments_and_operations');
+        return redirect('/operations_and_status');
     }
 
     /**
@@ -41,7 +41,7 @@ class OperationsController extends Controller
         $operation->save();
         $new_operation = "$operation->name";
         
-        return redirect('/garments_and_operations')->with('new_operation', $new_operation);
+        return redirect('/operations_and_status')->with('new_operation', $new_operation);
     }
 
     /**
@@ -81,7 +81,7 @@ class OperationsController extends Controller
         $operation->save();        
         $edited_operation = "$operation->name";
 
-        return redirect('/garments_and_operations')->with('edited_operation', $edited_operation);
+        return redirect('/operations_and_status')->with('edited_operation', $edited_operation);
     }
 
     /**

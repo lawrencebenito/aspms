@@ -10,18 +10,18 @@ class PagesController extends Controller
         return view('pages.index');
     }
 
-    public function fabrics_and_status(){
+    public function garments_and_fabrics(){
+        $garment = \App\Garment::select('id','name')->get();
         $fabric = \App\Fabric::select('id','name')->get();
+        
+        return view('pages.garments_and_fabrics')->with('garment', $garment)->with('fabric', $fabric);
+    }
+    
+    public function operations_and_status(){
+        $operation = \App\Operation::select('id','name')->get();
         $status = \App\Status::select('id','description')->get();
 
-        return view('pages.fabrics_and_status')->with('fabric', $fabric)->with('status',$status);
-    }
-
-    public function garments_and_operations(){
-        $garment = \App\Garment::select('id','name')->get();
-        $operation = \App\Operation::select('id','name')->get();
-
-        return view('pages.garments_and_operations')->with('garment', $garment)->with('operation',$operation);
+        return view('pages.operations_and_status')->with('operation',$operation)->with('status',$status);
     }
 
     public function orders(){
