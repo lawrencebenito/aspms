@@ -123,7 +123,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-          <a type="button" class="btn btn-default" href="{{url('/quotations')}}">Cancel</a>
+          <a type="button" class="btn btn-default" onclick="history.back(-1)">Back</a>
           <button type="submit" class="btn btn-success pull-right">Save</button>
         </div>
         <!-- /.box-footer -->

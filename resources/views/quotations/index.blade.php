@@ -79,13 +79,14 @@ $(document).ready(function() {
   $('#data_table').DataTable( {
       data: dataSet,
       columns: [
+          { title: "Date Created", data:"date_created"},
           { title: "Last Name", data:"last_name"},
           { title: "First Name", data:"first_name"},
           { title: "Company Name", data:"company_name"},
-          { title: "Date Created", data:"date_created"},
           { title: "Number of Products", data:"product_count"},
           { title: " "}
       ],
+      "order": [[ 0,"desc"]],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
         $(nRow).attr('id', aData['id']);
       },
