@@ -56,4 +56,8 @@ Route::get('/get_client_list', 'ClientsController@get_client_list');
 Route::get('/get_client_info', 'ClientsController@get_client_info');
 Route::get('/get_fabric_list', 'FabricsController@get_fabric_list');
 Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
+
+//CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');
+Route::get('/redirect_to_quo', 'OrdersController@quotation');
+Route::post('/orders/create', 'OrdersController@create');

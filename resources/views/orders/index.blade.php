@@ -35,7 +35,7 @@
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
-              <a class="btn btn-flat btn-success pull-right" href="./orders/create">
+              <a class="btn btn-flat btn-success pull-right" href="./redirect_to_quo">
                 <i class="fa fa-plus"> </i>  
                 Add New Order
               </a>
