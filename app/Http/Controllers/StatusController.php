@@ -14,7 +14,7 @@ class StatusController extends Controller
      */
     public function index()
     {
-        return redirect('/fabrics_and_status');
+        return redirect('/operations_and_status');
     }
 
     /**
@@ -41,7 +41,7 @@ class StatusController extends Controller
         $status->save();
         $new_status = "$status->description";
         
-        return redirect('/fabrics_and_status')->with('new_status', $new_status);
+        return redirect('/operations_and_status')->with('new_status', $new_status);
     }
 
     /**
@@ -80,7 +80,7 @@ class StatusController extends Controller
         $status->save();
         $edited_status = "$status->description";
 
-        return redirect('/fabrics_and_status')->with('edited_status', $edited_status);
+        return redirect('/operations_and_status')->with('edited_status', $edited_status);
     }
 
     /**

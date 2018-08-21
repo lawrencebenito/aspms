@@ -52,8 +52,8 @@
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('/garments_and_operations') }}"><i class="fa fa-circle-o"></i> <span> Garments & Operations </span></a></li>
-          <li><a href="{{ url('/fabrics_and_status') }}"><i class="fa fa-circle-o"></i> <span> Fabrics & Status </span></a></li>
+          <li><a href="{{ url('/garments_and_fabrics') }}"><i class="fa fa-circle-o"></i> <span> Garments & Fabrics </span></a></li>
+          <li><a href="{{ url('/operations_and_status') }}"><i class="fa fa-circle-o"></i> <span> Operations & Status </span></a></li>
         </ul>
       </li>
     </ul>
