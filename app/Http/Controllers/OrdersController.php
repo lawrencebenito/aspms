@@ -50,15 +50,14 @@ class OrdersController extends Controller
         $quotation = json_decode($request->get('quotation'));
         $products = json_decode($request->get('products'));
         
-        //get the array of garment radio button groups
-        $garments = $request->get('garments'); 
+        //get the array of selected products from the checkbox
+        $choosen_products = $request->get('choosen_products'); 
         
         $selected_products = array();
         
-        foreach ($garments as $garment) {
-            //$request-get("$garment") gets the index of the selected fabric under a garment
-            array_push( $selected_products, $products[$request->get("$garment")]);
-        }        
+        foreach ($choosen_products as $index) {
+            array_push( $selected_products, $products[$index]);
+        }
         
         return view('orders.create')->with('quotation', $quotation)->with('products',$selected_products);
     }
