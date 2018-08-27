@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\Order_Product;
 use App\Quotation;
 use App\Product;
-
-use App\Includes\StaticCounter;
-use App\Includes\SmartMove;
-
+use DB;
 
 use Illuminate\Http\Request;
 
@@ -21,11 +19,17 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        // $client = Client::select(
-        //     'id','company_name','last_name','first_name','contact_num','email_address')
-        //     ->get();
-        $client = [];
-        return view('orders.index')->with('client', $client);
+        $orders = Order::join('client','client.id', '=','order.client')
+            ->join('order_product','order_product.order', '=','order.id')
+            ->join('product','product.id', '=','order_product.product')
+            ->select('order.id','order.date_ordered','client.company_name',
+                    DB::raw("
+                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
+                        SUM(order_product.quantity * product.unit_price) as total_price")
+                    )
+            ->groupBy('order.id')
+            ->get();
+        return view('orders.index')->with('orders', $orders);
     }
 
     /**
@@ -70,7 +74,45 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try
+        {
+            $client_name = $request->get('client_name');
+
+            $order = new Order;
+            $order->date_ordered = $request->get('date_ordered');
+            $order->client = $request->get('client');
+            $order->po_number = $request->get('po_number');
+            $order->payment_terms = $request->get('payment_terms');
+            $order->remarks = $request->get('remarks');
+        
+            $products = DB::transaction(function()  use ($request, $order) {
+                
+                $order->save();
+                $order_id = $order->id;
+                $products = $request->get('ordered_products');
+                
+                foreach ($products as $key => $product) {
+                    //Ordered Product
+                    $order_product = new Order_Product;
+                    $order_product->order = $order_id;
+                    $order_product->product = $product;
+                    $order_product->size = $request->get("sizes")[$key];
+                    $order_product->quantity = $request->get("quantities")[$key];
+                    $order_product->save();
+                }
+            }); //end of transaction
+
+            $new_order = "for $client_name on $order->date_ordered";
+            return redirect('orders')->with('new_order', $new_order);
+        }
+        catch( PDOException $e )
+        {
+            return $e;
+        }
+        catch( Exception $e )
+        {
+            return $e;
+        }
     }
 
     /**
