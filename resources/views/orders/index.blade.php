@@ -78,7 +78,7 @@ $(document).ready(function() {
           { title: "Date Ordered", data:"date_ordered"},
           { title: "Client Name", data:"full_name"},
           { title: "Company Name", data:"company_name"},
-          { title: "Total Price", data:"total_price"},
+          { title: "Total Price", data:"total_price", render: $.fn.dataTable.render.number(',', '.', 0, '')},
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {

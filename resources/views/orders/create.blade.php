@@ -101,7 +101,7 @@
                     <td>
                       <select class="form-control" name="sizes[]" placeholder="Pick size" required>
                         <option></option>
-                        <option value="FS">Free Size</option>
+                        <option value="Free Size">Free Size</option>
                         <option value="XS">XS</option>
                         <option value="S">S</option>
                         <option value="M">M</option>

@@ -123,7 +123,29 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $id = $order->id;
+        $order = Order::join('client', 'client.id', '=', 'order.client')
+            ->select('order.*',
+                    DB::raw("
+                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
+                        client.company_name,
+                        CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
+                    "))
+            ->where('order.id', '=', $id)
+            ->get();
+
+        $order_product = Order_Product::join('order', 'order.id', '=', 'order_product.order')
+            ->join('product', 'product.id', '=', 'order_product.product')
+            ->join('garment', 'garment.id', '=', 'product.garment')
+            ->join('fabric', 'fabric.id', '=', 'product.fabric')
+            ->select('order_product.quantity','order_product.size','product.unit_price',
+                    DB::raw("
+                        CONCAT(garment.name,' (',fabric.name,') ',IF( ISNULL(product.description),'', product.description)) AS description
+                    "))
+            ->where('order.id', '=', $id)
+            ->get();
+            
+        return view('orders.show')->with('order', $order[0])->with('order_product',$order_product);
     }
 
     /**
