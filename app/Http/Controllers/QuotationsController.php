@@ -178,7 +178,7 @@ class QuotationsController extends Controller
     {
         $id = $quotation->id;
         $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
-            ->select('quotation.*',
+            ->select('quotation.*','client.tin',
                     DB::raw("
                         CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
                         client.company_name,

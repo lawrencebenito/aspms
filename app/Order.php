@@ -9,4 +9,8 @@ class Order extends Model
     protected $table = 'order';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    
+    public function getIdAttribute() {
+        return sprintf("%04d", $this->attributes['id']);
+    }
 }

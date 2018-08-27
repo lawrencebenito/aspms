@@ -26,29 +26,37 @@
               <div class="form-group col-lg-12 no-padding">
                 <label class="col-sm-4 control-label">Date Ordered</label>
                 <div class="col-sm-8">
-                  <input type="date" name="date" class="form-control">
+                  <input type="date" name="date_ordered" class="form-control" required>
                 </div>
               </div>
               <div class="form-group col-lg-12 no-padding">
                 <label class="col-sm-4 control-label">Client Name</label>
                 <div class="col-sm-8">
-                  <p>{{$quotation->full_name}}</p>
+                  <input type="hidden" name="client" class="form-control" value="{{$quotation->client}}">
+                  <input type="hidden" name="client_name" class="form-control" value="{{$quotation->full_name}}">
+                  <p>
+                    {{$quotation->full_name}} 
+                    @if (!is_null($quotation->company_name))
+                    of {{$quotation->company_name}}
+                    @endif
+                  </p>
                 </div>
               </div>
-              @if (!is_null($quotation->company_name))
               <div class="form-group col-lg-12 no-padding">
-                <label class="col-sm-4 control-label">Company Name</label>
-                <div class="col-sm-8">
-                  <p>{{$quotation->company_name}}</p>
-                </div>
-              </div>
-              @endif              
-              <div class="form-group col-lg-12 no-padding">
-                <label class="col-sm-4 control-label">Client Address</label>
+                <label class="col-sm-4 control-label">Company Address</label>
                 <div class="col-sm-8">
                   <p>{{$quotation->address}}</p>
                 </div>
-              </div>              
+              </div>
+              @if (!is_null($quotation->tin))
+              <div class="form-group col-lg-12 no-padding">
+                <label class="col-sm-4 control-label">Client Tin</label>
+                <div class="col-sm-8">
+                  <p>{{$quotation->company_name}}</p>
+                </div>
+                </div>  
+              </div>
+              @endif                            
             </div>
             <!-- End of First Column -->
             <!-- Start of Second Column -->
@@ -56,19 +64,19 @@
               <div class="form-group col-lg-12 no-padding">
                 <label class="col-sm-4 control-label">PO Number</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter P.O. Number from client" name="company_name" autocomplete="off"</input>
+                  <input type="text" class="form-control" placeholder="Enter P.O. Number from client" name="po_number" autocomplete="off"</input>
                 </div>
               </div>
               <div class="form-group col-lg-12 no-padding">
                 <label class="col-sm-4 control-label">Payment Terms</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Eg. 30 days, 50-50, Full payment, etc." name="company_name" autocomplete="off"</input>
+                  <input type="text" class="form-control" placeholder="Eg. 30 days, 50-50, Full payment, etc." name="payment_terms" autocomplete="off"</input>
                 </div>
               </div>              
               <div class="form-group">
                 <label class="col-sm-4 control-label">Remarks</label>
                 <div class="col-sm-8">
-                  <textarea rows="3" class="form-control" placeholder="Eg. Special Requests, Different Shipping Address or Delivery Conditions" name="address" maxlength="200" style="resize:none;"></textarea>
+                  <textarea rows="3" class="form-control" placeholder="Eg. Project Name, Special Requests, Different Shipping Address, Delivery Conditions" name="remarks" maxlength="200" style="resize:none;"></textarea>
                 </div>
               </div>              
             </div>
@@ -93,7 +101,7 @@
                     <td>
                       <select class="form-control" name="sizes[]" placeholder="Pick size" required>
                         <option></option>
-                        <option value="FS">Free Size</option>
+                        <option value="Free Size">Free Size</option>
                         <option value="XS">XS</option>
                         <option value="S">S</option>
                         <option value="M">M</option>
@@ -104,7 +112,7 @@
                       </select>
                     </td>
                     <td style="width:1%;white-space:nowrap;vertical-align: middle">
-                      <input type="hidden" name="product[]" value="{{$product->id}}">  
+                      <input type="hidden" name="ordered_products[]" value="{{$product->id}}">  
                       <b>{{$product->garment}}</b> ({{$product->fabric}}) <i>{{$product->description}}</i>
                     </td>
                     <td class="unit_price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">{{$product->unit_price}}</td>
@@ -115,7 +123,7 @@
               <div class="form-group pull-right">
                 <label for="total_price" class="col-sm-5 control-label">Total Price</label>
                 <div class="col-sm-7 no-padding">
-                  <input type="text" class="form-control" id="total_price" readonly style="text-align: right" value="0">
+                  <input type="text" class="form-control" name="total_price" id="total_price" readonly style="text-align: right" value="0">
                 </div>
               </div>
             </div>

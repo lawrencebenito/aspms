@@ -21,7 +21,7 @@
               <div class="col-sm-6">
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Company Name</label>
-                  <input type="text" class="form-control" value="{{$client->company_name}}" name="company_name"></input>
+                  <input type="text" class="form-control" value="{{$client->company_name}}" name="company_name" autocomplete="off"></input>
                 </div>
                 <div class="col-sm-12 form-group">
                   <label class="control-label">Last Name</label>

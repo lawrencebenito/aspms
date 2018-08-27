@@ -66,7 +66,7 @@
                   </tr>  
                 @endif
                 <tr>
-                  <td style="text-align:right"><input type="radio" name="{{$product->garment_id}}" value="{{$key}}" required></td>
+                  <td style="text-align:right"><input type="checkbox" name="choosen_products[]" value="{{$key}}"></td>
                   <td>{{$product->fabric}}</td>
                   <td>{{$product->unit_price}}</td>
                 </tr>

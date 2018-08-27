@@ -19,11 +19,11 @@
 
 @section('content')
 
-@if (session()->has('new_client'))
+@if (session()->has('new_order'))
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-    New order, {{ session()->get('new_client') }} has been added to the list.
+    New order, {{ session()->get('new_order') }} has been added to the list.
   </div>
 @endif
 
@@ -66,21 +66,19 @@
 $(document).ready(function() {
   var dataSet = [];
   
-  @if(count($client) > 0)
-    var dataSet = @json($client);
+  @if(count($orders) > 0)
+    var dataSet = @json($orders);
   @endif
   //console.log(dataSet);
 
   $('#data_table').DataTable( {
       data: dataSet,
       columns: [
-          { title: "Order #", data:"last_name"},
-          { title: "Date Ordered", data:"first_name"},
-          { title: "Client Name", data:"first_name"},
+          { title: "Order #", data:"id"},
+          { title: "Date Ordered", data:"date_ordered"},
+          { title: "Client Name", data:"full_name"},
           { title: "Company Name", data:"company_name"},
-          { title: "Total Cost", data:"contact_num"},
-          { title: "Payment Status", data:"email_address"},
-          { title: "Due Date", data:"email_address"},
+          { title: "Total Price", data:"total_price", render: $.fn.dataTable.render.number(',', '.', 0, '')},
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
@@ -96,7 +94,7 @@ $(document).ready(function() {
   } );
 
   //TODO: Look for a way to stop warping reponsive table of bootstrap, how to make it one liner.
-  var source_ref = "{{ url('/clients') }}" + "/";
+  var source_ref = "{{ url('/orders') }}" + "/";
   
   $('#data_table').on('dblclick','td',function(e){
     window.location.href = source_ref + $(this).closest('tr').attr('id');
