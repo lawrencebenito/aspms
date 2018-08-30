@@ -64,3 +64,6 @@ Route::post('/orders/create', 'OrdersController@create');
 
 //DomPDF
 Route::get('/export_invoice/{order}','OrdersController@export_invoice');
+
+//DELETE GET REQUESTS
+Route::get('/clients/{client}/delete', 'ClientsController@destroy');

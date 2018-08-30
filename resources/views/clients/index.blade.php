@@ -25,6 +25,12 @@
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
     New client, {{ session()->get('new_client') }} has been added to the list.
   </div>
+@elseif (session()->has('deleted'))
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
+    Client, {{ session()->get('deleted') }} has been removed to the list.
+  </div>
 @endif
 
 <div class="row">
@@ -71,7 +77,7 @@ $(document).ready(function() {
   @endif
   //console.log(dataSet);
 
-  $('#data_table').DataTable( {
+  var mytable = $('#data_table').DataTable( {
       data: dataSet,
       columns: [
           { title: "Last Name", data:"last_name"},
@@ -108,7 +114,10 @@ $(document).ready(function() {
     window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
   });
 
-} ); //end of document.ready
-
+  $('.btn_delete').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
+  });
+  
+});//end of document.ready
 </script>
 @endpush
