@@ -7,7 +7,7 @@
 @section('content')
 <div class="row">
   <div class="col-lg-6">
-      <div class="box box-info">
+      <div class="box box-warning">
         <div class="box-header with-border">
           <h3 class="box-title">Edit Status Information</h3>
         </div>
@@ -31,7 +31,7 @@
           <div class="box-footer">
             <a type="button" class="btn btn-default" href="{{ url('/status') }}">Cancel</a>
             {{ method_field('PUT') }}
-            <button type="submit" class="btn btn-info pull-right">Save</button>
+            <button type="submit" class="btn btn-warning pull-right">Save</button>
           </div>
           <!-- /.box-footer -->
         </form>
