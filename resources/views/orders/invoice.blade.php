@@ -1,18 +1,3 @@
-@extends('layouts.main')
-
-@section('page_header')
-  @include('orders.header')
-@endsection
-
-@section('content')
-
-@if (session()->has('edited_order'))
-  <div class="alert alert-success alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-    Changes made for this order: {{ session()->get('edited_order') }}.
-  </div>
-@endif
 
 <div class="row">
   <div class="col-md-9">
@@ -114,42 +99,16 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-        <a type="button" class="btn btn-default" href="{{url('/orders')}}">Back to List</a>
+        
       </div>
       <!-- /.box-footer -->
     </div>
     <!-- /.box box-primary -->
   </div>
   <!-- /.col -->
-  <div class="col-md-3">
-      <div class="box box-success">
-        <div class="box-header with-border">
-          <h3 class="box-title">Options</h3>
-        </div>
-        <!-- /.box-header -->
-          <div class="box-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
-              </div>
-              <!-- /.col -->
-            </div> 
-            <!-- /.row inner -->   
-          <div>
-          <!-- /.box-body -->
-          <div class="box-footer"></div>
-          <!-- /.box-footer -->
-        </form>
-        <!-- /.form-horizontal -->
-      </div>
-      <!-- /.box box-success -->
-    </div>
-    <!-- /.col -->
 </div>
 <!-- /.row -->
-@endsection
+
 
 @push('extra_scripts')
 <script src="{{ asset("dist/js/order-show.js")}}"></script>

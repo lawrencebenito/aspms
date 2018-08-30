@@ -61,3 +61,6 @@ Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');
 Route::get('/redirect_to_quo', 'OrdersController@quotation');
 Route::post('/orders/create', 'OrdersController@create');
+
+//DomPDF
+Route::get('/export_invoice/{order}','OrdersController@export_invoice');
