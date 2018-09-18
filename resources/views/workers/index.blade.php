@@ -17,6 +17,12 @@
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
     New employee, {{ session()->get('new_worker') }} has been added to the list.
   </div>
+@elseif (session()->has('deleted'))
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
+    Worker, {{ session()->get('deleted') }} has been removed to the list.
+  </div>
 @endif
 
 <div class="row">
@@ -69,17 +75,37 @@ $(document).ready(function() {
           { title: "Last Name", data:"last_name"},
           { title: "First Name", data:"first_name"},
           { title: "Contact Number", data:"contact_number"},
-          { title: "Address", data:"address"}
+          { title: "Address", data:"address"},
+          { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
         $(nRow).attr('id', aData['id']);
-      }
+      },
+      "columnDefs": [
+        {
+          defaultContent: btn_view + btn_edit + btn_delete,
+          sortable: false,
+          "targets": -1
+        }
+      ]
   } );
 
-  $('#data_table').on('dblclick','tr',function(e){
-    var id = $(this).attr('id');
-    //alert("double clicked!\n" + id);
-    window.location.href = "{{ url('/workers') }}"+"\/"+id;
+  var source_ref = "{{ url('/workers') }}" + "/";
+  
+  $('#data_table').on('dblclick','td',function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id');
+  });
+
+  $('.btn_view').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id');
+  });
+  
+  $('.btn_edit').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
+  });
+
+  $('.btn_delete').click(function(e){
+    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
   });
 
 } ); //end of document.ready

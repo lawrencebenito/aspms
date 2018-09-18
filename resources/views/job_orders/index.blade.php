@@ -27,7 +27,7 @@
           <th>Remaining Days</th>
         </tr>
         <tr>
-          <td>ORD-301</td>
+          <td>ORD20180001</td>
           <td>John Doe</td>
           <td>1,000 pcs.</td>
           <td>
@@ -40,7 +40,7 @@
           <td>9 days</td>
         </tr>
         <tr>
-          <td>ORD-302</td>
+          <td>ORD20180002</td>
           <td>Alexander Pierce</td>
           <td>3,000 pcs.</td>
           <td>
@@ -53,7 +53,7 @@
           <td>5 days</td>
         </tr>
         <tr>
-          <td>ORD-303</td>
+          <td>ORD20180003</td>
           <td>Mike Doe</td>
           <td>5,000 pcs.</td>
           <td>
@@ -66,7 +66,7 @@
           <td>1 month, 4 days</td>
         </tr>
         <tr>
-          <td>ORD-304</td>
+          <td>ORD20180004</td>
           <td>Zachary Wyman</td>
           <td>2,000 pcs.</td>
           <td>

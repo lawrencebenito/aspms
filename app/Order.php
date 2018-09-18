@@ -11,9 +11,7 @@ class Order extends Model
     public $timestamps = false;
     
     public function getIdAttribute() {
-        $fixed_chars = "ORD";
-        $year = date("Y");
 
-        return sprintf("%s%s%04d", $fixed_chars, $year, $this->attributes['id']);
+        return sprintf("%04d", $this->attributes['id']);
     }
 }

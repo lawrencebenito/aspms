@@ -67,3 +67,7 @@ Route::get('/export_invoice/{order}','OrdersController@export_invoice');
 
 //DELETE GET REQUESTS
 Route::get('/clients/{client}/delete', 'ClientsController@destroy');
+
+//!!!!!!! REFACTOR THESE PLEASE !!!!!/////
+Route::get('/workers/{worker}/delete', 'WorkersController@destroy');
+Route::get('/garments/{garment}/delete', 'GarmentsController@destroy');

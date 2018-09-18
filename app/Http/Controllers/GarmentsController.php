@@ -92,7 +92,11 @@ class GarmentsController extends Controller
      */
     public function destroy(Garment $garment)
     {
-        //
+        $deleted = "$garment->name";
+        
+        $garment->delete();
+
+        return redirect("/garments_and_fabrics")->with('deleted', $deleted);
     }
 
     /**
