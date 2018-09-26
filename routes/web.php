@@ -34,7 +34,7 @@ Route::get('/users/{id}/{name}', function ($id, $name) {
 //To show list of routes -> php artisan route:list
 
 //ROUTES TO PAGES USING CONTROLLER
-Route::get('/', 'PagesController@index');
+Route::get('/', 'PagesController@index')->name('home');
 Route::get('/garments_and_fabrics', 'PagesController@garments_and_fabrics');
 Route::get('/operations_and_status', 'PagesController@operations_and_status');
 
