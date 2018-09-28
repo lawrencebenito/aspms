@@ -35,13 +35,13 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <div class="box box-solid box-success">
+    <div class="box box-solid box-primary">
       <div class="box-header">
         <h3 class="box-title">List of Clients</h3>
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
-              <a class="btn btn-flat btn-success pull-right" href="./clients/create">
+              <a class="btn btn-flat btn-primary pull-right" href="./clients/create">
                 <i class="fa fa-plus"> </i>  
                 Add New Client
               </a>
@@ -72,12 +72,12 @@
 $(document).ready(function() {
   var dataSet = [];
   
-  @if(count($client) > 0)
+  @if(!empty($client))
     var dataSet = @json($client);
   @endif
   //console.log(dataSet);
 
-  var mytable = $('#data_table').DataTable( {
+  $('#data_table').DataTable( {
       data: dataSet,
       columns: [
           { title: "Last Name", data:"last_name"},
@@ -92,14 +92,18 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
+          defaultContent: "N/A",
+          "targets": 2
+        },
+        {
           defaultContent: btn_view + btn_edit + btn_delete,
+          className: "action-buttons",
           sortable: false,
           "targets": -1
         }
       ]
   } );
 
-  //TODO: Look for a way to stop warping reponsive table of bootstrap, how to make it one liner.
   var source_ref = "{{ url('/clients') }}" + "/";
   
   $('#data_table').on('dblclick','td',function(e){
@@ -115,7 +119,8 @@ $(document).ready(function() {
   });
 
   $('.btn_delete').click(function(e){
-    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
+    if(confirm_delete(this))
+      window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
   });
   
 });//end of document.ready

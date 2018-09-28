@@ -16,7 +16,7 @@
 @section('content')
 <div class="row">
   <div class="col-lg-12">
-      <div class="box box-success">
+      <div class="box box-primary">
         <div class="box-header with-border">
           <h3 class="box-title">Add New Client Profile</h3>
         </div>
@@ -74,7 +74,7 @@
           <!-- /.box-body -->
           <div class="box-footer">
             <a type="button" class="btn btn-default" href="{{url('/clients')}}">Cancel</a>
-            <button type="submit" class="btn btn-success pull-right">Submit</button>
+            <button type="submit" class="btn btn-primary pull-right">Submit</button>
           </div>
           <!-- /.box-footer -->
         </form>

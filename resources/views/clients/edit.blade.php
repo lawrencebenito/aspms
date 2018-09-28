@@ -7,7 +7,7 @@
 @section('content')
 <div class="row">
   <div class="col-lg-12">
-      <div class="box box-success">
+      <div class="box box-primary">
         <div class="box-header with-border">
           <h3 class="box-title">Edit Client Profile</h3>
         </div>
@@ -93,7 +93,7 @@
           <div class="box-footer">
             <a type="button" class="btn btn-default" onclick="history.back(-1)">Cancel</a>
             {{ method_field('PUT') }}
-            <button type="submit" class="btn btn-success pull-right">Save</button>
+            <button type="submit" class="btn btn-primary pull-right">Save</button>
           </div>
           <!-- /.box-footer -->
         </form>

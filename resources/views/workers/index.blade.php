@@ -64,10 +64,9 @@
 $(document).ready(function() {  
   var dataSet = [];
   
-  @if(count($worker) > 0)
+  @if(!empty($worker))
     var dataSet = @json($worker);
   @endif
-  //console.log(dataSet);
   
   $('#data_table').DataTable( {
       data: dataSet,
@@ -105,7 +104,8 @@ $(document).ready(function() {
   });
 
   $('.btn_delete').click(function(e){
-    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
+    if(confirm_delete(this))
+      window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
   });
 
 } ); //end of document.ready

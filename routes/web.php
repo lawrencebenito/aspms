@@ -35,9 +35,6 @@ Route::get('/users/{id}/{name}', function ($id, $name) {
 
 //ROUTES TO PAGES USING CONTROLLER
 Route::get('/', 'PagesController@index')->name('home');
-Route::get('/garments_and_fabrics', 'PagesController@garments_and_fabrics');
-Route::get('/operations_and_status', 'PagesController@operations_and_status');
-
 Route::get('/orders_mock', 'PagesController@orders');
 Route::get('/job_orders', 'PagesController@job_orders');
 
@@ -67,7 +64,6 @@ Route::get('/export_invoice/{order}','OrdersController@export_invoice');
 
 //DELETE GET REQUESTS
 Route::get('/clients/{client}/delete', 'ClientsController@destroy');
-
-//!!!!!!! REFACTOR THESE PLEASE !!!!!/////
 Route::get('/workers/{worker}/delete', 'WorkersController@destroy');
 Route::get('/garments/{garment}/delete', 'GarmentsController@destroy');
+Route::get('/fabrics/{fabric}/delete', 'FabricsController@destroy');

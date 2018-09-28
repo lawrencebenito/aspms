@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`client` (
   `company_name` VARCHAR(40) NULL COMMENT 'Globe Telecom Inc.',
   `contact_num` VARCHAR(13) NOT NULL COMMENT '09497580056',
   `email_address` VARCHAR(45) NULL COMMENT 'lawrencejohn.benito@gmail.com',
-  `tin` VARCHAR(45) NULL COMMENT '135-536-536-001',
   `address_line` TEXT(45) NOT NULL COMMENT 'B1 L19 Golden Mile, San Isidro',
   `address_municipality` VARCHAR(45) NOT NULL COMMENT 'Cainta',
   `address_province` VARCHAR(45) NOT NULL COMMENT 'Rizal',
@@ -63,9 +62,9 @@ COMMENT = 'Maintenance Table. This table contains all the information of a emplo
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`fabric`
+-- Table `db_aspms`.`fabric_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
+CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_type` (
   `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
   `name` VARCHAR(45) NOT NULL COMMENT 'Cotton',
   PRIMARY KEY (`id`),
@@ -159,24 +158,44 @@ COMMENT = 'This table will contain information about the payment collection per 
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`quotation`
+-- Table `db_aspms`.`pattern`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`quotation` (
-  `id` INT(4) ZEROFILL NOT NULL AUTO_INCREMENT COMMENT '1',
-  `client` INT(5) NOT NULL COMMENT '4',
-  `date_created` DATE NOT NULL COMMENT '2018-06-25',
-  `product_count` INT(2) NOT NULL COMMENT '3 (Number of products in the quotation)',
+CREATE TABLE IF NOT EXISTS `db_aspms`.`pattern` (
+  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `name` VARCHAR(45) NOT NULL COMMENT 'Plain',
   PRIMARY KEY (`id`),
-  INDEX `fk_client_quo_idx` (`client` ASC),
-  UNIQUE INDEX `unique_quote` (`client` ASC, `date_created` ASC),
-  CONSTRAINT `fk_client_quo`
-    FOREIGN KEY (`client`)
-    REFERENCES `db_aspms`.`client` (`id`)
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+COMMENT = 'Category Table. Contains the possible pattern of fabric used. Ex. Plain, Horizontal Stripe, Vertical Stripe, Printed, Abstart, Gradient, etc...';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`fabric`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
+  `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `type` INT(3) NOT NULL COMMENT '1',
+  `supplier_name` VARCHAR(45) NOT NULL COMMENT 'D.C.E. Fabrics Corp.',
+  `reference_num` VARCHAR(45) NOT NULL COMMENT '(From Supplier) SW29102',
+  `color` VARCHAR(45) NOT NULL COMMENT 'White',
+  `fabrication` VARCHAR(45) NOT NULL COMMENT '80% Cotton, 20% Linen',
+  `gsm` INT(3) NOT NULL COMMENT '220',
+  `pattern` INT(3) NOT NULL COMMENT '1',
+  PRIMARY KEY (`id`),
+  INDEX `fk_fabric_type_idx` (`type` ASC),
+  INDEX `fk_pattern_idx` (`pattern` ASC),
+  CONSTRAINT `fk_fabric_type`
+    FOREIGN KEY (`type`)
+    REFERENCES `db_aspms`.`fabric_type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pattern`
+    FOREIGN KEY (`pattern`)
+    REFERENCES `db_aspms`.`pattern` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COMMENT = 'This table connects operations needed for a certain product/garment.';
+COMMENT = 'Maintenance Table. Contains most of the information of fabric that will be used for the system.';
 
 
 -- -----------------------------------------------------
@@ -184,22 +203,20 @@ COMMENT = 'This table connects operations needed for a certain product/garment.'
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`product` (
   `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1\n',
-  `quotation` INT(4) ZEROFILL NOT NULL COMMENT '5',
+  `style_number` VARCHAR(45) NOT NULL COMMENT 'S328103',
   `garment` INT(5) NOT NULL COMMENT '3',
-  `fabric` INT(5) NOT NULL COMMENT '1',
-  `unit_price` DOUBLE NOT NULL COMMENT '950.00',
-  `description` TEXT NULL COMMENT 'production description',
+  `client` INT(5) NOT NULL COMMENT '1',
+  `main_fabrication` INT(5) NOT NULL COMMENT '1',
+  `description` TEXT NULL COMMENT 'ex. IBITS Shirt',
+  `min_range` TINYINT(1) NOT NULL COMMENT '2 (XS)',
+  `max_range` TINYINT(1) NOT NULL COMMENT '6 (XL)',
+  `consumption_size` TINYINT(1) NOT NULL COMMENT '4 (M)',
+  `total_price` DOUBLE NOT NULL COMMENT '350.00',
   PRIMARY KEY (`id`),
   INDEX `fk_garmet_idx` (`garment` ASC),
-  INDEX `fk_fabric_idx` (`fabric` ASC),
-  INDEX `fk_quotation_prod_idx` (`quotation` ASC),
-  CONSTRAINT `fk_quotation_prod`
-    FOREIGN KEY (`quotation`)
-    REFERENCES `db_aspms`.`quotation` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+  INDEX `fk_fabric_prod_idx` (`main_fabrication` ASC),
   CONSTRAINT `fk_fabric_prod`
-    FOREIGN KEY (`fabric`)
+    FOREIGN KEY (`main_fabrication`)
     REFERENCES `db_aspms`.`fabric` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -343,6 +360,334 @@ DEFAULT CHARACTER SET = utf8
 COMMENT = 'Transaction Table. This table will contains all the log of the employee for task(operation) they did.';
 
 
+-- -----------------------------------------------------
+-- Table `db_aspms`.`quotation`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`quotation` (
+  `id` INT(4) ZEROFILL NOT NULL AUTO_INCREMENT COMMENT '1',
+  `client` INT(5) NOT NULL COMMENT '4',
+  `date_created` DATE NOT NULL COMMENT '2018-06-25',
+  `product_count` INT(2) NOT NULL COMMENT '3 (Number of products in the quotation)',
+  PRIMARY KEY (`id`),
+  INDEX `fk_client_quo_idx` (`client` ASC),
+  CONSTRAINT `fk_client_quo`
+    FOREIGN KEY (`client`)
+    REFERENCES `db_aspms`.`client` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'This table connects operations needed for a certain product/garment.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`segment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`segment` (
+  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `name` VARCHAR(45) NOT NULL COMMENT 'Body',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. Contains the segmen(parts/components of a garment) Ex. Body, Sleeves, Collar, Neck Rib, Cuff Rib, Add-on Design, etc';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`fabric_price`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_price` (
+  `fabric` INT(5) NOT NULL COMMENT '1',
+  `date_effective` DATE NOT NULL COMMENT '2018-09-01',
+  `price_per_kgs` DOUBLE NOT NULL COMMENT '100',
+  PRIMARY KEY (`fabric`, `date_effective`),
+  CONSTRAINT `fk_fp_fabric`
+    FOREIGN KEY (`fabric`)
+    REFERENCES `db_aspms`.`fabric` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. Contains records with history of prices per fabric.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`product_fabric`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`product_fabric` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '1',
+  `product` INT(5) NOT NULL COMMENT '1',
+  `segment` INT(3) NOT NULL COMMENT '1',
+  `fabric` INT(5) NOT NULL COMMENT '1',
+  `length` FLOAT NOT NULL COMMENT '100 (in inches)',
+  `width` FLOAT NOT NULL COMMENT '28 (in inches)',
+  `allowance` INT NOT NULL COMMENT '10 (percentage)',
+  PRIMARY KEY (`id`),
+  INDEX `fk_pf_product_idx` (`product` ASC),
+  INDEX `fk_pf_segment_idx` (`segment` ASC),
+  INDEX `fk_pf_fabric_idx` (`fabric` ASC),
+  CONSTRAINT `fk_pf_product`
+    FOREIGN KEY (`product`)
+    REFERENCES `db_aspms`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pf_segment`
+    FOREIGN KEY (`segment`)
+    REFERENCES `db_aspms`.`segment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pf_fabric`
+    FOREIGN KEY (`fabric`)
+    REFERENCES `db_aspms`.`fabric` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'This table will hold the needed fabric/s consumed by the product with, segment as its category, length, witdth, and allowance need for computation. ';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`garment_segment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`garment_segment` (
+  `garment` INT(5) NOT NULL COMMENT '1',
+  `segment` INT(3) NOT NULL COMMENT '1',
+  PRIMARY KEY (`garment`, `segment`),
+  INDEX `fk_gs_segment_idx` (`segment` ASC),
+  CONSTRAINT `fk_gs_garment`
+    FOREIGN KEY (`garment`)
+    REFERENCES `db_aspms`.`garment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_gs_segment`
+    FOREIGN KEY (`segment`)
+    REFERENCES `db_aspms`.`segment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'Maintenance Table. This table connects all the required segment per garment.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`garment_operation`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`garment_operation` (
+  `garment` INT(5) NOT NULL COMMENT '1',
+  `operation` INT(5) NOT NULL COMMENT '1',
+  `rate` DOUBLE NOT NULL COMMENT '2.00',
+  PRIMARY KEY (`garment`, `operation`),
+  INDEX `fk_go_operation_idx` (`operation` ASC),
+  CONSTRAINT `fk_go_garment`
+    FOREIGN KEY (`garment`)
+    REFERENCES `db_aspms`.`garment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_go_operation`
+    FOREIGN KEY (`operation`)
+    REFERENCES `db_aspms`.`operation` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'Maintenance Table. This table connects all the required operations per garment.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`accesory_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`accesory_type` (
+  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `name` VARCHAR(45) NOT NULL COMMENT 'Button',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `unique_name` (`name` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'Categorical Table. This table holds all possible types of accessory like button, zipper, string, lining.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`accessory`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory` (
+  `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `accessory_type` INT(3) NOT NULL COMMENT '1',
+  `description` VARCHAR(225) NULL COMMENT '(optional) butons with 3 holes.',
+  `color` VARCHAR(45) NOT NULL COMMENT 'transparent white',
+  `reference_num` VARCHAR(45) NOT NULL COMMENT '(from supplier) RF91823',
+  `measurement_type` TINYINT(1) NOT NULL COMMENT '0 - by yards | 1 - by piece',
+  PRIMARY KEY (`id`),
+  INDEX `fk_accessory_idx` (`accessory_type` ASC),
+  CONSTRAINT `fk_accessory`
+    FOREIGN KEY (`accessory_type`)
+    REFERENCES `db_aspms`.`accesory_type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. Contains information of accessories for products';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`accesory_price`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`accesory_price` (
+  `accesory` INT(5) NOT NULL COMMENT '1',
+  `date_effective` DATE NOT NULL COMMENT '2018-09-01',
+  `price` DOUBLE NOT NULL COMMENT '100',
+  `quantity` DOUBLE NOT NULL COMMENT '80',
+  `unit_price` DOUBLE NOT NULL COMMENT 'price/quantity = unit_price',
+  PRIMARY KEY (`accesory`, `date_effective`),
+  CONSTRAINT `fk_ap_accessory`
+    FOREIGN KEY (`accesory`)
+    REFERENCES `db_aspms`.`accessory` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. Contains records with history of prices per accesories.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`product_accessory`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`product_accessory` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '1',
+  `product` INT(5) NOT NULL COMMENT '1',
+  `accessory` INT(5) NOT NULL COMMENT '1',
+  `quantity` INT NOT NULL COMMENT '100 (in inches or piece)',
+  PRIMARY KEY (`id`),
+  INDEX `fk_pf_product_idx` (`product` ASC),
+  INDEX `fk_pa_accessory_idx` (`accessory` ASC),
+  CONSTRAINT `fk_pa_product`
+    FOREIGN KEY (`product`)
+    REFERENCES `db_aspms`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pa_accessory`
+    FOREIGN KEY (`accessory`)
+    REFERENCES `db_aspms`.`accessory` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'This table will hold the needed accessories of the product. quantity will vary by inches or by pieces';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`design_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`design_type` (
+  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `name` VARCHAR(45) NOT NULL COMMENT 'Embroidery',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `unique_name` (`name` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'Categorical Table. This table holds all possible types of design like Embroidery, Silk Screen, Hot Press, Reburrized, Textile and etc.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`design_size`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`design_size` (
+  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `name` VARCHAR(45) NOT NULL COMMENT 'Small',
+  `min_width` INT NOT NULL COMMENT '1',
+  `min_height` INT NOT NULL COMMENT '1',
+  `max_width` INT NOT NULL COMMENT '3',
+  `max_height` INT NOT NULL COMMENT '3',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+COMMENT = 'Category Table. Contains the possible size of a certain design with range.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`design`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`design` (
+  `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `design_type` INT(3) NOT NULL COMMENT '1',
+  `design_size` INT(3) NOT NULL COMMENT '1',
+  `number of color` TINYINT(2) NOT NULL COMMENT '2',
+  `price` DOUBLE NOT NULL COMMENT '20.00',
+  PRIMARY KEY (`id`),
+  INDEX `fk_design_idx` (`design_type` ASC),
+  INDEX `fk_design_size_idx` (`design_size` ASC),
+  CONSTRAINT `fk_design_type`
+    FOREIGN KEY (`design_type`)
+    REFERENCES `db_aspms`.`design_type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_design_size`
+    FOREIGN KEY (`design_size`)
+    REFERENCES `db_aspms`.`design_size` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. This table will contain the base price of the design for the system.';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`product_design`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`product_design` (
+  `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `product` INT(5) NOT NULL COMMENT '1',
+  `design` INT(5) NOT NULL COMMENT '1',
+  `sample_image` TEXT NULL COMMENT 'C:/Users/Pictures/design.jpg',
+  PRIMARY KEY (`id`),
+  INDEX `fk_pd_product_idx` (`product` ASC),
+  INDEX `fk_pd_design_idx` (`design` ASC),
+  CONSTRAINT `fk_pd_product`
+    FOREIGN KEY (`product`)
+    REFERENCES `db_aspms`.`product` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pd_design`
+    FOREIGN KEY (`design`)
+    REFERENCES `db_aspms`.`design` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'This table will contain the add-on design of the product like logo, design print and etc.';
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`pattern`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (1, 'Plain');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (2, 'Stripe (Vertical)');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (3, 'Stripe (Horizontal)');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (4, 'Diagonal Stripes');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (5, 'Checkered');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (6, 'Printed');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (7, 'Gradient');
+INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (8, 'Abstract');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`segment`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (1, 'Front');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (2, 'Back');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (3, 'Front (Add-on)');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (4, 'Back (Add-on)');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (5, 'Right Sleeve');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (6, 'Right Sleeve (Add-on)');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (9, 'Collar');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (10, 'Neck Rib');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (11, 'Cuff Rib');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (12, 'Bottom Rib');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (7, 'Left Sleeve');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (8, 'Lef Sleeve (Add-on)');
+
+COMMIT;
+

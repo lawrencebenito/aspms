@@ -11,7 +11,7 @@
         </a>
       </li>
       <!-- Maintenance -->
-      <li class="treeview {{ Helper::is_active(['clients','workers']) }}">
+      <li class="treeview {{ Helper::is_active(['clients','workers','fabrics']) }}">
         <a href="#">
           <i class="fa fa-gears"></i> <span>Maintenance</span>
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -26,7 +26,7 @@
             <i class="fa fa-users"></i> <span> Workers </span></a>
           </li>
           <li class="{{ Helper::is_active('fabrics') }}">
-            <a href="{{ url('/garments_and_fabrics') }}">
+            <a href="{{ route('fabrics.index') }}">
             <i class="ion ion-scissors"></i> <span> Fabrics </span></a>
           </li>
           <li class="{{ Helper::is_active('garments') }}">
@@ -50,16 +50,16 @@
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
         </a>
         <ul class="treeview-menu">
-          <li>
-            <a href="{{ url('/quotations') }}">
+          <li> 
+            <a href="{{ url('/products') }}">
             <i class="ion ion-tshirt"></i> <span>Products</span></a>
           </li>
-          <li>
-            <a href="{{ url('/quotations') }}">
+          <li class="{{ Helper::is_active('quotations') }}">
+            <a href="{{ route('quotations.index') }}">
             <i class="fa fa-sticky-note"></i> <span>Quotations</span></a>
           </li>
-          <li>
-            <a href="{{ url('/orders') }}">
+          <li class="{{ Helper::is_active('orders') }}">
+            <a href="{{ route('orders.index') }}">
             <i class="fa fa-shopping-cart"></i> <span>Orders</span></a>
           </li>
         </ul>

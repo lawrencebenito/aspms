@@ -96,7 +96,7 @@ class GarmentsController extends Controller
         
         $garment->delete();
 
-        return redirect("/garments_and_fabrics")->with('deleted', $deleted);
+        return redirect("/garments_and_fabrics")->with('deleted_garment', $deleted);
     }
 
     /**

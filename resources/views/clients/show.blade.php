@@ -16,7 +16,7 @@
 
 <div class="row">
   <div class="col-md-9">
-    <div class="box box-success">
+    <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">View Client Profile</h3>
       </div>
@@ -91,13 +91,13 @@
       </form>
       <!-- /.form-horizontal -->
     </div>
-    <!-- /.box box-success -->
+    <!-- /.box box-primary -->
   </div>
   <!-- /.col -->
   </div>
   </div>  
   <div class="col-md-3">
-    <div class="box box-success">
+    <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Options</h3>
       </div>
@@ -105,10 +105,10 @@
         <div class="box-body">
           <div class="row">
             <div class="col-sm-12">
-              <a type="button" class="btn btn-success btn-block" href="{{ url('./clients')}}/{{$client->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
-              <a type="button" class="btn btn-success btn-block" href="{{ url('./clients')}}/{{$client->id}}/ed"><i class="fa fa-trash-o"></i> Delete</a>
-              <a type="button" class="btn btn-success btn-block">View Contracts</a>
-              <a type="button" class="btn btn-success btn-block">View Quotations</a>
+              <a type="button" class="btn btn-primary btn-block" href="{{ url('./clients')}}/{{$client->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+              <a type="button" class="btn btn-primary btn-block" href="{{ url('./clients')}}/{{$client->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
+              <a type="button" class="btn btn-primary btn-block"> View Contracts</a>
+              <a type="button" class="btn btn-primary btn-block"> View Quotations</a>
             </div>
             <!-- /.col -->
           </div> 
@@ -120,7 +120,7 @@
       </form>
       <!-- /.form-horizontal -->
     </div>
-    <!-- /.box box-success -->
+    <!-- /.box box-primary -->
   </div>
   <!-- /.col -->
 </div>

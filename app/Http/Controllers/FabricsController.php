@@ -14,7 +14,7 @@ class FabricsController extends Controller
      */
     public function index()
     {
-        return redirect('/garments_and_fabrics');
+        return view('fabrics.index');
     }
 
     /**
@@ -91,7 +91,11 @@ class FabricsController extends Controller
      */
     public function destroy(Fabric $fabric)
     {
-        //
+        $deleted = "$fabric->name";
+        
+        $fabric->delete();
+
+        return redirect("/garments_and_fabrics")->with('deleted_fabric', $deleted);
     }
 
     /**
