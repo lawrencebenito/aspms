@@ -158,9 +158,9 @@ COMMENT = 'This table will contain information about the payment collection per 
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`pattern`
+-- Table `db_aspms`.`fabric_pattern`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`pattern` (
+CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_pattern` (
   `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
   `name` VARCHAR(45) NOT NULL COMMENT 'Plain',
   PRIMARY KEY (`id`),
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
     ON UPDATE CASCADE,
   CONSTRAINT `fk_pattern`
     FOREIGN KEY (`pattern`)
-    REFERENCES `db_aspms`.`pattern` (`id`)
+    REFERENCES `db_aspms`.`fabric_pattern` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -650,23 +650,68 @@ ENGINE = InnoDB
 COMMENT = 'This table will contain the add-on design of the product like logo, design print and etc.';
 
 
+-- -----------------------------------------------------
+-- Table `db_aspms`.`garment_fabric`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`garment_fabric` (
+  `garment` INT(5) NOT NULL COMMENT '1',
+  `fabric` INT(3) NOT NULL COMMENT '1',
+  PRIMARY KEY (`garment`, `fabric`),
+  INDEX `fk_gf_fabric_idx` (`fabric` ASC),
+  CONSTRAINT `fk_gf_garment`
+    FOREIGN KEY (`garment`)
+    REFERENCES `db_aspms`.`garment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_gf_fabric`
+    FOREIGN KEY (`fabric`)
+    REFERENCES `db_aspms`.`fabric_type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'This table will serve as the connection of garment types to fabric types. It list down all possible fabric types for that garment, Ex. Garment(T-shirt) will only have possible fabric type of Cotton, Polyester, Linen etc. This will prevent user to connect Demin or Leather to T-Shirt';
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `db_aspms`.`pattern`
+-- Data for table `db_aspms`.`fabric_type`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `db_aspms`;
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (1, 'Plain');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (2, 'Stripe (Vertical)');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (3, 'Stripe (Horizontal)');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (4, 'Diagonal Stripes');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (5, 'Checkered');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (6, 'Printed');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (7, 'Gradient');
-INSERT INTO `db_aspms`.`pattern` (`id`, `name`) VALUES (8, 'Abstract');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (1, 'Cotton');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (2, 'Silk');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (3, 'Linen');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (4, 'Wool');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (5, 'Denim');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (6, 'Leather');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (7, 'Polyester');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (8, 'Nylon');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (9, 'Spandex');
+INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (10, 'Vinyl');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`fabric_pattern`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (1, 'Plain');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (2, 'Stripe (Vertical)');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (3, 'Stripe (Horizontal)');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (4, 'Diagonal Stripes');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (5, 'Checkered');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (6, 'Printed');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (7, 'Gradient');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (8, 'Floral');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (9, 'Chevron');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (10, 'Geometric');
 
 COMMIT;
 

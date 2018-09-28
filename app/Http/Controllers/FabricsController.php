@@ -16,7 +16,7 @@ class FabricsController extends Controller
     public function index()
     {
         $type = FabricType::select('id','name')->get();
-        $fabric = Fabric::select('id','name')->get();
+        $fabric = Fabric::select('id')->get();
         
         return view('fabrics.index')->with('type', $type)->with('fabric', $fabric);
     }
