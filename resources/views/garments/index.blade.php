@@ -6,7 +6,7 @@
 @endpush
 
 @section('page_header')
-  @include('fabrics.header')
+  @include('garments.header')
 @endsection
 
 @section('content')
@@ -20,23 +20,23 @@
     </div>
   </div>
 </div>
-@elseif(session()->has('edited_type'))
+@elseif(session()->has('edited_garment'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-      Changes made for fabric type, {{ session()->get('edited_type') }}.
+      Changes made for garment, {{ session()->get('edited_garment') }}.
     </div>
   </div>
 </div>
-@elseif (session()->has('deleted_type'))
+@elseif (session()->has('deleted_garment'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
-      Fabric type, {{ session()->get('deleted_type') }} has been removed to the list.
+      Garment, {{ session()->get('deleted_garment') }} has been removed to the list.
     </div>
   </div>
 </div>
@@ -76,11 +76,11 @@
   <div class="col-lg-6 col-md-6">
     <div class="box box-solid box-primary">
       <div class="box-header">
-        <h3 class="box-title">Fabric Types</h3>
+        <h3 class="box-title">Garment Types</h3>
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
-              <a class="btn btn-flat btn-primary pull-right" href="./fabric_types/create">
+              <a class="btn btn-flat btn-primary pull-right" href="./garment/create">
                 <i class="fa fa-plus"> </i>  
                 Add New Type
               </a>
@@ -100,13 +100,13 @@
   <div class="col-lg-6 col-md-6">
     <div class="box box-solid box-primary">
       <div class="box-header">
-        <h3 class="box-title">Fabric Patterns</h3>
+        <h3 class="box-title">Garment Operations</h3>
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
               <a class="btn btn-flat btn-primary pull-right" href="./fabrics/create">
                 <i class="fa fa-plus"> </i>  
-                Add New Pattern
+                Add New Operation
               </a>
             </div>
           </div>
@@ -127,13 +127,13 @@
   <div class="col-lg-12 col-md-12">
     <div class="box box-solid box-primary">
       <div class="box-header">
-        <h3 class="box-title">Fabric List</h3>
+        <h3 class="box-title">Garment List</h3>
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
               <a class="btn btn-flat btn-primary pull-right" href="./garments/create">
                 <i class="fa fa-plus"> </i>  
-                Add New Fabric
+                Add New Garment
               </a>
             </div>
           </div>
@@ -166,8 +166,8 @@ $(document).ready(function() {
   */
   var dataSet = [];
 
-  @if(!empty($type))
-    var dataSet = @json($type);
+  @if(!empty($alsdjfasdf))
+    var dataSet = @json($garment);
   @endif
   //console.log(dataSet); 
   
@@ -191,7 +191,7 @@ $(document).ready(function() {
       ]
   } );
 
-  var source_ref_types = "{{ url('/fabric_types') }}" + "/";
+  var source_ref_types = "{{ url('/garments') }}" + "/";
   
   $('#data_table_types').on('dblclick','td',function(e){
     window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/edit";

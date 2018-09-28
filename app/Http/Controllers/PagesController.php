@@ -10,6 +10,7 @@ class PagesController extends Controller
         return view('pages.index');
     }
 
+    //PLEASE DELETE THIS
     public function garments_and_fabrics(){
         $garment = \App\Garment::select('id','name')->get();
         $fabric = \App\Fabric::select('id','name')->get();

@@ -11,7 +11,7 @@
         </a>
       </li>
       <!-- Maintenance -->
-      <li class="treeview {{ Helper::is_active(['clients','workers','fabrics']) }}">
+      <li class="treeview {{ Helper::is_active(['clients','workers','fabrics','garments']) }}">
         <a href="#">
           <i class="fa fa-gears"></i> <span>Maintenance</span>
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -30,7 +30,7 @@
             <i class="ion ion-scissors"></i> <span> Fabrics </span></a>
           </li>
           <li class="{{ Helper::is_active('garments') }}">
-            <a href="{{ url('/garments_and_fabrics') }}">
+            <a href="{{ route('garments.index') }}">
             <i class="ion ion-tshirt"></i> <span> Garments </span></a>
           </li>
           <li>

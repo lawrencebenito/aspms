@@ -35,15 +35,16 @@ Route::get('/users/{id}/{name}', function ($id, $name) {
 
 //ROUTES TO PAGES USING CONTROLLER
 Route::get('/', 'PagesController@index')->name('home');
-Route::get('/orders_mock', 'PagesController@orders');
-Route::get('/job_orders', 'PagesController@job_orders');
+Route::get('/orders_mock', 'PagesController@orders'); //to be deleted
+Route::get('/job_orders', 'PagesController@job_orders'); //to be deleted
 
 // !!!! Check the routes using > php artisan route:list
 Route::resource('clients', 'ClientsController');
 Route::resource('workers', 'WorkersController');
+Route::resource('fabrics', 'FabricsController');
+Route::resource('fabric_types', 'FabricTypesController');
 Route::resource('garments', 'GarmentsController');
 Route::resource('operations', 'OperationsController');
-Route::resource('fabrics', 'FabricsController');
 Route::resource('status', 'StatusController');
 Route::resource('quotations', 'QuotationsController');
 Route::resource('orders', 'OrdersController');
@@ -67,3 +68,4 @@ Route::get('/clients/{client}/delete', 'ClientsController@destroy');
 Route::get('/workers/{worker}/delete', 'WorkersController@destroy');
 Route::get('/garments/{garment}/delete', 'GarmentsController@destroy');
 Route::get('/fabrics/{fabric}/delete', 'FabricsController@destroy');
+Route::get('/fabric_types/{fabric_type}/delete', 'FabricTypesController@destroy');

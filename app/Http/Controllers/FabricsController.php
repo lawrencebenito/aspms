@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Fabric;
+use App\FabricType;
 use Illuminate\Http\Request;
 
 class FabricsController extends Controller
@@ -14,7 +15,10 @@ class FabricsController extends Controller
      */
     public function index()
     {
-        return view('fabrics.index');
+        $type = FabricType::select('id','name')->get();
+        $fabric = Fabric::select('id','name')->get();
+        
+        return view('fabrics.index')->with('type', $type)->with('fabric', $fabric);
     }
 
     /**
@@ -52,7 +56,7 @@ class FabricsController extends Controller
      */
     public function show(Fabric $fabric)
     {
-        //
+        return view('fabrics.edit')->with('fabric', $fabric);
     }
 
     /**

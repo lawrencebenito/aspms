@@ -14,7 +14,7 @@ class GarmentsController extends Controller
      */
     public function index()
     {
-        return redirect('/garments_and_fabrics');
+        return view('garments.index');
     }
 
     /**
