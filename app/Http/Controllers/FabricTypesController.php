@@ -97,4 +97,24 @@ class FabricTypesController extends Controller
 
         return redirect("/fabrics")->with('deleted_type', $deleted);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function get_fabric_type_list(Request $request)
+    {
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $type = FabricType::select('id','name AS text')->where('name', 'like', '%' .$q. '%')->get();
+
+        }else{
+            $type = FabricType::select('id','name AS text')->get();
+        }
+
+        return response()->json($type);
+    }
 }

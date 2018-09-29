@@ -54,6 +54,8 @@ Route::resource('orders', 'OrdersController');
 Route::get('/get_client_list', 'ClientsController@get_client_list');
 Route::get('/get_client_info', 'ClientsController@get_client_info');
 Route::get('/get_fabric_list', 'FabricsController@get_fabric_list');
+Route::get('/get_fabric_type_list', 'FabricTypesController@get_fabric_type_list');
+Route::get('/get_fabric_pattern_list', 'FabricPatternsController@get_fabric_pattern_list');
 Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES

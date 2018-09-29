@@ -97,4 +97,24 @@ class FabricPatternsController extends Controller
 
         return redirect("/fabrics")->with('deleted_pattern', $deleted);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function get_fabric_pattern_list(Request $request)
+    {
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $type = FabricPattern::select('id','name AS text')->where('name', 'like', '%' .$q. '%')->get();
+
+        }else{
+            $type = FabricPattern::select('id','name AS text')->get();
+        }
+
+        return response()->json($type);
+    }
 }

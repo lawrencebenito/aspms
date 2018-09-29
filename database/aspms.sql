@@ -180,6 +180,7 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
   `color` VARCHAR(45) NOT NULL COMMENT 'White',
   `fabrication` VARCHAR(45) NOT NULL COMMENT '80% Cotton, 20% Linen',
   `gsm` INT(3) NOT NULL COMMENT '220',
+  `width` INT NOT NULL,
   `pattern` INT(3) NOT NULL COMMENT '1',
   PRIMARY KEY (`id`),
   INDEX `fk_fabric_type_idx` (`type` ASC),
@@ -398,7 +399,8 @@ COMMENT = 'Maintenance Table. Contains the segmen(parts/components of a garment)
 CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_price` (
   `fabric` INT(5) NOT NULL COMMENT '1',
   `date_effective` DATE NOT NULL COMMENT '2018-09-01',
-  `price_per_kgs` DOUBLE NOT NULL COMMENT '100',
+  `unit_price` DOUBLE NOT NULL COMMENT '100',
+  `measurement_type` TINYINT(1) NULL COMMENT '0 - per kgs | 1 - per yards',
   PRIMARY KEY (`fabric`, `date_effective`),
   CONSTRAINT `fk_fp_fabric`
     FOREIGN KEY (`fabric`)

@@ -145,6 +145,7 @@ class ClientsController extends Controller
                             ->get();
         }
 
+        //!IMPORTANT: select2 reponse needed a json with data as ["id":"text"]
         return response()->json($client);
     }
 

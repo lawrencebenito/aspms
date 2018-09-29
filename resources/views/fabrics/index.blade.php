@@ -10,7 +10,31 @@
 @endsection
 
 @section('content')
-@if (session()->has('new_type'))
+
+<!-- ALERT FOR FABRIC -->
+@if (session()->has('new_fabric'))
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
+      New fabric pattern, {{ session()->get('new_fabric') }} has been added to the list.
+    </div>
+  </div>
+</div>
+@elseif (session()->has('deleted_fabric'))
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
+      Fabric has been removed to the list.
+    </div>
+  </div>
+</div>
+
+<!-- ALERT FOR TYPE -->
+@elseif (session()->has('new_type'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
@@ -40,6 +64,8 @@
     </div>
   </div>
 </div>
+
+<!-- ALERT FOR PATTERN -->
 @elseif (session()->has('new_pattern'))
 <div class="row">
   <div class="col-lg-12">
@@ -71,6 +97,7 @@
   </div>
 </div>
 @endif
+
 <div class="row">
   <div class="col-lg-12 col-md-12">
     <div class="box box-solid box-primary">
@@ -79,7 +106,7 @@
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
-              <a class="btn btn-flat btn-primary pull-right" href="./garments/create">
+              <a class="btn btn-flat btn-primary pull-right" href="./fabrics/create">
                 <i class="fa fa-plus"> </i>  
                 Add New Fabric
               </a>
@@ -172,21 +199,21 @@ $(document).ready(function() {
   $('#data_table_fabrics').DataTable( {
       data: dataSet,
       columns: [
-          { title: "Type", data:"type_name" },
-          { title: "Ref #", data:"reference_num" },
-          { title: "Supplier", data:"supplier_name" },
-          { title: "Color", data:"color" },
-          { title: "Fabrication", data:"fabrication" },
-          { title: "GSM", data:"gsm" },
+          { title: "Color", data:"color" }, 
           { title: "Pattern", data:"pattern_name" },
+          { title: "Type", data:"type_name" },
+          { title: "Supplier", data:"supplier_name" },
+          { title: "Ref #", data:"reference_num" },
+          { title: "Fabrication", data:"fabrication" },
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
         $(nRow).attr('id', aData['id']);
       },
+      "order": [[2,"desc"]],
       "columnDefs": [
         {
-          defaultContent: btn_edit + btn_delete,
+          defaultContent: btn_view + btn_edit + btn_delete,
           className: "action-buttons",
           width: "50px",
           sortable: false,
@@ -198,7 +225,11 @@ $(document).ready(function() {
   var source_ref_fabrics = "{{ url('/fabrics') }}" + "/";
   
   $('#data_table_fabrics').on('dblclick','td',function(e){
-    window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id') + "/edit";
+    window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id');
+  });
+
+  $('#data_table_fabrics').on('click','button.btn_view',function(e){
+    window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id');
   });
   
   $('#data_table_fabrics').on('click','button.btn_edit',function(e){
