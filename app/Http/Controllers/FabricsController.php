@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Fabric;
 use App\FabricType;
+use App\FabricPattern;
 use Illuminate\Http\Request;
 
 class FabricsController extends Controller
@@ -16,9 +17,13 @@ class FabricsController extends Controller
     public function index()
     {
         $type = FabricType::select('id','name')->get();
+        $pattern = FabricPattern::select('id','name')->get();
         $fabric = Fabric::select('id')->get();
         
-        return view('fabrics.index')->with('type', $type)->with('fabric', $fabric);
+        return view('fabrics.index')
+            ->with('type', $type)
+            ->with('pattern', $pattern)
+            ->with('fabric', $fabric);
     }
 
     /**

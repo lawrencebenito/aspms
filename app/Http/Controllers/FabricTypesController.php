@@ -52,7 +52,7 @@ class FabricTypesController extends Controller
      */
     public function show(FabricType $fabricType)
     {
-        return view('fabrics.types.edit')->with('fabric', $fabricType);
+        return view('fabrics.types.edit')->with('fabric_type', $fabricType);
     }
 
     /**
@@ -63,7 +63,7 @@ class FabricTypesController extends Controller
      */
     public function edit(FabricType $fabricType)
     {
-        return view('fabrics.types.edit')->with('fabric', $fabricType);
+        return view('fabrics.types.edit')->with('fabric_type', $fabricType);
     }
 
     /**

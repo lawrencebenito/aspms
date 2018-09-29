@@ -13,14 +13,14 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form" method="POST" action="{{ URL('/fabric_types')}}/{{$fabric->id}}" onsubmit="return validate(this);">
+        <form class="form" method="POST" action="{{ URL('/fabric_types')}}/{{$fabric_type->id}}" onsubmit="return validate(this);">
           @CSRF
           <div class="box-body">
             <div class="row">
               <div class="col-sm-12">
                <div class="col-sm-12 form-group">
                   <label class="control-label">Name</label>
-                  <input type="text" class="form-control" value="{{$fabric->name}}" name="name" autocomplete="off" required></input>
+                  <input type="text" class="form-control" value="{{$fabric_type->name}}" name="name" autocomplete="off" required></input>
                 </div>
               </div>
               <!-- /.col -->
