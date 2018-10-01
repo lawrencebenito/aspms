@@ -472,9 +472,9 @@ COMMENT = 'Maintenance Table. This table connects all the required operations pe
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`accesory_type`
+-- Table `db_aspms`.`accessory_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`accesory_type` (
+CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory_type` (
   `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
   `name` VARCHAR(45) NOT NULL COMMENT 'Button',
   PRIMARY KEY (`id`),
@@ -492,13 +492,14 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory` (
   `accessory_type` INT(3) NOT NULL COMMENT '1',
   `description` VARCHAR(225) NULL COMMENT '(optional) butons with 3 holes.',
   `color` VARCHAR(45) NOT NULL COMMENT 'transparent white',
+  `supplier` VARCHAR(45) NOT NULL,
   `reference_num` VARCHAR(45) NOT NULL COMMENT '(from supplier) RF91823',
   `measurement_type` TINYINT(1) NOT NULL COMMENT '0 - by yards | 1 - by piece',
   PRIMARY KEY (`id`),
   INDEX `fk_accessory_idx` (`accessory_type` ASC),
   CONSTRAINT `fk_accessory`
     FOREIGN KEY (`accessory_type`)
-    REFERENCES `db_aspms`.`accesory_type` (`id`)
+    REFERENCES `db_aspms`.`accessory_type` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -736,6 +737,21 @@ INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (11, 'Cuff Rib');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (12, 'Bottom Rib');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (7, 'Left Sleeve');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (8, 'Letf Sleeve (Add-on)');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`accessory_type`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (1, 'Button');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (2, 'Zipper');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (3, 'Chord');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (4, 'Cuff');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (5, 'Collar');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (6, 'Cotton Tape');
 
 COMMIT;
 

@@ -45,10 +45,12 @@ Route::resource('fabrics', 'FabricsController');
 Route::resource('fabric_types', 'FabricTypesController');
 Route::resource('fabric_patterns', 'FabricPatternsController');
 Route::resource('fabric_prices', 'FabricPricesController');
-Route::resource('segments', 'SegmentsController');
 Route::resource('garments', 'GarmentsController');
+Route::resource('segments', 'SegmentsController');
 Route::resource('operations', 'OperationsController');
-Route::resource('status', 'StatusController');
+Route::resource('accessories', 'AccessoriesController');
+Route::resource('accessory_types', 'AccessoryTypesController');
+
 Route::resource('quotations', 'QuotationsController');
 Route::resource('orders', 'OrdersController');
 
@@ -77,3 +79,4 @@ Route::get('/fabric_types/{fabric_type}/delete', 'FabricTypesController@destroy'
 Route::get('/fabric_patterns/{fabric_pattern}/delete', 'FabricPatternsController@destroy');
 Route::get('/segments/{segment}/delete', 'SegmentsController@destroy');
 Route::get('/operations/{operation}/delete', 'OperationsController@destroy');
+Route::get('/accessory_types/{accessory_type}/delete', 'AccessoryTypesController@destroy');

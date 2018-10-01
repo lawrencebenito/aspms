@@ -1,0 +1,1 @@
+<i class="ion ion-ios-pricetags"></i> <span> Accessories </span>
