@@ -43,33 +43,33 @@
 </div>
 
 <!-- ALERT FOR OPERATIONS -->
-@elseif (session()->has('new_fabric'))
+@elseif (session()->has('new_operation'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-      New fabric, {{ session()->get('new_fabric') }} has been added to the list.
+      New operation, {{ session()->get('new_operation') }} has been added to the list.
     </div>
   </div>
 </div>
-@elseif(session()->has('edited_fabric'))
+@elseif(session()->has('edited_operation'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-      Changes made for fabric, {{ session()->get('edited_fabric') }}.
+      Changes made for operation, {{ session()->get('edited_operation') }}.
     </div>
   </div>
 </div>
-@elseif (session()->has('deleted_fabric'))
+@elseif (session()->has('deleted_operation'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
-      Fabric, {{ session()->get('deleted_fabric') }} has been removed to the list.
+      Operation, {{ session()->get('deleted_operation') }} has been removed to the list.
     </div>
   </div>
 </div>
@@ -93,7 +93,7 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body table-responsive">
-        <table id="data_table_fabrics" class="table table-bordered table-hover" width="100%"></table>
+        <table id="data_table_garments" class="table table-bordered table-hover" width="100%"></table>
       </div>
       <!-- /.box-body -->
     </div>
@@ -134,8 +134,8 @@
           <div class="box-tools">
             <div class="input-group input-group-md" style="width: 150px;">
               <div class="input-group-btn">
-                <a class="btn btn-flat btn-primary pull-right" href="./fabrics/create">
-                  <i class="fa fa-plus"> </i>  
+                <a class="btn btn-flat btn-primary pull-right" href="./operations/create">
+                  <i class="fa fa-plus"> </i>
                   Add New Operation
                 </a>
               </div>
@@ -144,7 +144,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table id="data_table_patterns" class="table table-bordered table-hover" width="100%"></table>
+          <table id="data_table_operations" class="table table-bordered table-hover" width="100%"></table>
         </div>
         <!-- /.box-body -->
       </div>
@@ -169,11 +169,11 @@ $(document).ready(function() {
   */
   var dataSet = [];
 
-  @if(!empty($alsdjfasdf))
-    var dataSet = @json($garment);
+  @if(!empty($garments))
+    var dataSet = @json($garments);
   @endif
   
-  $('#data_table_types').DataTable( {
+  $('#data_table_garments').DataTable( {
       data: dataSet,
       columns: [
           { title: "Name", data:"name" },
@@ -195,15 +195,15 @@ $(document).ready(function() {
 
   var source_ref_types = "{{ url('/garments') }}" + "/";
   
-  $('#data_table_types').on('dblclick','td',function(e){
+  $('#data_table_garments').on('dblclick','td',function(e){
     window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/edit";
   });
   
-  $('#data_table_types').on('click','button.btn_edit',function(e){
+  $('#data_table_garments').on('click','button.btn_edit',function(e){
     window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/edit";
   });
 
-  $('#data_table_types').on('click','button.btn_delete',function(e){
+  $('#data_table_garments').on('click','button.btn_delete',function(e){
     if(confirm_delete(this))
       window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/delete";
   });
@@ -253,16 +253,15 @@ $(document).ready(function() {
   });
 
   /**
-  * For Fabrics
+  * For Operations
   */
   var dataSet = [];
 
-  @if(session()->has('garment') && count($fabric) > 0)
-    var dataSet = @json($fabric);
+  @if(!empty($operation))
+    var dataSet = @json($operation);
   @endif
-  //console.log(dataSet); 
   
-  $('#data_table_fabrics').DataTable( {
+  $('#data_table_operations').DataTable( {
       data: dataSet,
       columns: [
           { title: "Name", data:"name" },
@@ -282,19 +281,19 @@ $(document).ready(function() {
       ]
   } );
 
-  var source_ref_segments = "{{ url('/fabrics') }}" + "/";
+  var source_ref_operations = "{{ url('/operations') }}" + "/";
   
-  $('#data_table_fabrics').on('dblclick','td',function(e){
-    window.location.href = source_ref_segments + $(this).closest('tr').attr('id') + "/edit";
+  $('#data_table_operations').on('dblclick','td',function(e){
+    window.location.href = source_ref_operations + $(this).closest('tr').attr('id') + "/edit";
   });
   
-  $('#data_table_fabrics').on('click','button.btn_edit',function(e){
-    window.location.href = source_ref_segments + $(this).closest('tr').attr('id') + "/edit";
+  $('#data_table_operations').on('click','button.btn_edit',function(e){
+    window.location.href = source_ref_operations + $(this).closest('tr').attr('id') + "/edit";
   });
 
-  $('#data_table_fabrics').on('click','button.btn_delete',function(e){
+  $('#data_table_operations').on('click','button.btn_delete',function(e){
     if(confirm_delete(this))
-      window.location.href = source_ref_segments + $(this).closest('tr').attr('id') + "/delete";
+      window.location.href = source_ref_operations + $(this).closest('tr').attr('id') + "/delete";
   });
   
 } ); //end of document.ready

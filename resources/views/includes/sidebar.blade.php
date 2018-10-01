@@ -12,7 +12,7 @@
       </li>
       <!-- Maintenance -->
       <li class="treeview {{ Helper::is_active(
-        ['clients','workers','fabrics','fabric_types','fabric_patterns','fabric_prices','garments']) 
+        ['clients','workers','fabrics','fabric_types','fabric_patterns','fabric_prices','garments','segments','operations']) 
       }}">
         <a href="#">
           <i class="fa fa-gears"></i> <span>Maintenance</span>
@@ -31,7 +31,7 @@
             <a href="{{ route('fabrics.index') }}">
             <i class="ion ion-scissors"></i> <span> Fabrics </span></a>
           </li>
-          <li class="{{ Helper::is_active('garments') }}">
+          <li class="{{ Helper::is_active(['garments','segments','operations']) }}">
             <a href="{{ route('garments.index') }}">
             <i class="ion ion-tshirt"></i> <span> Garments </span></a>
           </li>

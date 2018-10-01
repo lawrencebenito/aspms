@@ -76,3 +76,4 @@ Route::get('/fabrics/{fabric}/delete', 'FabricsController@destroy');
 Route::get('/fabric_types/{fabric_type}/delete', 'FabricTypesController@destroy');
 Route::get('/fabric_patterns/{fabric_pattern}/delete', 'FabricPatternsController@destroy');
 Route::get('/segments/{segment}/delete', 'SegmentsController@destroy');
+Route::get('/operations/{operation}/delete', 'OperationsController@destroy');

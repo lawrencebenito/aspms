@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use DB;
 use App\Garment;
 use App\Segment;
-// use App\Fabric;
-// use App\FabricType;
-// use App\FabricPattern;
-// use App\FabricPrice;
+use App\Operation;
+
 use Illuminate\Http\Request;
 
 class GarmentsController extends Controller
@@ -21,9 +19,11 @@ class GarmentsController extends Controller
     public function index()
     {
         $segment = Segment::select('id','name')->get();
+        $operation = Operation::select('id','name')->get();
         
         return view('garments.index')
-            ->with('segment', $segment);
+            ->with('segment', $segment)
+            ->with('operation', $operation);
             // ->with('pattern', $pattern)
             // ->with('fabric', $fabric);
     }

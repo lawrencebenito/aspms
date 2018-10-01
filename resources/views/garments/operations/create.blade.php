@@ -1,13 +1,13 @@
 @extends('layouts.main')
 
 @section('page_header')
-  <i class="ion ion-scissors"></i> Operations
+  @include('garments.header')
 @endsection
 
 @section('content')
 <div class="row">
   <div class="col-lg-6">
-      <div class="box box-warning">
+      <div class="box box-primary">
         <div class="box-header with-border">
           <h3 class="box-title">Add New Operation </h3>
         </div>
@@ -30,7 +30,7 @@
           <!-- /.box-body -->
           <div class="box-footer">
             <a type="button" class="btn btn-default" href="{{url('/operations')}}">Cancel</a>
-            <button type="submit" class="btn btn-warning pull-right">Submit</button>
+            <button type="submit" class="btn btn-primary pull-right">Submit</button>
           </div>
           <!-- /.box-footer -->
         </form>
