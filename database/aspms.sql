@@ -97,9 +97,6 @@ COMMENT = 'Maintenance Table. This table holds basic information of a base garme
 CREATE TABLE IF NOT EXISTS `db_aspms`.`operation` (
   `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
   `name` VARCHAR(45) NOT NULL COMMENT 'Leg Bias',
-  `active` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 - active | 0 - inactive',
-  `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '2018-06-25 23:14:08',
-  `date_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '2018-07-19 20:00:00',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_unq` (`name` ASC))
 ENGINE = InnoDB
@@ -180,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
   `color` VARCHAR(45) NOT NULL COMMENT 'White',
   `fabrication` VARCHAR(45) NOT NULL COMMENT '80% Cotton, 20% Linen',
   `gsm` INT(3) NOT NULL COMMENT '220',
-  `width` INT NOT NULL,
+  `width` INT NOT NULL COMMENT '48 (in inches)',
   `pattern` INT(3) NOT NULL COMMENT '1',
   PRIMARY KEY (`id`),
   INDEX `fk_fabric_type_idx` (`type` ASC),
@@ -320,20 +317,6 @@ COMMENT = 'Transaction Table. This table contains the assigned task(operation) w
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`status`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`status` (
-  `id` TINYINT(2) NOT NULL AUTO_INCREMENT COMMENT '1',
-  `description` VARCHAR(45) NOT NULL COMMENT 'Completed',
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `unique_description` (`description` ASC))
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8
-COMMENT = 'Categorical Table. This table holds all the status used for the system like Completed, Pending, Rejected or etc. The user may add new status.';
-
-
--- -----------------------------------------------------
 -- Table `db_aspms`.`production_log`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`production_log` (
@@ -344,16 +327,10 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`production_log` (
   `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '2018-06-25 23:14:08',
   `date_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '2018-07-19 20:00:00',
   PRIMARY KEY (`id`),
-  INDEX `fk_status_pl_idx` (`status` ASC),
   INDEX `fk_assignment_pl_idx` (`assignment` ASC),
   CONSTRAINT `fk_assignment_pl`
     FOREIGN KEY (`assignment`)
     REFERENCES `db_aspms`.`work_assignment` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_status_pl`
-    FOREIGN KEY (`status`)
-    REFERENCES `db_aspms`.`status` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -400,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_price` (
   `fabric` INT(5) NOT NULL COMMENT '1',
   `date_effective` DATE NOT NULL COMMENT '2018-09-01',
   `unit_price` DOUBLE NOT NULL COMMENT '100',
-  `measurement_type` TINYINT(1) NULL COMMENT '0 - per kgs | 1 - per yards',
+  `measurement_type` TINYINT(1) NOT NULL COMMENT '0 - per kgs | 1 - per yards',
   PRIMARY KEY (`fabric`, `date_effective`),
   CONSTRAINT `fk_fp_fabric`
     FOREIGN KEY (`fabric`)
@@ -695,6 +672,30 @@ INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (7, 'Polyester');
 INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (8, 'Nylon');
 INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (9, 'Spandex');
 INSERT INTO `db_aspms`.`fabric_type` (`id`, `name`) VALUES (10, 'Vinyl');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`operation`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (1, 'Cutting');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (2, 'O.E. (Operation Edging)');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (3, 'Attach Garter');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (4, 'Leg Bias');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (5, 'Dapa Garter');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (6, 'Tucking');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (7, 'O.E. - Shoulder');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (8, 'O.E. - Side Close');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (9, 'Bias Neck And Arm Hole');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (10, 'Hem Leg');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (11, 'O.E. - Sleeve');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (12, 'Fold - Hem');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (13, 'Fold - Sleve');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (14, 'Bias Neck');
+INSERT INTO `db_aspms`.`operation` (`id`, `name`) VALUES (15, 'O.E. - Crotch Side Close');
 
 COMMIT;
 
