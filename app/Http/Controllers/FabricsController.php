@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Fabric;
 use App\FabricType;
 use App\FabricPattern;
+use App\FabricPrice;
 use Illuminate\Http\Request;
 
 class FabricsController extends Controller
@@ -47,7 +49,7 @@ class FabricsController extends Controller
      */
     public function store(Request $request)
     {
-        $fabric = new fabric;
+        $fabric = new Fabric;
         
         $fabric->color = $request->get('color');
         $fabric->pattern = $request->get('pattern');
@@ -58,7 +60,21 @@ class FabricsController extends Controller
         $fabric->gsm = $request->get('gsm');
         $fabric->width = $request->get('width');
         
-        $fabric->save();
+        $products = DB::transaction(function()  use ($request, $fabric) {
+                
+            $fabric->save();
+            $fabric_id = $fabric->id;
+
+            $fabric_price = new FabricPrice;
+
+            $fabric_price->fabric = $fabric_id;
+            $fabric_price->date_effective = $request->get('date_effective');
+            $fabric_price->unit_price = $request->get('unit_price');
+            $fabric_price->measurement_type = $request->get('measurement_type');
+            
+            $fabric_price->save();
+            
+        }); //end of transaction        
 
         $pattern_name = $request->get('pattern_name');
         $type_name = $request->get('type_name');
@@ -75,13 +91,26 @@ class FabricsController extends Controller
      */
     public function show(Fabric $fabric)
     {
+        $id = $fabric->id;
+
         $fabric = Fabric::join('fabric_type', 'fabric_type.id', '=', 'fabric.type')
                         ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
                         ->select('fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name')
-                        ->where('fabric.id', $fabric->id)
-                        ->get(1);
+                        ->where('fabric.id', $id)
+                        ->get();
 
-        return view('fabrics.show')->with('fabric', $fabric[0]);
+        $fabric_price = FabricPrice::join('fabric', 'fabric.id', '=', 'fabric')
+                        ->select('fabric_price.*')
+                        ->where('fabric_price.fabric', $id)
+                        ->limit(1)
+                        ->orderBy('fabric_price.date_effective','DESC')
+                        ->get();
+                        
+        return view('fabrics.show')
+                ->with('fabric', $fabric[0])
+                ->with('fabric_price', $fabric_price[0])
+                ->with('latest_date', $fabric_price[0]->date_effective);
+
     }
 
     /**
@@ -96,7 +125,7 @@ class FabricsController extends Controller
                         ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
                         ->select('fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name')
                         ->where('fabric.id', $fabric->id)
-                        ->get(1);
+                        ->get();
 
         return view('fabrics.edit')->with('fabric', $fabric[0]);
     }

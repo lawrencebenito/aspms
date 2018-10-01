@@ -41,5 +41,9 @@ $(document).ready(function(){
     $('#pattern_name').val(pattern.text);
   });
   
+  var date = get_full_date();
+  $('#display_date').val(date.text);
+  $('#date_effective').val(date.numeric);
+  
 
 }); //end of document.ready

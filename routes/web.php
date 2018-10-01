@@ -44,6 +44,7 @@ Route::resource('workers', 'WorkersController');
 Route::resource('fabrics', 'FabricsController');
 Route::resource('fabric_types', 'FabricTypesController');
 Route::resource('fabric_patterns', 'FabricPatternsController');
+Route::resource('fabric_prices', 'FabricPricesController');
 Route::resource('garments', 'GarmentsController');
 Route::resource('operations', 'OperationsController');
 Route::resource('status', 'StatusController');

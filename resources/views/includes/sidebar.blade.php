@@ -11,7 +11,9 @@
         </a>
       </li>
       <!-- Maintenance -->
-      <li class="treeview {{ Helper::is_active(['clients','workers','fabrics','garments']) }}">
+      <li class="treeview {{ Helper::is_active(
+        ['clients','workers','fabrics','fabric_types','fabric_patterns','fabric_prices','garments']) 
+      }}">
         <a href="#">
           <i class="fa fa-gears"></i> <span>Maintenance</span>
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -25,7 +27,7 @@
             <a href="{{ route('workers.index') }}">
             <i class="fa fa-users"></i> <span> Workers </span></a>
           </li>
-          <li class="{{ Helper::is_active('fabrics') }}">
+          <li class="{{ Helper::is_active(['fabrics','fabric_types','fabric_patterns','fabric_prices']) }}">
             <a href="{{ route('fabrics.index') }}">
             <i class="ion ion-scissors"></i> <span> Fabrics </span></a>
           </li>

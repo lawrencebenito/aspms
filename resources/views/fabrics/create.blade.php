@@ -69,6 +69,26 @@
                 <label class="control-label">Fabric Width Inch</label>
                 <input type="number" class="form-control" placeholder="Fabric width inch upon fabric procurement" name="width" autocomplete="off" required min=22 max=120>
               </div>
+              <div class="col-sm-12 form-group">
+                <label class="control-label">Price Effective Date</label>
+                <input id="display_date" type="text" class="form-control" readonly>
+                <input id="date_effective" type="hidden" class="form-control" name="date_effective">
+              </div>
+              <div class="col-sm-12 form-group">
+                <label class="control-label">Unit Price</label>
+                <div class="row">
+                  <div class="col-xs-6 col-sm-6 col-md-7" style="padding-right:0">
+                    <input type="number" class="form-control" placeholder="Fabric unit price" name="unit_price" autocomplete="off" required min=1s max=1000>
+                  </div>
+                  <div class="col-xs-5 col-sm-5 col-md-4 no-padding">
+                    <select class="form-control" name="measurement_type">
+                      <option value="0">per kgs</option>
+                      <option value="1">per yards</option>
+                    </select>
+                  </div> 
+                </div>
+                <!-- /.row -->                             
+              </div>
             </div>
             <!-- /.col-lg -->
           </div> 
