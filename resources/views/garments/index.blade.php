@@ -10,36 +10,39 @@
 @endsection
 
 @section('content')
-@if (session()->has('new_type'))
+<!-- ALERT FOR TYPE -->
+@if (session()->has('new_segment'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-      New fabric type, {{ session()->get('new_type') }} has been added to the list.
+      New segment, {{ session()->get('new_segment') }} has been added to the list.
     </div>
   </div>
 </div>
-@elseif(session()->has('edited_garment'))
+@elseif(session()->has('edited_segment'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-      Changes made for garment, {{ session()->get('edited_garment') }}.
+      Changes made for segment, {{ session()->get('edited_segment') }}.
     </div>
   </div>
 </div>
-@elseif (session()->has('deleted_garment'))
+@elseif (session()->has('deleted_segment'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
-      Garment, {{ session()->get('deleted_garment') }} has been removed to the list.
+      Segment, {{ session()->get('deleted_segment') }} has been removed to the list.
     </div>
   </div>
 </div>
+
+<!-- ALERT FOR OPERATIONS -->
 @elseif (session()->has('new_fabric'))
 <div class="row">
   <div class="col-lg-12">
@@ -107,7 +110,7 @@
           <div class="box-tools">
             <div class="input-group input-group-md" style="width: 150px;">
               <div class="input-group-btn">
-                <a class="btn btn-flat btn-primary pull-right" href="./garment/create">
+                <a class="btn btn-flat btn-primary pull-right" href="./segments/create">
                   <i class="fa fa-plus"> </i>  
                   Add New Segment
                 </a>
@@ -117,7 +120,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table id="data_table_types" class="table table-bordered table-hover" width="100%"></table>
+          <table id="data_table_segments" class="table table-bordered table-hover" width="100%"></table>
         </div>
         <!-- /.box-body -->
       </div>
@@ -162,14 +165,13 @@
 $(document).ready(function() {  
   
   /**
-  * For Types
+  * For Garments
   */
   var dataSet = [];
 
   @if(!empty($alsdjfasdf))
     var dataSet = @json($garment);
   @endif
-  //console.log(dataSet); 
   
   $('#data_table_types').DataTable( {
       data: dataSet,
@@ -207,16 +209,15 @@ $(document).ready(function() {
   });
 
   /**
-  * For Patterns
+  * For Segments
   */
   var dataSet = [];
 
-  @if(session()->has('garment') && count($fabric) > 0)
-    var dataSet = @json($fabric);
+  @if(!empty($segment))
+    var dataSet = @json($segment);
   @endif
-  //console.log(dataSet); 
   
-  $('#data_table_patterns').DataTable( {
+  $('#data_table_segments').DataTable( {
       data: dataSet,
       columns: [
           { title: "Name", data:"name" },
@@ -236,17 +237,17 @@ $(document).ready(function() {
       ]
   } );
 
-  var source_ref_patterns = "{{ url('/fabrics') }}" + "/";
+  var source_ref_patterns = "{{ url('/segments') }}" + "/";
   
-  $('#data_table_patterns').on('dblclick','td',function(e){
+  $('#data_table_segments').on('dblclick','td',function(e){
     window.location.href = source_ref_patterns + $(this).closest('tr').attr('id') + "/edit";
   });
   
-  $('#data_table_patterns').on('click','button.btn_edit',function(e){
+  $('#data_table_segments').on('click','button.btn_edit',function(e){
     window.location.href = source_ref_patterns + $(this).closest('tr').attr('id') + "/edit";
   });
 
-  $('#data_table_patterns').on('click','button.btn_delete',function(e){
+  $('#data_table_segments').on('click','button.btn_delete',function(e){
     if(confirm_delete(this))
       window.location.href = source_ref_patterns + $(this).closest('tr').attr('id') + "/delete";
   });
@@ -281,19 +282,19 @@ $(document).ready(function() {
       ]
   } );
 
-  var source_ref_patterns = "{{ url('/fabrics') }}" + "/";
+  var source_ref_segments = "{{ url('/fabrics') }}" + "/";
   
   $('#data_table_fabrics').on('dblclick','td',function(e){
-    window.location.href = source_ref_patterns + $(this).closest('tr').attr('id') + "/edit";
+    window.location.href = source_ref_segments + $(this).closest('tr').attr('id') + "/edit";
   });
   
   $('#data_table_fabrics').on('click','button.btn_edit',function(e){
-    window.location.href = source_ref_patterns + $(this).closest('tr').attr('id') + "/edit";
+    window.location.href = source_ref_segments + $(this).closest('tr').attr('id') + "/edit";
   });
 
   $('#data_table_fabrics').on('click','button.btn_delete',function(e){
     if(confirm_delete(this))
-      window.location.href = source_ref_patterns + $(this).closest('tr').attr('id') + "/delete";
+      window.location.href = source_ref_segments + $(this).closest('tr').attr('id') + "/delete";
   });
   
 } ); //end of document.ready

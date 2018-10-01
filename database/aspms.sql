@@ -735,7 +735,7 @@ INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (10, 'Neck Rib');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (11, 'Cuff Rib');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (12, 'Bottom Rib');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (7, 'Left Sleeve');
-INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (8, 'Lef Sleeve (Add-on)');
+INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (8, 'Letf Sleeve (Add-on)');
 
 COMMIT;
 
