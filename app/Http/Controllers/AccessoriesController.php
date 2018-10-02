@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Accessory;
 use App\AccessoryType;
+use App\AccessoryPrice;
 use Illuminate\Http\Request;
 
 class AccessoriesController extends Controller
@@ -42,7 +44,6 @@ class AccessoriesController extends Controller
     public function store(Request $request)
     {
         $accessory = new Accessory;
-        # id, accessory_type, description, color, supplier, reference_num
 
         $accessory->accessory_type = $request->get('type');
         $accessory->description = $request->get('description');
@@ -50,21 +51,23 @@ class AccessoriesController extends Controller
         $accessory->supplier = $request->get('supplier');
         $accessory->reference_num = $request->get('reference_num');
         
-        // $products = DB::transaction(function()  use ($request, $fabric) {
+        DB::transaction(function()  use ($request, $accessory) {
                 
             $accessory->save();
-        //     $fabric_id = $fabric->id;
+            $id = $accessory->id;
 
-        //     $fabric_price = new FabricPrice;
+            $accessory_price = new AccessoryPrice;
 
-        //     $fabric_price->fabric = $fabric_id;
-        //     $fabric_price->date_effective = $request->get('date_effective');
-        //     $fabric_price->unit_price = $request->get('unit_price');
-        //     $fabric_price->measurement_type = $request->get('measurement_type');
+            $accessory_price->accesory = $id;
+            $accessory_price->date_effective = $request->get('date_effective');
+            $accessory_price->price = $request->get('price');
+            $accessory_price->measurement_type = $request->get('measurement_type');
+            $accessory_price->quantity = $request->get('quantity');
+            $accessory_price->unit_price = $request->get('unit_price');
             
-        //     $fabric_price->save();
+            $accessory_price->save();
             
-        // }); //end of transaction
+        }); //end of transaction
         
         return redirect('/accessories')->with('new_accessory', true);
     }
@@ -77,7 +80,23 @@ class AccessoriesController extends Controller
      */
     public function show(Accessory $accessory)
     {
-        //
+        $id = $accessory->id;
+
+        $accessory = Accessory::join('accessory_type', 'accessory_type.id', '=', 'accessory.accessory_type')
+                        ->select('accessory.*','accessory_type.name AS type_name')
+                        ->where('accessory.id', $id)
+                        ->get();
+
+        $accessory_price = AccessoryPrice::join('accessory', 'accessory.id', '=', 'accesory')
+                        ->select('accessory_price.*')
+                        ->where('accessory_price.accesory', $id)
+                        ->limit(1)
+                        ->orderBy('accessory_price.date_effective','DESC')
+                        ->get();
+                        
+        return view('accessories.show')
+                ->with('accessory', $accessory[0])
+                ->with('accessory_price', $accessory_price[0]);
     }
 
     /**
@@ -111,6 +130,8 @@ class AccessoriesController extends Controller
      */
     public function destroy(Accessory $accessory)
     {
-        //
+        $accessory->delete();
+
+        return redirect("/accessories")->with('deleted_accessory', true);
     }
 }

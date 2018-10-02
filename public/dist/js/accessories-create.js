@@ -26,7 +26,7 @@ $(document).ready(function(){
 
       $('#price').val('');
       $('#quantity').val('');
-      $('#quantity').removeAttr('disabled');
+      $('#quantity').removeAttr('readonly');
       $('#display_quantity').val('yards');
       $('#unit_price').val('');
       $('#display_unit_price').val('per yard');
@@ -36,7 +36,7 @@ $(document).ready(function(){
 
       $('#price').val('');
       $('#quantity').val('144');
-      $('#quantity').attr('disabled','disabled');
+      $('#quantity').attr('readonly','readonly');
       $('#display_quantity').val('pieces');
       $('#unit_price').val('');
       $('#display_unit_price').val('per piece');

@@ -6,15 +6,15 @@
 @endpush
 
 @section('page_header')
-  @include('fabrics.header')
+  @include('acccessories.header')
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li>Maintenance</a></li>
-    <li>Fabrics</li>
-    <li class="active">Edit Fabric</li>
+    <li>Accessories</li>
+    <li class="active">Edit</li>
   </ol>
 @endsection
 

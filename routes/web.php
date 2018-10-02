@@ -81,3 +81,4 @@ Route::get('/fabric_patterns/{fabric_pattern}/delete', 'FabricPatternsController
 Route::get('/segments/{segment}/delete', 'SegmentsController@destroy');
 Route::get('/operations/{operation}/delete', 'OperationsController@destroy');
 Route::get('/accessory_types/{accessory_type}/delete', 'AccessoryTypesController@destroy');
+Route::get('/accessories/{accessory}/delete', 'AccessoriesController@destroy');

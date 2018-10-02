@@ -160,23 +160,23 @@ $(document).ready(function() {
       ]
   } );
 
-  var source_ref_fabrics = "{{ url('/fabrics') }}" + "/";
+  var source_ref_accessories = "{{ url('/accessories') }}" + "/";
   
   $('#data_table_accesory').on('dblclick','td',function(e){
-    window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id');
+    window.location.href = source_ref_accessories + $(this).closest('tr').attr('id');
   });
 
   $('#data_table_accesory').on('click','button.btn_view',function(e){
-    window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id');
+    window.location.href = source_ref_accessories + $(this).closest('tr').attr('id');
   });
   
   $('#data_table_accesory').on('click','button.btn_edit',function(e){
-    window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id') + "/edit";
+    window.location.href = source_ref_accessories + $(this).closest('tr').attr('id') + "/edit";
   });
 
   $('#data_table_accesory').on('click','button.btn_delete',function(e){
     if(confirm_delete(this))
-      window.location.href = source_ref_fabrics + $(this).closest('tr').attr('id') + "/delete";
+      window.location.href = source_ref_accessories + $(this).closest('tr').attr('id') + "/delete";
   });
 
   /**
