@@ -78,7 +78,7 @@
                 <label class="control-label">Unit Price</label>
                 <div class="row">
                   <div class="col-xs-6 col-sm-6 col-md-7" style="padding-right:0">
-                    <input type="number" class="form-control" placeholder="Fabric unit price" name="unit_price" autocomplete="off" required min=1s max=1000>
+                    <input type="number" class="form-control" placeholder="Fabric unit price" name="unit_price" autocomplete="off" required min=1 max=1000>
                   </div>
                   <div class="col-xs-5 col-sm-5 col-md-4 no-padding">
                     <select class="form-control" name="measurement_type">

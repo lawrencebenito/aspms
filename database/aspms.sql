@@ -494,7 +494,6 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory` (
   `color` VARCHAR(45) NOT NULL COMMENT 'transparent white',
   `supplier` VARCHAR(45) NOT NULL,
   `reference_num` VARCHAR(45) NOT NULL COMMENT '(from supplier) RF91823',
-  `measurement_type` TINYINT(1) NOT NULL COMMENT '0 - by yards | 1 - by piece',
   PRIMARY KEY (`id`),
   INDEX `fk_accessory_idx` (`accessory_type` ASC),
   CONSTRAINT `fk_accessory`
@@ -507,16 +506,17 @@ COMMENT = 'Maintenance Table. Contains information of accessories for products';
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`accesory_price`
+-- Table `db_aspms`.`accessory_price`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`accesory_price` (
+CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory_price` (
   `accesory` INT(5) NOT NULL COMMENT '1',
   `date_effective` DATE NOT NULL COMMENT '2018-09-01',
   `price` DOUBLE NOT NULL COMMENT '100',
+  `measurement_type` TINYINT(1) NOT NULL COMMENT '0 - per pack/bundle | 1 - per rolls',
   `quantity` DOUBLE NOT NULL COMMENT '80',
   `unit_price` DOUBLE NOT NULL COMMENT 'price/quantity = unit_price',
   PRIMARY KEY (`accesory`, `date_effective`),
-  CONSTRAINT `fk_ap_accessory`
+  CONSTRAINT `fk_ap_accessories`
     FOREIGN KEY (`accesory`)
     REFERENCES `db_aspms`.`accessory` (`id`)
     ON DELETE CASCADE
@@ -752,6 +752,8 @@ INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (3, 'Chord');
 INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (4, 'Cuff');
 INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (5, 'Collar');
 INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (6, 'Cotton Tape');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (7, 'String');
+INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (8, 'Garter');
 
 COMMIT;
 

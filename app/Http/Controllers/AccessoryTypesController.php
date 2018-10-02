@@ -97,4 +97,24 @@ class AccessoryTypesController extends Controller
 
         return redirect("/accessories")->with('deleted_type', $deleted);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function get_accessory_type_list(Request $request)
+    {
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $type = AccessoryType::select('id','name AS text')->where('name', 'like', '%' .$q. '%')->get();
+
+        }else{
+            $type = AccessoryType::select('id','name AS text')->get();
+        }
+
+        return response()->json($type);
+    }
 }

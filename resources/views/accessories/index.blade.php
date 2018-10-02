@@ -43,41 +43,31 @@
   </div>
 </div>
 
-<!-- ALERT FOR PATTERN -->
-@elseif (session()->has('new_pattern'))
+<!-- ALERT FOR ACCESSORIES -->
+@elseif (session()->has('new_accessory'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-      New fabric pattern, {{ session()->get('new_pattern') }} has been added to the list.
+      New accessory has been added to the list.
     </div>
   </div>
 </div>
-@elseif(session()->has('edited_pattern'))
-<div class="row">
-  <div class="col-lg-12">
-    <div class="alert alert-success alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-      Changes made for fabric pattern, {{ session()->get('edited_pattern') }}.
-    </div>
-  </div>
-</div>
-@elseif (session()->has('deleted_pattern'))
+@elseif (session()->has('deleted_accessory'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
-      Fabric pattern, {{ session()->get('deleted_pattern') }} has been removed to the list.
+      Accessory has been removed to the list.
     </div>
   </div>
 </div>
 @endif
 
 <div class="row">
-  <div class="col-lg-6 col-md-6">
+  <div class="col-lg-8 col-md-8">
     <div class="box box-solid box-primary">
       <div class="box-header">
         <h3 class="box-title">Accessories List</h3>
@@ -101,7 +91,7 @@
     <!-- /.box -->
   </div>
   <!-- /.col -->
-  <div class="col-lg-6 col-md-6">
+  <div class="col-lg-4 col-md-4">
     <div class="box box-solid box-primary">
       <div class="box-header">
         <h3 class="box-title">Accessory Types</h3>
@@ -143,8 +133,8 @@ $(document).ready(function() {
   */
   var dataSet = [];
 
-  @if(!empty($fabric))
-    var dataSet = @json($fabric);
+  @if(!empty($accessory))
+    var dataSet = @json($accessory);
   @endif
   
   $('#data_table_accesory').DataTable( {
@@ -152,7 +142,7 @@ $(document).ready(function() {
       columns: [
           { title: "Type", data:"type_name" },
           { title: "Color", data:"color" }, 
-          { title: "Description", data:"description" },
+          { title: "Supplier", data:"supplier" },
           { title: "Ref #", data:"reference_num" },
           { title: " "}
       ],
