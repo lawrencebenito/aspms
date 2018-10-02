@@ -6,12 +6,26 @@
 
 @section('content')
 
-@if (session()->has('price_updated'))
-  <div class="alert alert-success alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <h4><i class="icon fa fa-check"></i> Price Updating Successful!</h4>
-    New price was set to this fabric. Note: It is not allowed to update price for the same day.
+@if (session()->has('edited_fabric'))
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
+      Changes made for this fabric.
+    </div>
   </div>
+</div>
+@elseif(session()->has('price_updated'))
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Price Updating Successful!</h4>
+      New price was set to this record. Note: It is not allowed to update price for the same day.
+    </div>
+  </div>
+</div>
 @endif
 
 <div class="row">
