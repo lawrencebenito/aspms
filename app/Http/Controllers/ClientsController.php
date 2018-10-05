@@ -112,7 +112,11 @@ class ClientsController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $deleted = "$client->first_name $client->last_name";
+        
+        $client->delete();
+
+        return redirect("clients")->with('deleted', $deleted);
     }
 
     /**
@@ -141,6 +145,7 @@ class ClientsController extends Controller
                             ->get();
         }
 
+        //!IMPORTANT: select2 reponse needed a json with data as ["id":"text"]
         return response()->json($client);
     }
 

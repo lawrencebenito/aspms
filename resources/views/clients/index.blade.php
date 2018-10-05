@@ -25,17 +25,23 @@
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
     New client, {{ session()->get('new_client') }} has been added to the list.
   </div>
+@elseif (session()->has('deleted'))
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
+    Client, {{ session()->get('deleted') }} has been removed to the list.
+  </div>
 @endif
 
 <div class="row">
   <div class="col-lg-12">
-    <div class="box box-solid box-success">
+    <div class="box box-solid box-primary">
       <div class="box-header">
         <h3 class="box-title">List of Clients</h3>
         <div class="box-tools">
           <div class="input-group input-group-md" style="width: 150px;">
             <div class="input-group-btn">
-              <a class="btn btn-flat btn-success pull-right" href="./clients/create">
+              <a class="btn btn-flat btn-primary pull-right" href="./clients/create">
                 <i class="fa fa-plus"> </i>  
                 Add New Client
               </a>
@@ -66,7 +72,7 @@
 $(document).ready(function() {
   var dataSet = [];
   
-  @if(count($client) > 0)
+  @if(!empty($client))
     var dataSet = @json($client);
   @endif
   //console.log(dataSet);
@@ -86,14 +92,18 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
+          defaultContent: "N/A",
+          "targets": 2
+        },
+        {
           defaultContent: btn_view + btn_edit + btn_delete,
+          className: "action-buttons",
           sortable: false,
           "targets": -1
         }
       ]
   } );
 
-  //TODO: Look for a way to stop warping reponsive table of bootstrap, how to make it one liner.
   var source_ref = "{{ url('/clients') }}" + "/";
   
   $('#data_table').on('dblclick','td',function(e){
@@ -108,7 +118,11 @@ $(document).ready(function() {
     window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
   });
 
-} ); //end of document.ready
-
+  $('.btn_delete').click(function(e){
+    if(confirm_delete(this))
+      window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
+  });
+  
+});//end of document.ready
 </script>
 @endpush

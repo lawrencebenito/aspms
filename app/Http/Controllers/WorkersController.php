@@ -105,6 +105,10 @@ class WorkersController extends Controller
      */
     public function destroy(Worker $worker)
     {
-        //
+        $deleted = "$worker->first_name $worker->last_name";
+        
+        $worker->delete();
+
+        return redirect("/workers")->with('deleted', $deleted);
     }
 }

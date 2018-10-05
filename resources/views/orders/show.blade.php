@@ -132,7 +132,7 @@
               <div class="col-sm-12">
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
-                <a type="button" class="btn btn-success btn-block">Print Invoice</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
               </div>
               <!-- /.col -->
             </div> 

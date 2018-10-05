@@ -86,15 +86,16 @@
   <div class="col-md-3">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">Other Options</h3>
+        <h3 class="box-title">Options</h3>
       </div>
       <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
             <div class="col-sm-12">
-              <a type="button" class="btn btn-primary btn-block" href="{{ url('./workers')}}/{{$worker->id}}/edit"><i class="fa fa-edit"></i> Edit Info</a>
-              <a type="button" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> Edit User Account</a>
-              <a type="button" class="btn btn-primary btn-block"><i class="fa fa-file-text-o"></i> View Production Log</a>
+              <a type="button" class="btn btn-primary btn-block" href="{{ url('./workers')}}/{{$worker->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+              <a type="button" class="btn btn-primary btn-block" href="{{ url('./workers')}}/{{$worker->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
+              <a type="button" class="btn btn-primary btn-block"> View User Account</a>
+              <a type="button" class="btn btn-primary btn-block"> View Production Log</a>
             </div>
             <!-- /.col -->
           </div> 

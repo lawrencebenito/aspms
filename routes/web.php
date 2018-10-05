@@ -34,20 +34,23 @@ Route::get('/users/{id}/{name}', function ($id, $name) {
 //To show list of routes -> php artisan route:list
 
 //ROUTES TO PAGES USING CONTROLLER
-Route::get('/', 'PagesController@index');
-Route::get('/garments_and_fabrics', 'PagesController@garments_and_fabrics');
-Route::get('/operations_and_status', 'PagesController@operations_and_status');
-
-Route::get('/orders_mock', 'PagesController@orders');
-Route::get('/job_orders', 'PagesController@job_orders');
+Route::get('/', 'PagesController@index')->name('home');
+Route::get('/orders_mock', 'PagesController@orders'); //to be deleted
+Route::get('/job_orders', 'PagesController@job_orders'); //to be deleted
 
 // !!!! Check the routes using > php artisan route:list
 Route::resource('clients', 'ClientsController');
 Route::resource('workers', 'WorkersController');
-Route::resource('garments', 'GarmentsController');
-Route::resource('operations', 'OperationsController');
 Route::resource('fabrics', 'FabricsController');
-Route::resource('status', 'StatusController');
+Route::resource('fabric_types', 'FabricTypesController');
+Route::resource('fabric_patterns', 'FabricPatternsController');
+Route::resource('fabric_prices', 'FabricPricesController');
+Route::resource('garments', 'GarmentsController');
+Route::resource('segments', 'SegmentsController');
+Route::resource('operations', 'OperationsController');
+Route::resource('accessories', 'AccessoriesController');
+Route::resource('accessory_types', 'AccessoryTypesController');
+
 Route::resource('quotations', 'QuotationsController');
 Route::resource('orders', 'OrdersController');
 
@@ -55,9 +58,29 @@ Route::resource('orders', 'OrdersController');
 Route::get('/get_client_list', 'ClientsController@get_client_list');
 Route::get('/get_client_info', 'ClientsController@get_client_info');
 Route::get('/get_fabric_list', 'FabricsController@get_fabric_list');
+Route::get('/get_fabric_type_list', 'FabricTypesController@get_fabric_type_list');
+Route::get('/get_accessory_type_list', 'AccessoryTypesController@get_accessory_type_list');
+Route::get('/get_fabric_pattern_list', 'FabricPatternsController@get_fabric_pattern_list');
 Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
+Route::get('/list_segments', 'SegmentsController@list_segments');
+Route::get('/list_operations', 'OperationsController@list_operations');
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');
 Route::get('/redirect_to_quo', 'OrdersController@quotation');
 Route::post('/orders/create', 'OrdersController@create');
+
+//DomPDF
+Route::get('/export_invoice/{order}','OrdersController@export_invoice');
+
+//DELETE GET REQUESTS
+Route::get('/clients/{client}/delete', 'ClientsController@destroy');
+Route::get('/workers/{worker}/delete', 'WorkersController@destroy');
+Route::get('/garments/{garment}/delete', 'GarmentsController@destroy');
+Route::get('/fabrics/{fabric}/delete', 'FabricsController@destroy');
+Route::get('/fabric_types/{fabric_type}/delete', 'FabricTypesController@destroy');
+Route::get('/fabric_patterns/{fabric_pattern}/delete', 'FabricPatternsController@destroy');
+Route::get('/segments/{segment}/delete', 'SegmentsController@destroy');
+Route::get('/operations/{operation}/delete', 'OperationsController@destroy');
+Route::get('/accessory_types/{accessory_type}/delete', 'AccessoryTypesController@destroy');
+Route::get('/accessories/{accessory}/delete', 'AccessoriesController@destroy');

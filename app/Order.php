@@ -11,6 +11,7 @@ class Order extends Model
     public $timestamps = false;
     
     public function getIdAttribute() {
+
         return sprintf("%04d", $this->attributes['id']);
     }
 }
