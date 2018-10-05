@@ -97,4 +97,25 @@ class OperationsController extends Controller
 
         return redirect("/garments")->with('deleted_operation', $deleted);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_operations(Request $request)
+    {
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $list = Operation::select('id','name AS text')
+                        ->where('name', 'like', '%' .$q. '%')
+                        ->get();
+        }else{
+            $list = Operation::select('id','name AS text')->get();
+        }
+
+        return response()->json($list);
+    }
 }

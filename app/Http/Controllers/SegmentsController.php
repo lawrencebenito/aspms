@@ -97,4 +97,25 @@ class SegmentsController extends Controller
 
         return redirect("/garments")->with('deleted_segment', $deleted);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_segments(Request $request)
+    {
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $list = Segment::select('id','name AS text')
+                        ->where('name', 'like', '%' .$q. '%')
+                        ->get();
+        }else{
+            $list = Segment::select('id','name AS text')->get();
+        }
+
+        return response()->json($list);
+    }
 }

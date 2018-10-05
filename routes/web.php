@@ -62,6 +62,8 @@ Route::get('/get_fabric_type_list', 'FabricTypesController@get_fabric_type_list'
 Route::get('/get_accessory_type_list', 'AccessoryTypesController@get_accessory_type_list');
 Route::get('/get_fabric_pattern_list', 'FabricPatternsController@get_fabric_pattern_list');
 Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
+Route::get('/list_segments', 'SegmentsController@list_segments');
+Route::get('/list_operations', 'OperationsController@list_operations');
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');

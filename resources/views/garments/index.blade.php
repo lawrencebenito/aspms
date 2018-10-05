@@ -10,8 +10,30 @@
 @endsection
 
 @section('content')
+<!-- ALERT FOR GARMENT -->
+@if (session()->has('new_garment'))
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
+      New garment, {{ session()->get('new_garment') }} has been added to the list.
+    </div>
+  </div>
+</div>
+@elseif (session()->has('deleted_garment'))
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
+      Garment, {{ session()->get('deleted_garment') }} has been removed to the list.
+    </div>
+  </div>
+</div>
+
 <!-- ALERT FOR TYPE -->
-@if (session()->has('new_segment'))
+@elseif (session()->has('new_segment'))
 <div class="row">
   <div class="col-lg-12">
     <div class="alert alert-success alert-dismissible">
@@ -169,8 +191,8 @@ $(document).ready(function() {
   */
   var dataSet = [];
 
-  @if(!empty($garments))
-    var dataSet = @json($garments);
+  @if(!empty($garment))
+    var dataSet = @json($garment);
   @endif
   
   $('#data_table_garments').DataTable( {
@@ -184,7 +206,7 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: btn_edit + btn_delete,
+          defaultContent: btn_view + btn_edit + btn_delete,
           className: "action-buttons",
           width: "50px",
           sortable: false,
@@ -193,19 +215,23 @@ $(document).ready(function() {
       ]
   } );
 
-  var source_ref_types = "{{ url('/garments') }}" + "/";
+  var source_ref_garments = "{{ url('/garments') }}" + "/";
   
   $('#data_table_garments').on('dblclick','td',function(e){
-    window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/edit";
+    window.location.href = source_ref_garments + $(this).closest('tr').attr('id');
   });
   
+  $('#data_table_garments').on('click','button.btn_view',function(e){
+    window.location.href = source_ref_garments + $(this).closest('tr').attr('id');
+  });
+
   $('#data_table_garments').on('click','button.btn_edit',function(e){
-    window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/edit";
+    window.location.href = source_ref_garments + $(this).closest('tr').attr('id') + "/edit";
   });
 
   $('#data_table_garments').on('click','button.btn_delete',function(e){
     if(confirm_delete(this))
-      window.location.href = source_ref_types + $(this).closest('tr').attr('id') + "/delete";
+      window.location.href = source_ref_garments + $(this).closest('tr').attr('id') + "/delete";
   });
 
   /**
