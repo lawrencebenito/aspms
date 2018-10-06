@@ -71,6 +71,7 @@ Route::get('/get_fabric_pattern_list', 'FabricPatternsController@get_fabric_patt
 Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
 Route::get('/list_segments', 'SegmentsController@list_segments');
 Route::get('/list_operations', 'OperationsController@list_operations');
+Route::get('/list_design_types', 'DesignTypesController@list_design_types');
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');
@@ -91,3 +92,6 @@ Route::get('/segments/{segment}/delete', 'SegmentsController@destroy');
 Route::get('/operations/{operation}/delete', 'OperationsController@destroy');
 Route::get('/accessory_types/{accessory_type}/delete', 'AccessoryTypesController@destroy');
 Route::get('/accessories/{accessory}/delete', 'AccessoriesController@destroy');
+Route::get('/design_types/{design_type}/delete', 'DesignTypesController@destroy');
+Route::get('/design_sizes/{design_size}/delete', 'DesignTypesController@destroy');
+Route::get('/designs/{design}/delete', 'DesignsController@destroy');

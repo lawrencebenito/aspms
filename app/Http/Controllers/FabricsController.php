@@ -60,7 +60,7 @@ class FabricsController extends Controller
         $fabric->gsm = $request->get('gsm');
         $fabric->width = $request->get('width');
         
-        $products = DB::transaction(function()  use ($request, $fabric) {
+        DB::transaction(function()  use ($request, $fabric) {
                 
             $fabric->save();
             $fabric_id = $fabric->id;

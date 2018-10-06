@@ -14,7 +14,7 @@ class DesignTypesController extends Controller
      */
     public function index()
     {
-        //
+        return redirect('/designs');
     }
 
     /**
@@ -24,7 +24,7 @@ class DesignTypesController extends Controller
      */
     public function create()
     {
-        //
+        return view('designs.types.create');
     }
 
     /**
@@ -35,7 +35,13 @@ class DesignTypesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $designType = new DesignType;
+        $designType->name = $request->get('name');
+        
+        $designType->save();
+
+        $new = "$designType->name";
+        return redirect('/designs')->with('new_type', $new);
     }
 
     /**
@@ -46,7 +52,7 @@ class DesignTypesController extends Controller
      */
     public function show(DesignType $designType)
     {
-        //
+        return view('designs.types.edit')->with('design_type', $designType);
     }
 
     /**
@@ -57,7 +63,7 @@ class DesignTypesController extends Controller
      */
     public function edit(DesignType $designType)
     {
-        //
+        return view('designs.types.edit')->with('design_type', $designType);
     }
 
     /**
@@ -69,7 +75,12 @@ class DesignTypesController extends Controller
      */
     public function update(Request $request, DesignType $designType)
     {
-        //
+        $designType->name = $request->get('name');
+        
+        $designType->save();
+
+        $edited = "$designType->name";
+        return redirect('/designs')->with('edited_type', $edited);
     }
 
     /**
@@ -80,6 +91,31 @@ class DesignTypesController extends Controller
      */
     public function destroy(DesignType $designType)
     {
-        //
+        $deleted = "$designType->name";
+        
+        $designType->delete();
+
+        return redirect("/designs")->with('deleted_type', $deleted);
+    }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_design_types(Request $request)
+    {
+        if ($request->has('q')) {
+            $q = $request->input('q');
+
+            $list = DesignType::select('id','name AS text')
+                        ->where('name', 'like', '%' .$q. '%')
+                        ->get();
+        }else{
+            $list = DesignType::select('id','name AS text')->get();
+        }
+
+        return response()->json($list);
     }
 }

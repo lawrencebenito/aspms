@@ -64,7 +64,7 @@
                 <label class="control-label">Price</label>
                 <div class="row">
                   <div class="col-xs-6 col-sm-6 col-md-7" style="padding-right:0">
-                    <input id="price" type="number" class="form-control" placeholder="Price of accessory upon buying" name="price" autocomplete="off" required min=1s max=1000>
+                    <input id="price" type="number" class="form-control" placeholder="Price of accessory upon buying" name="price" autocomplete="off" required min=1 max=1000>
                   </div>
                   <div class="col-xs-5 col-sm-5 col-md-4 no-padding">
                     <select id="measurement_type" class="form-control" name="measurement_type">
