@@ -135,7 +135,7 @@ COMMENT = 'This table contains information about the order of the clients to the
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`payment` (
   `id` INT(4) ZEROFILL NOT NULL AUTO_INCREMENT COMMENT '0457',
-  `order` INT(4) ZEROFILL NOT NULL,
+  `order` INT(4) ZEROFILL NOT NULL COMMENT '0001',
   `date_received` DATE NOT NULL COMMENT '2018-07-04',
   `payment_mode` VARCHAR(45) NOT NULL COMMENT 'Cash',
   `reference_num` VARCHAR(45) NULL DEFAULT NULL COMMENT 'N/A',
@@ -564,41 +564,20 @@ COMMENT = 'Categorical Table. This table holds all possible types of design like
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`design_size`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`design_size` (
-  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
-  `name` VARCHAR(45) NOT NULL COMMENT 'Small',
-  `min_width` INT NOT NULL COMMENT '1',
-  `min_height` INT NOT NULL COMMENT '1',
-  `max_width` INT NOT NULL COMMENT '3',
-  `max_height` INT NOT NULL COMMENT '3',
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-ENGINE = InnoDB
-COMMENT = 'Category Table. Contains the possible size of a certain design with range.';
-
-
--- -----------------------------------------------------
 -- Table `db_aspms`.`design`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`design` (
   `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
   `design_type` INT(3) NOT NULL COMMENT '1',
-  `design_size` INT(3) NOT NULL COMMENT '1',
-  `number of color` TINYINT(2) NOT NULL COMMENT '2',
-  `price` DOUBLE NOT NULL COMMENT '20.00',
+  `supplier` VARCHAR(45) NOT NULL,
+  `category_size` TINYINT(1) NOT NULL COMMENT '0 - Small| 1- Medium | 2- Large',
+  `size_range` VARCHAR(45) NOT NULL COMMENT '(user input) 1 sq.in - 4 sq.in',
+  `color_count` TINYINT(2) NOT NULL COMMENT '2',
   PRIMARY KEY (`id`),
   INDEX `fk_design_idx` (`design_type` ASC),
-  INDEX `fk_design_size_idx` (`design_size` ASC),
   CONSTRAINT `fk_design_type`
     FOREIGN KEY (`design_type`)
     REFERENCES `db_aspms`.`design_type` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_design_size`
-    FOREIGN KEY (`design_size`)
-    REFERENCES `db_aspms`.`design_size` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -612,6 +591,8 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`product_design` (
   `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
   `product` INT(5) NOT NULL COMMENT '1',
   `design` INT(5) NOT NULL COMMENT '1',
+  `actual size` VARCHAR(45) NOT NULL COMMENT '12 inches x 10 inches',
+  `location` VARCHAR(45) NULL COMMENT '10 inches from neckline',
   `sample_image` TEXT NULL COMMENT 'C:/Users/Pictures/design.jpg',
   PRIMARY KEY (`id`),
   INDEX `fk_pd_product_idx` (`product` ASC),
@@ -652,6 +633,23 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8
 COMMENT = 'This table will serve as the connection of garment types to fabric types. It list down all possible fabric types for that garment, Ex. Garment(T-shirt) will only have possible fabric type of Cotton, Polyester, Linen etc. This will prevent user to connect Demin or Leather to T-Shirt';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`design_price`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`design_price` (
+  `design` INT(5) NOT NULL COMMENT '1',
+  `date_effective` DATE NOT NULL COMMENT '2018-09-01',
+  `unit_price` DOUBLE NOT NULL COMMENT '100',
+  PRIMARY KEY (`design`, `date_effective`),
+  CONSTRAINT `fk_dp_design`
+    FOREIGN KEY (`design`)
+    REFERENCES `db_aspms`.`design` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. Contains records with history of prices per fabric.';
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -762,6 +760,21 @@ INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (5, 'Collar');
 INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (6, 'Cotton Tape');
 INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (7, 'String');
 INSERT INTO `db_aspms`.`accessory_type` (`id`, `name`) VALUES (8, 'Garter');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`design_type`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`design_type` (`id`, `name`) VALUES (DEFAULT, 'Embroidery');
+INSERT INTO `db_aspms`.`design_type` (`id`, `name`) VALUES (DEFAULT, 'Screen Printing');
+INSERT INTO `db_aspms`.`design_type` (`id`, `name`) VALUES (DEFAULT, 'Heat Press');
+INSERT INTO `db_aspms`.`design_type` (`id`, `name`) VALUES (DEFAULT, 'Vinyl');
+INSERT INTO `db_aspms`.`design_type` (`id`, `name`) VALUES (DEFAULT, 'Patch');
+INSERT INTO `db_aspms`.`design_type` (`id`, `name`) VALUES (DEFAULT, 'Label');
 
 COMMIT;
 
