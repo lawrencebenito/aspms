@@ -39,6 +39,7 @@ Route::get('/orders_mock', 'PagesController@orders'); //to be deleted
 Route::get('/job_orders', 'PagesController@job_orders'); //to be deleted
 
 // !!!! Check the routes using > php artisan route:list
+//** FOR MAINTENANCE */
 Route::resource('clients', 'ClientsController');
 Route::resource('workers', 'WorkersController');
 Route::resource('fabrics', 'FabricsController');
@@ -50,9 +51,15 @@ Route::resource('segments', 'SegmentsController');
 Route::resource('operations', 'OperationsController');
 Route::resource('accessories', 'AccessoriesController');
 Route::resource('accessory_types', 'AccessoryTypesController');
+Route::resource('designs', 'DesignsController');
+Route::resource('design_types', 'DesignTypesController');
 
+//** FOR SALES */
 Route::resource('quotations', 'QuotationsController');
 Route::resource('orders', 'OrdersController');
+
+//** FOR PRODUCTION */
+
 
 //RESPONE CONTROLLERS FOR AJAX
 Route::get('/get_client_list', 'ClientsController@get_client_list');

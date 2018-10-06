@@ -42,7 +42,7 @@
               </div>
               <div class="col-sm-12 form-group">
                 <label class="control-label">Description</label>
-                <input type="text" class="form-control" placeholder="(Optional) Description about this accessory" name="description" autocomplete="off">
+                <input type="text" class="form-control" placeholder="Description about this accessory" name="description" autocomplete="off">
               </div>              
               <div class="col-sm-12 form-group">
                 <label class="control-label">Supplier</label>
