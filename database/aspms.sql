@@ -155,48 +155,6 @@ COMMENT = 'This table will contain information about the payment collection per 
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`fabric_pattern`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_pattern` (
-  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
-  `name` VARCHAR(45) NOT NULL COMMENT 'Plain',
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-ENGINE = InnoDB
-COMMENT = 'Category Table. Contains the possible pattern of fabric used. Ex. Plain, Horizontal Stripe, Vertical Stripe, Printed, Abstart, Gradient, etc...';
-
-
--- -----------------------------------------------------
--- Table `db_aspms`.`fabric`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
-  `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
-  `type` INT(3) NOT NULL COMMENT '1',
-  `supplier_name` VARCHAR(45) NOT NULL COMMENT 'D.C.E. Fabrics Corp.',
-  `reference_num` VARCHAR(45) NOT NULL COMMENT '(From Supplier) SW29102',
-  `color` VARCHAR(45) NOT NULL COMMENT 'White',
-  `fabrication` VARCHAR(45) NOT NULL COMMENT '80% Cotton, 20% Linen',
-  `gsm` INT(3) NOT NULL COMMENT '220',
-  `width` INT NOT NULL COMMENT '48 (in inches)',
-  `pattern` INT(3) NOT NULL COMMENT '1',
-  PRIMARY KEY (`id`),
-  INDEX `fk_fabric_type_idx` (`type` ASC),
-  INDEX `fk_pattern_idx` (`pattern` ASC),
-  CONSTRAINT `fk_fabric_type`
-    FOREIGN KEY (`type`)
-    REFERENCES `db_aspms`.`fabric_type` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_pattern`
-    FOREIGN KEY (`pattern`)
-    REFERENCES `db_aspms`.`fabric_pattern` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-COMMENT = 'Maintenance Table. Contains most of the information of fabric that will be used for the system.';
-
-
--- -----------------------------------------------------
 -- Table `db_aspms`.`product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`product` (
@@ -204,7 +162,6 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`product` (
   `style_number` VARCHAR(45) NOT NULL COMMENT 'S328103',
   `garment` INT(5) NOT NULL COMMENT '3',
   `client` INT(5) NOT NULL COMMENT '1',
-  `main_fabrication` INT(5) NOT NULL COMMENT '1',
   `description` TEXT NULL COMMENT 'ex. IBITS Shirt',
   `min_range` TINYINT(1) NOT NULL COMMENT '2 (XS)',
   `max_range` TINYINT(1) NOT NULL COMMENT '6 (XL)',
@@ -212,12 +169,6 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`product` (
   `total_price` DOUBLE NOT NULL COMMENT '350.00',
   PRIMARY KEY (`id`),
   INDEX `fk_garmet_idx` (`garment` ASC),
-  INDEX `fk_fabric_prod_idx` (`main_fabrication` ASC),
-  CONSTRAINT `fk_fabric_prod`
-    FOREIGN KEY (`main_fabrication`)
-    REFERENCES `db_aspms`.`fabric` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
   CONSTRAINT `fk_garment_prod`
     FOREIGN KEY (`garment`)
     REFERENCES `db_aspms`.`garment` (`id`)
@@ -371,6 +322,48 @@ COMMENT = 'Maintenance Table. Contains the segmen(parts/components of a garment)
 
 
 -- -----------------------------------------------------
+-- Table `db_aspms`.`fabric_pattern`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_pattern` (
+  `id` INT(3) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `name` VARCHAR(45) NOT NULL COMMENT 'Plain',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+COMMENT = 'Category Table. Contains the possible pattern of fabric used. Ex. Plain, Horizontal Stripe, Vertical Stripe, Printed, Abstart, Gradient, etc...';
+
+
+-- -----------------------------------------------------
+-- Table `db_aspms`.`fabric`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric` (
+  `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
+  `type` INT(3) NOT NULL COMMENT '1',
+  `supplier_name` VARCHAR(45) NOT NULL COMMENT 'D.C.E. Fabrics Corp.',
+  `reference_num` VARCHAR(45) NOT NULL COMMENT '(From Supplier) SW29102',
+  `color` VARCHAR(45) NOT NULL COMMENT 'White',
+  `fabrication` VARCHAR(45) NOT NULL COMMENT '80% Cotton, 20% Linen',
+  `gsm` INT(3) NOT NULL COMMENT '220',
+  `width` INT NOT NULL COMMENT '48 (in inches)',
+  `pattern` INT(3) NOT NULL COMMENT '1',
+  PRIMARY KEY (`id`),
+  INDEX `fk_fabric_type_idx` (`type` ASC),
+  INDEX `fk_pattern_idx` (`pattern` ASC),
+  CONSTRAINT `fk_fabric_type`
+    FOREIGN KEY (`type`)
+    REFERENCES `db_aspms`.`fabric_type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pattern`
+    FOREIGN KEY (`pattern`)
+    REFERENCES `db_aspms`.`fabric_pattern` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Maintenance Table. Contains most of the information of fabric that will be used for the system.';
+
+
+-- -----------------------------------------------------
 -- Table `db_aspms`.`fabric_price`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`fabric_price` (
@@ -423,55 +416,6 @@ COMMENT = 'This table will hold the needed fabric/s consumed by the product with
 
 
 -- -----------------------------------------------------
--- Table `db_aspms`.`garment_segment`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`garment_segment` (
-  `garment` INT(5) NOT NULL COMMENT '1',
-  `segment` INT(3) NOT NULL COMMENT '1',
-  PRIMARY KEY (`garment`, `segment`),
-  INDEX `fk_gs_segment_idx` (`segment` ASC),
-  CONSTRAINT `fk_gs_garment`
-    FOREIGN KEY (`garment`)
-    REFERENCES `db_aspms`.`garment` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_gs_segment`
-    FOREIGN KEY (`segment`)
-    REFERENCES `db_aspms`.`segment` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8
-COMMENT = 'Maintenance Table. This table connects all the required segment per garment.';
-
-
--- -----------------------------------------------------
--- Table `db_aspms`.`garment_operation`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_aspms`.`garment_operation` (
-  `garment` INT(5) NOT NULL COMMENT '1',
-  `operation` INT(5) NOT NULL COMMENT '1',
-  `rate` DOUBLE NOT NULL COMMENT '2.00',
-  PRIMARY KEY (`garment`, `operation`),
-  INDEX `fk_go_operation_idx` (`operation` ASC),
-  CONSTRAINT `fk_go_garment`
-    FOREIGN KEY (`garment`)
-    REFERENCES `db_aspms`.`garment` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_go_operation`
-    FOREIGN KEY (`operation`)
-    REFERENCES `db_aspms`.`operation` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8
-COMMENT = 'Maintenance Table. This table connects all the required operations per garment.';
-
-
--- -----------------------------------------------------
 -- Table `db_aspms`.`accessory_type`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory_type` (
@@ -492,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`accessory` (
   `accessory_type` INT(3) NOT NULL COMMENT '1',
   `description` VARCHAR(225) NULL COMMENT '(optional) butons with 3 holes.',
   `color` VARCHAR(45) NOT NULL COMMENT 'transparent white',
-  `supplier` VARCHAR(45) NOT NULL,
+  `supplier` VARCHAR(45) NOT NULL COMMENT 'MCU Fabrics Corp.',
   `reference_num` VARCHAR(45) NOT NULL COMMENT '(from supplier) RF91823',
   PRIMARY KEY (`id`),
   INDEX `fk_accessory_idx` (`accessory_type` ASC),
@@ -569,7 +513,7 @@ COMMENT = 'Categorical Table. This table holds all possible types of design like
 CREATE TABLE IF NOT EXISTS `db_aspms`.`design` (
   `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1',
   `design_type` INT(3) NOT NULL COMMENT '1',
-  `supplier` VARCHAR(45) NOT NULL,
+  `supplier` VARCHAR(45) NOT NULL COMMENT 'ABC Printing Co.',
   `category_size` TINYINT(1) NOT NULL COMMENT '0 - Small| 1- Medium | 2- Large',
   `size_range` VARCHAR(45) NOT NULL COMMENT '(user input) 1 sq.in - 4 sq.in',
   `color_count` TINYINT(2) NOT NULL COMMENT '2',
@@ -700,25 +644,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `db_aspms`.`fabric_pattern`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `db_aspms`;
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (1, 'Plain');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (2, 'Stripe (Vertical)');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (3, 'Stripe (Horizontal)');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (4, 'Diagonal Stripes');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (5, 'Checkered');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (6, 'Printed');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (7, 'Gradient');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (8, 'Floral');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (9, 'Chevron');
-INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (10, 'Geometric');
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `db_aspms`.`segment`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -743,6 +668,25 @@ INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (17, 'Pocket');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (18, 'Pocket Bag');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (19, 'Secret Pocket');
 INSERT INTO `db_aspms`.`segment` (`id`, `name`) VALUES (20, 'Zipper Ply');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `db_aspms`.`fabric_pattern`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `db_aspms`;
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (1, 'Plain');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (2, 'Stripe (Vertical)');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (3, 'Stripe (Horizontal)');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (4, 'Diagonal Stripes');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (5, 'Checkered');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (6, 'Printed');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (7, 'Gradient');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (8, 'Floral');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (9, 'Chevron');
+INSERT INTO `db_aspms`.`fabric_pattern` (`id`, `name`) VALUES (10, 'Geometric');
 
 COMMIT;
 
