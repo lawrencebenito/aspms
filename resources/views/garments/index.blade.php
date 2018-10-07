@@ -98,7 +98,7 @@
 @endif
 
 <div class="row">
-  <div class="col-lg-12 col-md-12">
+  <div class="col-lg-4 col-md-4">
     <div class="box box-solid box-primary">
       <div class="box-header">
         <h3 class="box-title">Garment List</h3>
@@ -122,59 +122,56 @@
     <!-- /.box -->
   </div>
   <!-- /.col -->
+  <div class="col-lg-4 col-md-4">
+    <div class="box box-solid box-primary">
+      <div class="box-header">
+        <h3 class="box-title">Garment Segments</h3>
+        <div class="box-tools">
+          <div class="input-group input-group-md" style="width: 150px;">
+            <div class="input-group-btn">
+              <a class="btn btn-flat btn-primary pull-right" href="./segments/create">
+                <i class="fa fa-plus"> </i>  
+                Add New Segment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive">
+        <table id="data_table_segments" class="table table-bordered table-hover" width="100%"></table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-lg-4 col-md-4">
+    <div class="box box-solid box-primary">
+      <div class="box-header">
+        <h3 class="box-title">Garment Operations</h3>
+        <div class="box-tools">
+          <div class="input-group input-group-md" style="width: 150px;">
+            <div class="input-group-btn">
+              <a class="btn btn-flat btn-primary pull-right" href="./operations/create">
+                <i class="fa fa-plus"> </i>
+                Add New Operation
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive">
+        <table id="data_table_operations" class="table table-bordered table-hover" width="100%"></table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+  <!--/.col-->
 </div>
 <!-- /.row -->
-<div class="row">
-    <div class="col-lg-6 col-md-6">
-      <div class="box box-solid box-primary">
-        <div class="box-header">
-          <h3 class="box-title">Garment Segments</h3>
-          <div class="box-tools">
-            <div class="input-group input-group-md" style="width: 150px;">
-              <div class="input-group-btn">
-                <a class="btn btn-flat btn-primary pull-right" href="./segments/create">
-                  <i class="fa fa-plus"> </i>  
-                  Add New Segment
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body table-responsive">
-          <table id="data_table_segments" class="table table-bordered table-hover" width="100%"></table>
-        </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-lg-6 col-md-6">
-      <div class="box box-solid box-primary">
-        <div class="box-header">
-          <h3 class="box-title">Garment Operations</h3>
-          <div class="box-tools">
-            <div class="input-group input-group-md" style="width: 150px;">
-              <div class="input-group-btn">
-                <a class="btn btn-flat btn-primary pull-right" href="./operations/create">
-                  <i class="fa fa-plus"> </i>
-                  Add New Operation
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body table-responsive">
-          <table id="data_table_operations" class="table table-bordered table-hover" width="100%"></table>
-        </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
-    </div>
-    <!--/.col-->
-  </div>
-  <!-- /.row -->
 @endsection
 
 @push('extra_scripts')

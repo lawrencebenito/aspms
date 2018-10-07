@@ -46,22 +46,6 @@
                 <p>{{$garment->name}}</p>
               </div>
               <div class="col-sm-12 form-group">
-                <label class="control-label">Segment List</label>
-                <p>
-                @foreach ($segment_list as $segment)
-                  {{$segment->name}},
-                @endforeach
-                </p>
-              </div>
-              <div class="col-sm-12 form-group">
-                <label class="control-label">Operation List</label>
-                <p>
-                @foreach ($operation_list as $operation)
-                  {{$operation->name}},
-                @endforeach
-                </p>
-              </div>
-              <div class="col-sm-12 form-group">
                 <label class="control-label">Fabric List</label>
                 <p>
                 @foreach ($fabric_list as $fabric)
