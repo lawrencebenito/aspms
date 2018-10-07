@@ -160,6 +160,7 @@ COMMENT = 'This table will contain information about the payment collection per 
 CREATE TABLE IF NOT EXISTS `db_aspms`.`product` (
   `id` INT(5) NOT NULL AUTO_INCREMENT COMMENT '1\n',
   `style_number` VARCHAR(45) NOT NULL COMMENT 'S328103',
+  `date_created` DATE NOT NULL COMMENT '2018-09-30',
   `garment` INT(5) NOT NULL COMMENT '3',
   `client` INT(5) NOT NULL COMMENT '1',
   `description` TEXT NULL COMMENT 'ex. IBITS Shirt',
@@ -169,9 +170,15 @@ CREATE TABLE IF NOT EXISTS `db_aspms`.`product` (
   `total_price` DOUBLE NOT NULL COMMENT '350.00',
   PRIMARY KEY (`id`),
   INDEX `fk_garmet_idx` (`garment` ASC),
-  CONSTRAINT `fk_garment_prod`
+  INDEX `fk_product_client_idx` (`client` ASC),
+  CONSTRAINT `fk_product_garment_type`
     FOREIGN KEY (`garment`)
     REFERENCES `db_aspms`.`garment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_product_client`
+    FOREIGN KEY (`client`)
+    REFERENCES `db_aspms`.`client` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
