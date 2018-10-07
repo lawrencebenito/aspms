@@ -55,6 +55,7 @@ Route::resource('designs', 'DesignsController');
 Route::resource('design_types', 'DesignTypesController');
 
 //** FOR SALES */
+Route::resource('products', 'ProductsController');
 Route::resource('quotations', 'QuotationsController');
 Route::resource('orders', 'OrdersController');
 

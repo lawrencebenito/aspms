@@ -51,14 +51,19 @@
         </ul>
       </li>
       <!-- Sales -->
-      <li class="treeview {{ Helper::is_active(['products','quotations','orders']) }}">
+      <li class="treeview {{ Helper::is_active([
+        'products',
+        'quotations',
+        'orders'
+        ])
+      }}">
         <a href="#">
           <i class="fa fa-line-chart"></i> <span>Sales</span>
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
         </a>
         <ul class="treeview-menu">
-          <li> 
-            <a href="{{ url('/products') }}">
+          <li class="{{ Helper::is_active('products') }}"> 
+            <a href="{{ route('products.index') }}">
             <i class="ion ion-tshirt"></i> <span>Products</span></a>
           </li>
           <li class="{{ Helper::is_active('quotations') }}">

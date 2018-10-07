@@ -204,7 +204,6 @@ $(document).ready(function() {
           { title: "Type", data:"type_name" },
           { title: "Supplier", data:"supplier_name" },
           { title: "Ref #", data:"reference_num" },
-          { title: "Fabrication", data:"fabrication" },
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
