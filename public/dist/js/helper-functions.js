@@ -81,6 +81,7 @@ const stripCommas = (value) => {
   return value.replace(/\,/g,'');
 }
 
+var btn_select = "<button class='btn btn-xs btn-primary btn_select' data-toggle='tooltip' title='Select'>Select</button> ";
 var btn_view = "<button class='btn btn-xs btn_view' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></button> ";
 var btn_edit = "<button class='btn btn-xs btn_edit' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></button> ";
 var btn_delete = "<button class='btn btn-xs btn_delete' data-toggle='tooltip' title='Delete'><i class='fa fa-trash-o'></i></button> ";

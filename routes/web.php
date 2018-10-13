@@ -65,7 +65,6 @@ Route::resource('orders', 'OrdersController');
 //RESPONE CONTROLLERS FOR AJAX
 Route::get('/get_client_list', 'ClientsController@get_client_list');
 Route::get('/get_client_info', 'ClientsController@get_client_info');
-Route::get('/get_fabric_list', 'FabricsController@get_fabric_list');
 Route::get('/get_fabric_type_list', 'FabricTypesController@get_fabric_type_list');
 Route::get('/get_accessory_type_list', 'AccessoryTypesController@get_accessory_type_list');
 Route::get('/get_fabric_pattern_list', 'FabricPatternsController@get_fabric_pattern_list');
@@ -73,6 +72,7 @@ Route::get('/get_garment_list', 'GarmentsController@get_garment_list');
 Route::get('/list_segments', 'SegmentsController@list_segments');
 Route::get('/list_operations', 'OperationsController@list_operations');
 Route::get('/list_design_types', 'DesignTypesController@list_design_types');
+Route::get('/list_fabrics', 'FabricsController@list_fabrics');
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');

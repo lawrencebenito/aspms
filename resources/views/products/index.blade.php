@@ -72,16 +72,16 @@ $(document).ready(function() {
   @if(!empty($product))
     var dataSet = @json($product);
   @endif
-  
+
   $('#data_table').DataTable( {
       data: dataSet,
       columns: [
-          { title: "Color", data:"color" }, 
-          { title: "Pattern", data:"pattern_name" },
-          { title: "Type", data:"type_name" },
-          { title: "Supplier", data:"supplier_name" },
-          { title: "Ref #", data:"reference_num" },
-          { title: "Fabrication", data:"fabrication" },
+          { title: "Style Number", data:"style_number" }, 
+          { title: "Garment", data:"garment" },
+          { title: "Description", data:"description" },
+          { title: "Client", data:"client" },
+          { title: "Fabrication", data:"consumption_size" },
+          { title: "Ref #", data:"total_price" },
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {

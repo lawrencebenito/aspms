@@ -177,17 +177,12 @@ class FabricsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function get_fabric_list(Request $request)
+    public function list_fabrics(Request $request)
     {
-        if ($request->has('q')) {
-            $q = $request->input('q');
-
-            $fabric = \App\Fabric::select('id','name AS text')
-                        ->where('name', 'like', '%' .$q. '%')
-                        ->get();
-        }else{
-            $fabric = \App\Fabric::select('id','name AS text')->get();
-        }
+        $fabric = Fabric::join('fabric_type', 'fabric_type.id', '=', 'fabric.type')
+                ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
+                ->select('fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name')
+                ->get();
 
         return response()->json($fabric);
     }
