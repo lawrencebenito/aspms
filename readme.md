@@ -29,7 +29,7 @@ A copy of the Production section of the Admin module. Just to seperate the acces
 A simple GUI made for phones or tablets so the employee can log their every day work. how many they have sewn, cut, packed for that day. which later on will be approved by the Production Manager or by the Admin.     
 
 ## Build
-This web-based system is built with following:
+This system is built with following:
 
 Language: PHP with Laravel Framework <br/>
 Design: Admin-LTE Bootstrap Template. <br/>
