@@ -132,4 +132,20 @@ class DesignsController extends Controller
 
         return redirect("/designs")->with('deleted_design', true);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_designs(Request $request)
+    {
+        $design = Design::join('design_type', 'design_type.id', '=', 'design.design_type')
+                        ->join('design_price', 'design_price.design', '=', 'design.id')
+                        ->select('design.*','design_type.name AS type_name','unit_price')
+                        ->get();
+
+        return response()->json($design);
+    }
 }

@@ -73,6 +73,8 @@ Route::get('/list_segments', 'SegmentsController@list_segments');
 Route::get('/list_operations', 'OperationsController@list_operations');
 Route::get('/list_design_types', 'DesignTypesController@list_design_types');
 Route::get('/list_fabrics', 'FabricsController@list_fabrics');
+Route::get('/list_accessories', 'AccessoriesController@list_accessories');
+Route::get('/list_designs', 'DesignsController@list_designs');
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');

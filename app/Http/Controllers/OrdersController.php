@@ -26,7 +26,7 @@ class OrdersController extends Controller
             ->select('order.id','order.date_ordered','client.company_name',
                     DB::raw("
                         CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
-                        SUM(order_product.quantity * product.unit_price) as total_price")
+                        SUM(order_product.quantity * product.total_price) as total_price")
                     )
             ->groupBy('order.id')
             ->get();

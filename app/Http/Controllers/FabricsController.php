@@ -181,7 +181,11 @@ class FabricsController extends Controller
     {
         $fabric = Fabric::join('fabric_type', 'fabric_type.id', '=', 'fabric.type')
                 ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
-                ->select('fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name')
+                ->join('fabric_price', 'fabric_price.fabric', '=', 'fabric.id')
+                ->select('fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name',
+                'unit_price',
+                'measurement_type',
+                'date_effective')
                 ->get();
 
         return response()->json($fabric);

@@ -134,4 +134,24 @@ class AccessoriesController extends Controller
 
         return redirect("/accessories")->with('deleted_accessory', true);
     }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_accessories(Request $request)
+    {
+        $accessory = Accessory::join('accessory_type', 'accessory_type.id', '=', 'accessory.accessory_type')
+                ->join('accessory_price', 'accessory_price.accesory', '=', 'accessory.id')
+                ->select('accessory.*','accessory_type.name AS type_name',
+                'unit_price',
+                'measurement_type',
+                'date_effective')
+                ->get();
+                
+        return response()->json($accessory);
+    }
+
 }

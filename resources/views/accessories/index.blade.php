@@ -142,6 +142,7 @@ $(document).ready(function() {
       columns: [
           { title: "Type", data:"type_name" },
           { title: "Color", data:"color" }, 
+          { title: "Description", data:"description" }, 
           { title: "Supplier", data:"supplier" },
           { title: "Ref #", data:"reference_num" },
           { title: " "}
@@ -150,6 +151,10 @@ $(document).ready(function() {
         $(nRow).attr('id', aData['id']);
       },
       "columnDefs": [
+        {
+          defaultContent: "N/A",
+          "targets": 2
+        },
         {
           defaultContent: btn_view + btn_edit + btn_delete,
           className: "action-buttons",

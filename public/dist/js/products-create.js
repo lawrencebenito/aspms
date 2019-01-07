@@ -52,49 +52,29 @@ $(document).ready(function(){
   var td_length = '<td><input type="number" class="form-control length" name="length[]" placeholder="Length" required autocomplete="off" min=1 max=1000></td>';
   var td_width = '<td><input type="number" class="form-control width" name="width[]" placeholder="Width" required autocomplete="off" min=1 max=1000></td>';
   var td_pair = '<td style="text-align: center;"><input type="checkbox" class="pair"></td>';
-  var td_allowance = '<td><input type="number" class="form-control allowance" name="allowance[]" placeholder="Percentage" required autocomplete="off" value="5" min=1 max=1000></td>';
-  var td_price = '<td><input type="number" class="form-control price" name="unit_price[]" placeholder="Enter unit price" required autocomplete="off" min=1 max=10000></td>';
-  
-  
-  //readonly textfields
-  var td_fabric_display = '<input type="text" class="form-control fabric_display" value="Click the icon to choose a fabric" autocomplete="off" readonly style="width: 300px">';
-  var td_gsm = '<td><input type="number" class="form-control gsm" value="0" autocomplete="off" readonly style="width: 80px"></td>';
-  var td_rqkp = '<td><input type="number" class="form-control rqkp" value="0" autocomplete="off" readonly></td>';
-  var td_rqkpwa = '<td><input type="number" class="form-control rqkpwa" value="0" autocomplete="off" readonly></td>';
-  var td_rqkdz = '<td style="background-color: #fffcd3"><input type="number" class="form-control rqkd" value="0" autocomplete="off" readonly></td>';
-  var td_fabric_width = '<td><input type="number" class="form-control fabric_width" value="0" autocomplete="off" readonly></td>';
-  var td_rqydz = '<td style="background-color: #fffcd3"><input type="number" class="form-control rqydz" value="0" autocomplete="off" readonly></td>';
+  var td_allowance = '<td><input type="number" class="form-control allowance" name="allowance[]" placeholder="Percentage" required autocomplete="off" value="5" min=1 max=100></td>';
 
+  //readonly textfields
+  var td_fabric_display = '<input type="text" class="form-control fabric_display" value="Click the icon to choose a fabric" readonly style="width: 300px">';
+  var td_gsm = '<td><input type="number" class="form-control gsm" value="0" readonly style="width: 80px"></td>';
+  var td_rqkp = '<td><input type="number" class="form-control rqkp" value="0" readonly></td>';
+  var td_rqkpwa = '<td><input type="number" class="form-control rqkpwa" value="0" readonly></td>';
+  var td_rqkdz = '<td style="background-color: #fffcd3"><input type="number" class="form-control rqkdz" value="0" readonly></td>';
+  var td_fabric_width = '<td><input type="number" class="form-control fabric_width" value="0" readonly></td>';
+  var td_rqydz = '<td style="background-color: #fffcd3"><input type="number" class="form-control rqydz" value="0" readonly></td>';
+  var td_fabric_price = '<td><input type="number" class="form-control fabric_price" value="0" readonly></td>';
+  var td_fabric_price_type_display = '<input type="text" class="form-control fabric_price_type_display" readonly>';
+  var td_consum_cost = '<td style="background-color: #fffcd3"><input type="number" class="form-control consum_cost" value="0" readonly></td>';
+  
   //hidden forms
+  var td_fabric_price_type = '<input type="hidden" class="form-control fabric_price_type" readonly>';
   var td_fabric = '<input type="hidden" class="fabric_counter form-control fabric" name="fabric[]" required>';
 
   //button groups (wraps buttons)
   var opt1 = `<td>${btn_row_add_consumption}</td>`;
   var opt2 = `<td>${btn_row_delete}</td>`;
   var opt3 = `<td>${td_fabric_display}${td_fabric}</td>`;
-  
-  //misc
-  var td_space = '<td></td>';
-  // var tr_prod_end= '<tr class="prod_end" bgcolor="#f5f5f5"><td colspan="3"></td></tr>';
-  
-
-
-  function initFabricSelect() {
-    return {
-      placeholder: "Select or search a fabric",
-      ajax: {
-        method: 'get',
-        url: '../get_fabric_list',
-        dataType: 'json',
-        delay: 250,
-        processResults: function (data) {
-          return {
-            results: data
-          };
-        }
-      }
-    }//end of return
-  }//end of function
+  var opt4 = `<td>${td_fabric_price_type_display} ${td_fabric_price_type}</td>`;
 
   function initSegmentSelect() {
     return {
@@ -118,33 +98,32 @@ $(document).ready(function(){
   */
   $('tbody#fabric_consumption').append(
     `<tr>
-      ${opt1} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz}
+      ${opt1} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
     </tr>`
   );
   $('tbody#fabric_consumption').append(
     `<tr>
-      ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz}
+      ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
     </tr>`
   );
   $('tbody#fabric_consumption').append(
     `<tr>
-      ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz}
+      ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
     </tr>`
   );
     
   $('.segment.select2').select2(initSegmentSelect());
-  $('.fabric.select2').select2(initFabricSelect());
   
   
   //BUTTON ACTION LISTENERS
   $('tbody#fabric_consumption').on('click','.row_add_consumption' ,function () {
     $('tbody#fabric_consumption').append(
       `<tr>
-        ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz}
+        ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
       </tr>`
     );
     $('.segment.select2').select2(initSegmentSelect());
-    $('.fabric.select2').select2(initFabricSelect());
+
   });
 
   $('tbody#fabric_consumption').on('click','.row_delete', function () {
@@ -155,7 +134,13 @@ $(document).ready(function(){
     var row = $(this).parent().parent().parent().children().index($(this).parent().parent());
     $('#modal-fabrics').attr('for-row', row);
   });
+
   //* ============================================ MODAL SCRIPTS =========================================*//
+  
+  var btn_select = `<button type="button" class="btn btn-xs btn-primary btn_select" data-dismiss="modal">Select</button>`;
+  var btn_view = `<button type="button" class='btn btn-xs btn_view'><i class='fa fa-eye'></i></button>`;
+  var btn_edit = `<button type="button" class='btn btn-xs btn_edit'><i class='fa fa-pencil'></i></button>`;
+
   /**
   * For Fabric Consumption
   */
@@ -173,7 +158,8 @@ $(document).ready(function(){
         { title: "Ref #", data:"reference_num" },
         { title: "GSM", data:"gsm" },
         { title: "Width", data:"width" },
-        { title: " "}
+        { title: "Price Date", data:"date_effective" },
+        { title: "Price", data:"unit_price" }
     ],
     "fnCreatedRow": function( nRow, aData, iDataIndex ) {
       $(nRow).attr('id', aData['id']);
@@ -183,33 +169,13 @@ $(document).ready(function(){
     "order": [[3,"asc"]],
     "columnDefs": [
       {
-        defaultContent: btn_view + btn_edit,
-        className: "action-buttons",
-        width: "50px",
-        sortable: false,
-        "targets": -1
-      },
-      {
         defaultContent: btn_select,
-        className: "select-button",
         width: "20px",
         sortable: false,
         "targets": 0
       }
     ]
   } );
-
-  var source_ref_fabrics = "../fabrics/";
-
-  $('#data_table_fabrics').on('click','button.btn_view',function(e){
-    href = source_ref_fabrics + $(this).closest('tr').attr('id');
-    window.open(href, '_blank');
-  });
-  
-  $('#data_table_fabrics').on('click','button.btn_edit',function(e){
-    href =  source_ref_fabrics + $(this).closest('tr').attr('id') + "/edit";
-    window.open(href, '_blank');
-  });
 
   $('#data_table_fabrics').on('click','button.btn_select',function(e){
     $('#modal-fabrics').modal('hide');
@@ -223,11 +189,127 @@ $(document).ready(function(){
     $(row).find('td input.fabric').val(modal_data.id);
     $(row).find('td input.gsm').val(modal_data.gsm);
     $(row).find('td input.fabric_width').val(modal_data.width);
+    $(row).find('td input.fabric_price').val(modal_data.unit_price);
+    $(row).find('td input.fabric_price_type').val(modal_data.measurement_type);
+
+    if(modal_data.measurement_type == '0'){
+      $(row).find('td input.fabric_price_type_display').val('per kgs');
+    }else{
+      $(row).find('td input.fabric_price_type_display').val('per yards');
+    }
+
   });
 
   $('#modal-fabrics').on('hide.bs.modal',function(e){
     dtable_fabrics.search('').columns().search( '' ).draw();
     //$('#modal-fabrics').attr('for-row', -1);
   });
-  
+
+  //* ============================================ COMPUTATION SCRIPTS =========================================*//
+
+  $('tbody#fabric_consumption').on('keyup','input', function(){
+    row = $(this).closest('tr');
+    compute(row);
+  });
+
+  $('tbody#fabric_consumption').on('change','.pair', function(){
+    row = $(this).closest('tr');
+    compute(row);
+  });
+
+  function compute(row){
+    length = row.find('.length').val();
+    width = row.find('.width').val();
+    is_pair = row.find('.pair').prop("checked");
+    allowance = row.find('.allowance').val() / 100;
+    gsm = row.find('.gsm').val();
+    fabric_width = row.find('.fabric_width').val();
+    fabric_price = row.find('.fabric_price').val();
+    
+    rqkp = ( length * width * (is_pair? 2 : 1) ) * gsm / 10000000;
+    row.find('.rqkp').val(rqkp.toFixed(4));
+    
+    rqkpwa = (rqkp * allowance) + rqkp;
+    row.find('.rqkpwa').val(rqkpwa.toFixed(4));
+    
+    rqkdz = rqkpwa * 12;
+    row.find('.rqkdz').val(rqkdz.toFixed(4));
+    
+    rqydz = rqkdz / (fabric_width * gsm / 1550 / 1000) / 36;
+    row.find('.rqydz').val(rqydz.toFixed(4));
+
+    fabric_price_type = row.find('.fabric_price_type').val();
+
+    if(fabric_price_type == 0){
+      value = fabric_price * row.find('.rqkdz').val();
+      
+      row.find('.consum_cost').val(value.toFixed(2));
+
+    }else if(fabric_price_type == 1){
+      value = fabric_price * row.find('.rqydz').val();
+      
+      row.find('.consum_cost').val(value.toFixed(2));
+    }
+
+    calculateTotalKgSum();
+    calculateTotalYdsSum();
+    calculateTotalConsumptionCost();
+
+  }
+
+  function calculateTotalKgSum() {
+
+    var sum = 0;
+    // iterate through each td based on class and add the values
+    $("#fabric_consumption tr td input.rqkdz").each(function() {
+
+      var value = $(this).val();
+      // add only if the value is number
+      if(!isNaN(value) && value.length != 0) {
+          sum += parseFloat(value);
+      }
+    });
+    
+    $('#total_kg_dz').val(sum.toFixed(4));    
+  };
+
+  function calculateTotalYdsSum(){
+
+    var sum = 0;
+    // iterate through each td based on class and add the values
+    $("#fabric_consumption tr td input.rqydz").each(function() {
+
+      var value = $(this).val();
+      // add only if the value is number
+      if(!isNaN(value) && value.length != 0) {
+          sum += parseFloat(value);
+      }
+    });
+    
+    $('#total_yd_dz').val(sum.toFixed(4));    
+  };
+
+  function calculateTotalConsumptionCost(){
+
+    var sum = 0;
+    // iterate through each td based on class and add the values
+    $("#fabric_consumption tr td input.consum_cost").each(function() {
+
+      var value = $(this).val();
+      // add only if the value is number
+      if(!isNaN(value) && value.length != 0) {
+          sum += parseFloat(value);
+      }
+    });
+    
+    $('#total_consum_cost').val(sum.toFixed(2));
+    $('#total_consum_cost_per_piece').val((sum.toFixed(2)/12).toFixed(2));
+
+    computeFinal();
+  };
+
+  $('#markup').on('keyup','input', function(){
+    computeFinal();
+  });
+
 }); //end of document.ready
