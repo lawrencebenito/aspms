@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DesignSize;
+use App\Product;
 use Illuminate\Http\Request;
 
-class DesignSizesController extends Controller
+class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,11 @@ class DesignSizesController extends Controller
      */
     public function index()
     {
-        //
+        
+        return view('products.index');
+            // ->with('type', $type)
+            // ->with('pattern', $pattern)
+            // ->with('fabric', $fabric);
     }
 
     /**
@@ -24,7 +28,7 @@ class DesignSizesController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -41,10 +45,10 @@ class DesignSizesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\DesignSize  $designSize
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(DesignSize $designSize)
+    public function show(Product $product)
     {
         //
     }
@@ -52,10 +56,10 @@ class DesignSizesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\DesignSize  $designSize
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(DesignSize $designSize)
+    public function edit(Product $product)
     {
         //
     }
@@ -64,10 +68,10 @@ class DesignSizesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DesignSize  $designSize
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DesignSize $designSize)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -75,10 +79,10 @@ class DesignSizesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\DesignSize  $designSize
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DesignSize $designSize)
+    public function destroy(Product $product)
     {
         //
     }

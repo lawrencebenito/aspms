@@ -28,16 +28,6 @@
                   <input type="text" class="form-control" placeholder="Garment's Name eg. T-shirt, Polo, Polo-Shirt, Pants, Shorts etc." name="name" required autocomplete="off">
                 </div>
                 <div class="col-sm-12 form-group">
-                  <label>Assign Segments</label>
-                  <select id="segments" name="segments[]" class="form-control select2" multiple="multiple" style="width: 100%;" required>
-                  </select>                      
-                </div>
-                <div class="col-sm-12 form-group">
-                  <label>Assign Operations</label>
-                  <select id="operations" name="operations[]" class="form-control select2" multiple="multiple" style="width: 100%;" required>
-                  </select>                      
-                </div>
-                <div class="col-sm-12 form-group">
                   <label>Assign Fabrics</label>
                   <select id="fabrics" name="fabrics[]" class="form-control select2" multiple="multiple" style="width: 100%;" required>
                   </select>                      
@@ -71,35 +61,7 @@
 <script>
 $(document).ready(function(){
   
-  //Initialize Select2 Elements
-  $('#segments.select2').select2({
-    placeholder: "Select Required Segments",
-    ajax: {
-      method: 'get',
-      url: '../list_segments',
-      dataType: 'json',
-      delay: 250,
-      processResults: function (data) {
-        return {
-          results: data
-        };
-      }
-    }
-  });
-  $('#operations.select2').select2({
-    placeholder: "Select Required Operations",
-    ajax: {
-      method: 'get',
-      url: '../list_operations',
-      dataType: 'json',
-      delay: 250,
-      processResults: function (data) {
-        return {
-          results: data
-        };
-      }
-    }
-  });$('#fabrics.select2').select2({
+  $('#fabrics.select2').select2({
     placeholder: "Select Allowed Fabrics",
     ajax: {
       method: 'get',
@@ -113,9 +75,6 @@ $(document).ready(function(){
       }
     }
   });
-
-  
-   
 
 }); //end of document.ready
 </script>

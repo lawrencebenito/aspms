@@ -204,13 +204,14 @@ $(document).ready(function() {
           { title: "Type", data:"type_name" },
           { title: "Supplier", data:"supplier_name" },
           { title: "Ref #", data:"reference_num" },
-          { title: "Fabrication", data:"fabrication" },
+          { title: "GSM", data:"gsm" },
+          { title: "Width", data:"width" },
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
         $(nRow).attr('id', aData['id']);
       },
-      "order": [[2,"desc"]],
+      "order": [[2,"asc"]],
       "columnDefs": [
         {
           defaultContent: btn_view + btn_edit + btn_delete,

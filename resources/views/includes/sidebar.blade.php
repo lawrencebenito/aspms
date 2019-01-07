@@ -15,7 +15,8 @@
         'clients','workers',
         'fabrics','fabric_types','fabric_patterns','fabric_prices',
         'garments','segments','operations',
-        'accessories','accessory_types'
+        'accessories','accessory_types',
+        'designs','design_types'
         ]) 
       }}">
         <a href="#">
@@ -43,21 +44,26 @@
             <a href="{{ route('accessories.index') }}">
             <i class="ion ion-ios-pricetags"></i> <span> Accessories </span></a>
           </li>
-          <li>
-            <a href="{{ url('/operations_and_status') }}">
-            <i class="ion ion-android-star"></i> <span> Design </span></a>
+          <li class="{{ Helper::is_active(['designs','design_types']) }}">
+            <a href="{{ route('designs.index') }}">
+            <i class="ion ion-android-star"></i> <span> Designs </span></a>
           </li>
         </ul>
       </li>
       <!-- Sales -->
-      <li class="treeview {{ Helper::is_active(['products','quotations','orders']) }}">
+      <li class="treeview {{ Helper::is_active([
+        'products',
+        'quotations',
+        'orders'
+        ])
+      }}">
         <a href="#">
           <i class="fa fa-line-chart"></i> <span>Sales</span>
           <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
         </a>
         <ul class="treeview-menu">
-          <li> 
-            <a href="{{ url('/products') }}">
+          <li class="{{ Helper::is_active('products') }}"> 
+            <a href="{{ route('products.index') }}">
             <i class="ion ion-tshirt"></i> <span>Products</span></a>
           </li>
           <li class="{{ Helper::is_active('quotations') }}">

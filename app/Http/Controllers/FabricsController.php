@@ -60,7 +60,7 @@ class FabricsController extends Controller
         $fabric->gsm = $request->get('gsm');
         $fabric->width = $request->get('width');
         
-        $products = DB::transaction(function()  use ($request, $fabric) {
+        DB::transaction(function()  use ($request, $fabric) {
                 
             $fabric->save();
             $fabric_id = $fabric->id;
@@ -177,17 +177,16 @@ class FabricsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function get_fabric_list(Request $request)
+    public function list_fabrics(Request $request)
     {
-        if ($request->has('q')) {
-            $q = $request->input('q');
-
-            $fabric = \App\Fabric::select('id','name AS text')
-                        ->where('name', 'like', '%' .$q. '%')
-                        ->get();
-        }else{
-            $fabric = \App\Fabric::select('id','name AS text')->get();
-        }
+        $fabric = Fabric::join('fabric_type', 'fabric_type.id', '=', 'fabric.type')
+                ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
+                ->join('fabric_price', 'fabric_price.fabric', '=', 'fabric.id')
+                ->select('fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name',
+                'unit_price',
+                'measurement_type',
+                'date_effective')
+                ->get();
 
         return response()->json($fabric);
     }

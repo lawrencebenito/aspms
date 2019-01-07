@@ -6,7 +6,6 @@ use DB;
 use App\Garment;
 use App\Segment;
 use App\Operation;
-use App\GarmentSegment;
 use App\GarmentOperation;
 use App\GarmentFabric;
 
@@ -75,21 +74,7 @@ class GarmentsController extends Controller
             $segments = $request->get('segments');
             $operations = $request->get('operations');
             $fabrics = $request->get('fabrics');
-            
-            foreach ($segments as $segment) {
-                $obj = new GarmentSegment;
-                $obj->garment = $id;
-                $obj->segment = $segment;
-                $obj->save();
-            }
-            
-            foreach ($operations as $operation) {
-                $obj = new GarmentOperation;
-                $obj->garment = $id;
-                $obj->operation = $operation;
-                $obj->save();
-            }
-            
+                        
             foreach ($fabrics as $fabric) {
                 $obj = new GarmentFabric;
                 $obj->garment = $id;
@@ -113,16 +98,6 @@ class GarmentsController extends Controller
     {
         $id = $garment->id;
 
-        $segment_list = Garment::leftjoin('garment_segment', 'garment.id', '=', 'garment_segment.garment')
-                            ->join('segment', 'segment.id', '=', 'garment_segment.segment')
-                            ->select('segment.name')
-                            ->where('garment.id', $id)
-                            ->get();
-        $operation_list = Garment::leftjoin('garment_operation', 'garment.id', '=', 'garment_operation.garment')
-                            ->join('operation', 'operation.id', '=', 'garment_operation.operation')
-                            ->select('operation.name')
-                            ->where('garment.id', $id)
-                            ->get();
         $fabric_list = Garment::leftjoin('garment_fabric', 'garment.id', '=', 'garment_fabric.garment')
                             ->join('fabric_type', 'fabric_type.id', '=', 'garment_fabric.fabric')
                             ->select('fabric_type.name')
@@ -131,8 +106,6 @@ class GarmentsController extends Controller
         
         return view('garments.show')
                 ->with('garment', $garment)
-                ->with('segment_list', $segment_list)
-                ->with('operation_list', $operation_list)
                 ->with('fabric_list', $fabric_list);
     }
 
