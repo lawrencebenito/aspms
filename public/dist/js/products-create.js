@@ -313,3 +313,34 @@ $(document).ready(function(){
   });
 
 }); //end of document.ready
+
+/**
+ * This function must be outside the document.ready to be called by other external js files
+ */
+function computeFinal(){
+  $('#final_fabric').val( $('#total_consum_cost_per_piece').val());
+  $('#final_accessory').val( $('#total_acc_pc').val() );
+  $('#final_design').val( $('#total_design_pc').val() );
+  $('#final_operation').val( $('#total_operation_cost').val());
+  
+  
+  val1 = parseFloat($('#final_fabric').val());
+  val2 = parseFloat($('#final_accessory').val());
+  val3 = parseFloat($('#final_design').val());
+  val4 = parseFloat($('#final_operation').val());
+
+  
+  /* parseFloat is needed to make sure the variable don't treat val() as strings */
+  total = parseFloat(val1 + val2 + val3 + val4);
+  
+  $('#final_product').val(total.toFixed(2));
+
+  markup = total * ($('#markup').val() / 100);
+  total_with_markup = (total + markup);
+  // console.log("total: " +  total);
+  // console.log("markup: " + markup);
+  // console.log("with markup: " + total_with_markup);
+  
+  $('#final_cost').val(total_with_markup.toFixed(2));
+
+}

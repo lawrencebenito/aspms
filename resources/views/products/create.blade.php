@@ -434,8 +434,8 @@
               <input id="markup" type="text" class="form-control" placeholder="Any description for this product" name="mark_up" value="20" autocomplete="off">
             </div>
             <div class="col-sm-12 form-group">
-              <label>Final Cost</label>
-              <input id="final_cost" class="form-control" style="width: 100%;" value="0" readonly>
+              <label>Final Total Product Cost (with markup)</label>
+              <input id="final_cost" class="form-control" style="width: 100%; color: green; font-weight: bold" value="0" readonly>
             </div>
           </div>
           <!-- /.col -->
@@ -471,26 +471,4 @@
 <script src="{{ asset("dist/js/products-create-design.js")}}"></script>
 <script src="{{ asset("dist/js/products-create-operation.js")}}"></script>
 
-<script>
-function computeFinal(){
-    $('#final_fabric').val( $('#total_consum_cost_per_piece').val());
-    $('#final_accessory').val( $('#total_acc_pc').val() );
-    $('#final_design').val( $('#total_design_pc').val() );
-    $('#final_operation').val( $('#total_operation_cost').val());
-    
-    val1 = $('#final_fabric').val();
-    val2 = $('#final_accessory').val();
-    val3 = $('#final_design').val();
-    val4 = $('#final_operation').val();
-    console.log(val1);
-    final = (val1 + val2 + val3 + val4);
-    console.log(final);
-    $('#final_product').val(final);
-
-    markup = $('#markup').val() / 100;
-    with_markup = (final * markup) + final;
-    $('#final_cost').val(with_markup);
-
-  }
-</script>
 @endpush
