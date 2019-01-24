@@ -11,7 +11,7 @@ $(document).ready(function(){
   var btn_row_add_design = '<input class="btn btn-success btn-sm row_add_design" type="button" value="+" data-toggle="tooltip" title="Add row below.">';
 
   //input elements
-  var td_quantity = '<td><input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity" required autocomplete="off" min=1 max=100></td>';
+  var td_quantity = '<td><input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity" autocomplete="off" min=1 max=100></td>';
 
   //readonly textfields
   var td_design_display = '<input type="text" class="form-control design_display" value="Click the icon to choose a design" readonly style="width: 300px">';
@@ -22,7 +22,7 @@ $(document).ready(function(){
   
   //hidden forms
   var td_measurement_type = '<input type="hidden" class="form-control measurement_type" readonly>';
-  var td_design = '<input type="hidden" class="form-control design" name="design[]" required>';
+  var td_design = '<input type="hidden" class="form-control design" name="design[]">';
 
   //button groups (wraps buttons)
   var opt1 = `<td>${btn_row_add_design}</td>`;

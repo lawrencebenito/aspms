@@ -96,7 +96,7 @@
             </div>
             <div class="col-sm-12 form-group">
               <label>Client Name</label>
-              <select id="client" class="form-control select2" style="width: 100%;" required></select>
+              <select id="client" class="form-control select2" style="width: 100%;" name="client" required></select>
             </div>
             <div class="col-sm-12 form-group">
               <label>Product Description</label>
@@ -107,7 +107,7 @@
           <div class="col-sm-6">
             <div class="col-sm-12 form-group">
               <label>Garment Type</label>
-              <select id="garment" class="form-control select2" style="width: 100%;" required></select>
+              <select id="garment" class="form-control select2" style="width: 100%;" name="garment" required></select>
             </div>
             <div class="col-sm-12 form-group">
               <label>Size Range</label>
@@ -244,6 +244,51 @@
 </div>
 <!-- /.row-->
 
+<div class="row">
+  <!-- FOR OPERATION COSTING -->
+  <div class="col-lg-12">
+    <div class="box box-success box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title">Operation Costing</h3>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <div class="table-responsive">
+              <table class="table table-bordered" style="white-space:nowrap; width:100%; max-width:100%;">
+                <thead bgcolor="#f5f5f5">
+                  <th> </th>
+                  <th>Operation</th>
+                  <th>Rate</th>
+                </thead>
+                <tbody id="table_operation">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="col-sm-12 form-group">
+              <label>Total Operation Cost /Pc</label>
+              <input id="total_operation_cost" class="form-control" value="0" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-footer -->
+    </div>
+    <!-- /.box box-success -->
+  </div>
+  <!-- /.col-->
+</div>
+<!-- /.row-->
+
 <!-- FOR ACCESSORIES COSTING -->
 <div class="row">
   <div class="col-lg-12">
@@ -302,7 +347,7 @@
 
 <!-- FOR DESIGN -->
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-12">
     <div class="box box-success box-solid">
       <div class="box-header with-border">
         <h3 class="box-title">Design Costing</h3>
@@ -331,59 +376,16 @@
       <!-- /.box-body -->
       <div class="box-footer">
         <div class="row">
-          <div class="col-sm-5">
+          <div class="col-sm-6">
             <div class="col-sm-12 form-group">
               <label>Total Design Cost /Pc</label>
               <input id="total_design_pc" class="form-control" style="width: 100%;" value="0" readonly>
             </div>
           </div>
-          <div class="col-sm-5">
+          <div class="col-sm-6">
             <div class="col-sm-12 form-group">
               <label>Total Design Cost /Dz</label>
               <input id="total_design_dz" class="form-control" style="width: 100%;" value="0" readonly>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- /.box-footer -->
-    </div>
-    <!-- /.box box-success -->
-  </div>
-  <!-- /.col-->
-
-
-  <!-- FOR OPERATION COSTING -->
-  <div class="col-lg-4">
-    <div class="box box-success box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title">Operation Costing</h3>
-      </div>
-      <div class="box-body">
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <div class="table-responsive">
-              <table class="table table-bordered" style="white-space:nowrap; width:100%; max-width:100%;">
-                <thead bgcolor="#f5f5f5">
-                  <th> </th>
-                  <th>Operation</th>
-                  <th>Rate</th>
-                </thead>
-                <tbody id="table_operation">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.box-body -->
-      <div class="box-footer">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="col-sm-12 form-group">
-              <label>Total Operation Cost /Pc</label>
-              <input id="total_operation_cost" class="form-control" style="width: 100%;" value="0" readonly>
             </div>
           </div>
         </div>
@@ -431,11 +433,11 @@
             </div>
             <div class="col-sm-12 form-group">
               <label>Price Markup (%)</label>
-              <input id="markup" type="text" class="form-control" placeholder="Any description for this product" name="mark_up" value="20" autocomplete="off">
+              <input id="markup" type="text" class="form-control" placeholder="Any description for this product" name="markup" value="20" autocomplete="off">
             </div>
             <div class="col-sm-12 form-group">
               <label>Final Total Product Cost (with markup)</label>
-              <input id="final_cost" class="form-control" style="width: 100%; color: green; font-weight: bold" value="0" readonly>
+              <input id="final_cost" class="form-control" style="width: 100%; color: green; font-weight: bold" name="total_price" value="0" readonly>
             </div>
           </div>
           <!-- /.col -->

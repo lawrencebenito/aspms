@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Product;
+use App\Product_Fabric;
+use App\Product_Operation;
 use Illuminate\Http\Request;
+
 
 class ProductsController extends Controller
 {
@@ -14,11 +18,16 @@ class ProductsController extends Controller
      */
     public function index()
     {
+        $product = Product::join('client', 'client.id', '=', 'product.client')
+                        ->join('garment','garment.id', '=','product.garment')
+                        ->select('product.*', 'garment.name',
+                                DB::raw("
+                                    CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.')), ' of ', client.company_name) AS client_name
+                                ")
+                        )
+                        ->get();
         
-        return view('products.index');
-            // ->with('type', $type)
-            // ->with('pattern', $pattern)
-            // ->with('fabric', $fabric);
+        return view('products.index')->with('product', $product);
     }
 
     /**
@@ -39,7 +48,98 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try
+        {
+            DB::transaction(function () use ($request) {
+                
+                /** ============================== PRODUCT HEADER =============================== */
+                $product = new Product;
+                
+                $product->date_created = $request->get('date_created');
+                $product->garment = $request->get('garment');
+                $product->client = $request->get('client');
+                $product->description = $request->get('description');
+                $product->min_range = $request->get('min_range');
+                $product->max_range = $request->get('max_range');
+                $product->consumption_size = $request->get('consumption_size');
+                $product->markup = $request->get('markup');
+                $product->total_price = $request->get('total_price');
+    
+                $product->save();
+                $id = $product->id;
+
+                $fixed_chars = "SN";
+                $year = date("Y");
+                
+                $product->style_number = sprintf("%s%s%04d",$fixed_chars, $year, $id);
+                $product->update();
+
+                /** ============================== PRODUCT FABRIC =============================== */
+                
+                //Populates the arrayed "get requests" to variable arrays
+                $segments = $request->get('segment');
+                $fabrics = $request->get('fabric');
+                $lengths = $request->get('length');
+                $widths = $request->get('width');
+                $pairs = $request->get('pair');
+                $allowances = $request->get('allowance');
+
+                //JUST FOR PRINTING AND DEBUGGING
+                // foreach ($segments as $key => $value) {
+                //     echo "Segment Order no. $key: $value | ";
+                //     echo "Fabric Order no. $key: $fabrics[$key] | ";
+                //     echo "Length: $lengths[$key] , Width: $widths[$key]  | ";
+                //     echo "Pair?: $pairs[$key], Allowance: $allowances[$key] <br/>";
+                // }
+
+                foreach ($segments as $key => $value) {
+                    $fabric = new Product_Fabric;
+                    
+                    $fabric->product = $id;
+                    $fabric->segment = $segments[$key];
+                    $fabric->fabric = $fabrics[$key];
+                    $fabric->length = $lengths[$key];
+                    $fabric->width = $widths[$key];
+                    $fabric->is_pair = $pairs[$key];
+                    $fabric->allowance = $allowances[$key];
+
+                    $fabric->save();
+                }
+                
+                /** ============================== PRODUCT OPERATIONS =============================== */
+
+                //Populates the arrayed "get requests" to variable arrays
+                $operations = $request->get('operation');
+                $rates = $request->get('rate');
+                
+                foreach ($operations as $key => $value) {
+                    echo "Operation Order no. $key: $operations[$key] | ";
+                    echo "Rate Order no. $key: $rates[$key] <br /> ";
+                }
+
+                foreach ($operations as $key => $value) {
+                    $operation = new Product_Operation;
+                    
+                    $operation->product = $id;
+                    $operation->operation = $operations[$key];
+                    $operation->rate = $rates[$key];
+
+                    $operation->save();
+                }
+            });
+        
+            $new = true;
+            return redirect('products')->with('new', $new);
+        }
+        catch( PDOException $e )
+        {
+            return $e;
+        }
+        catch( Exception $e )
+        {
+            return $e;
+        }
+
     }
 
     /**

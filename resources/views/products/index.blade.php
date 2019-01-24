@@ -19,7 +19,7 @@
 
 @section('content')
 
-@if (session()->has('new_product'))
+@if (session()->has('new'))
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
@@ -77,17 +77,32 @@ $(document).ready(function() {
       data: dataSet,
       columns: [
           { title: "Style Number", data:"style_number" }, 
-          { title: "Garment", data:"garment" },
-          { title: "Description", data:"description" },
-          { title: "Client", data:"client" },
-          { title: "Fabrication", data:"consumption_size" },
-          { title: "Ref #", data:"total_price" },
+          { title: "Garment Type", data:"name" },
+          { title: "Client Name", data:"client_name" },
+          { 
+            title: "Consumption Size", data:"consumption_size",
+            render: function(data){
+              if(data === 0){ return "Free Size" }
+              else if(data === 1){ return "XXS" }
+              else if(data === 2){ return "Extra Small" }
+              else if(data === 3){ return "Small" }
+              else if(data === 4){ return "Medium" }
+              else if(data === 5){ return "Large" }
+              else if(data === 6){ return "Extra Large" }
+              else if(data === 7){ return "XXL" }
+              else if(data === 8){ return "XXXL" }
+              else{
+                return "Error. Check index.blade.php"
+              }
+            }
+          },
+          { title: "Product Cost", data:"total_price", render: function(data){ return "Php " + data }},
           { title: " "}
       ],
       "fnCreatedRow": function( nRow, aData, iDataIndex ) {
         $(nRow).attr('id', aData['id']);
       },
-      "order": [[2,"desc"]],
+      "order": [[1,"desc"]],
       "columnDefs": [
         {
           defaultContent: btn_view + btn_edit + btn_delete,

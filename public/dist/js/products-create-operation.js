@@ -20,14 +20,14 @@ $(document).ready(function(){
   /*
   * THIS SECTION IF FOR MANIPULATING THE TABLE
   */ 
- var td_operation = '<td><select class="form-control operation select2" name="segment[]" style="width: 150px; font-weight: bold;" required></select></td>';
+ var td_operation = '<td><select class="form-control operation select2" name="operation[]" style="width: 350px; font-weight: bold;" required></select></td>';
 
   //buttons
   var btn_row_delete = '<input class="btn btn-danger btn-sm row_delete" type="button" value="-" data-toggle="tooltip" title="Delete this row." />';
   var btn_row_add_operation = '<input class="btn btn-success btn-sm row_add_operation" type="button" value="+" data-toggle="tooltip" title="Add row below.">';
 
   //input elements
-  var td_rate = '<td><input type="number" class="form-control rate" name="rate[]" placeholder="Rate" required autocomplete="off" min=0 max=100></td>';
+  var td_rate = '<td><input type="number" class="form-control rate" name="rate[]" placeholder="Rate" required autocomplete="off" step="any" max=20></td>';
 
   //readonly textfields
   var td_operation_display = '<input type="text" class="form-control operation_display" value="Click the icon to choose a operation" readonly style="width: 300px">';
@@ -40,8 +40,6 @@ $(document).ready(function(){
   //button groups (wraps buttons)
   var opt1 = `<td>${btn_row_add_operation}</td>`;
   var opt2 = `<td>${btn_row_delete}</td>`;
-  var opt3 = `<td>${td_operation_display} ${td_operation}</td>`;
-  var opt4 = `<td>${td_measurement_type_display} ${td_measurement_type}</td>`;
 
   /*
   * Initial Rows
