@@ -51,7 +51,7 @@ $(document).ready(function(){
   //input elements
   var td_length = '<td><input type="number" class="form-control length" name="length[]" placeholder="Length" required autocomplete="off" min=1 max=1000></td>';
   var td_width = '<td><input type="number" class="form-control width" name="width[]" placeholder="Width" required autocomplete="off" min=1 max=1000></td>';
-  var td_pair = '<td style="text-align: center;"><input type="checkbox" class="pair"></td>';
+  var td_pair = '<td style="text-align: center;"><input type="checkbox" class="pair"> <input type="hidden" class="is_pair" name="pair[]" value="0"></td>';
   var td_allowance = '<td><input type="number" class="form-control allowance" name="allowance[]" placeholder="Percentage" required autocomplete="off" value="5" min=1 max=100></td>';
 
   //readonly textfields
@@ -123,7 +123,6 @@ $(document).ready(function(){
       </tr>`
     );
     $('.segment.select2').select2(initSegmentSelect());
-
   });
 
   $('tbody#fabric_consumption').on('click','.row_delete', function () {
@@ -215,6 +214,11 @@ $(document).ready(function(){
   $('tbody#fabric_consumption').on('change','.pair', function(){
     row = $(this).closest('tr');
     compute(row);
+    if($(this).is(':checked')) {
+      row.find('.is_pair').val("1");
+    } else {
+      row.find('.is_pair').val("0");
+    }
   });
 
   function compute(row){
