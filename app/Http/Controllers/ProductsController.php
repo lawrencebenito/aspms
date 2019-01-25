@@ -145,8 +145,6 @@ class ProductsController extends Controller
                 /** ============================== PRODUCT DESIGN =============================== */
 
                 //Populates the arrayed "get requests" to variable arrays
-                # id, product, design, actual size, location, sample_image
-
                 $designs = $request->get('design');
                 $actual_sizes = $request->get('actual_size');
                 $locations = $request->get('location');
@@ -188,7 +186,63 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $id = $product->id;
+        $product = Product::join('client', 'client.id', '=', 'product.client')
+            ->join('garment','garment.id', '=', 'product.garment')
+            ->select('product.*','garment.name AS garment_type',
+                DB::raw("
+                    CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.')), ' of ', client.company_name) AS client_name
+                "))
+            ->where('product.id', '=', $id)
+            ->get();
+            
+        function checkSize($data)
+        {
+            if($data === 0){ return "Free Size"; }
+            else if($data === 1){ return "XXS"; }
+            else if($data === 2){ return "Extra Small"; }
+            else if($data === 3){ return "Small"; }
+            else if($data === 4){ return "Medium"; }
+            else if($data === 5){ return "Large"; }
+            else if($data === 6){ return "Extra Large"; }
+            else if($data === 7){ return "XXL"; }
+            else if($data === 8){ return "XXXL"; }
+            else{
+                return "Error. Check index.blade.php";
+            }
+        }
+
+        $product[0]->min_range = checkSize($product[0]->min_range);
+        $product[0]->max_range = checkSize($product[0]->max_range);
+        $product[0]->consumption_size = checkSize($product[0]->consumption_size);
+        $product[0]->total_price = number_format((float)$product[0]->total_price, 2, '.', '');
+
+        $fabrics = Product_Fabric::join('segment', 'segment.id', '=', 'product_fabric.segment')
+            ->join('fabric','fabric.id', '=', 'product_fabric.fabric')
+            ->join('fabric_type', 'fabric_type.id', '=', 'fabric.type')
+            ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
+            ->select('segment.name AS segment_name', 'fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name')
+            ->where('product_fabric.product', '=', $id)
+            ->get();
+
+        $accessories = Product_Accessory::join('accessory', 'accessory.id', '=', 'product_accessory.accessory')
+            ->join('accessory_type', 'accessory_type.id', '=', 'accessory.accessory_type')
+            ->select('product_accessory.*','accessory.*','accessory_type.name AS type_name')
+            ->where('product_accessory.product', '=', $id)
+            ->get();
+        
+        $designs = Product_Design::join('design', 'design.id', '=', 'product_design.design')
+            ->join('design_type', 'design_type.id', '=', 'design.design_type')
+            ->select('product_design.*','design.*','design_type.name AS type_name')
+            ->where('product_design.product', '=', $id)
+            ->get();
+
+        return view('products.show')
+                ->with('product', $product[0])
+                ->with('fabrics', $fabrics)
+                ->with('accessories', $accessories)
+                ->with('designs', $designs)
+                ;
     }
 
     /**
@@ -223,5 +277,5 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         //
-    }
+    }    
 }
