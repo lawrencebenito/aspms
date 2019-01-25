@@ -110,6 +110,7 @@ $(document).ready(function(){
     var display_accessory_text = `${modal_data.color} ${modal_data.type_name} - ${modal_data.reference_num}`;
 
     var row = $('#table_accessories tr').eq(row_index);
+    $(row).find('td input.accessory').val(modal_data.id);
     $(row).find('td input.accessory_display').val(display_accessory_text);
     $(row).find('td input.accessory_price').val(modal_data.unit_price);
 

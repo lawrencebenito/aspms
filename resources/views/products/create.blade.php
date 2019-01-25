@@ -361,6 +361,8 @@
                   <th> </th>
                   <th>Design</th>
                   <th> </th>
+                  <th>Actual Size </th>
+                  <th>Location </th>
                   <th>Sample Image</th>
                   <th style="background-color: #fffcd3">Cost</th>
                 </thead>

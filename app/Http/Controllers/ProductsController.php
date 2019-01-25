@@ -6,6 +6,8 @@ use DB;
 use App\Product;
 use App\Product_Fabric;
 use App\Product_Operation;
+use App\Product_Accessory;
+use App\Product_Design;
 use Illuminate\Http\Request;
 
 
@@ -111,11 +113,6 @@ class ProductsController extends Controller
                 //Populates the arrayed "get requests" to variable arrays
                 $operations = $request->get('operation');
                 $rates = $request->get('rate');
-                
-                foreach ($operations as $key => $value) {
-                    echo "Operation Order no. $key: $operations[$key] | ";
-                    echo "Rate Order no. $key: $rates[$key] <br /> ";
-                }
 
                 foreach ($operations as $key => $value) {
                     $operation = new Product_Operation;
@@ -126,7 +123,48 @@ class ProductsController extends Controller
 
                     $operation->save();
                 }
-            });
+
+                /** ============================== PRODUCT ACCESSORY =============================== */
+
+                //Populates the arrayed "get requests" to variable arrays
+                $accessories = $request->get('accessory');
+                $quantities = $request->get('quantity');
+
+                if ($accessories[0] !== null) {
+                    foreach ($accessories as $key => $value) {
+                        $accessory = new Product_Accessory;
+                        
+                        $accessory->product = $id;
+                        $accessory->accessory = $accessories[$key];
+                        $accessory->quantity = $quantities[$key];
+
+                        $accessory->save();
+                    }
+                }//end if 
+
+                /** ============================== PRODUCT DESIGN =============================== */
+
+                //Populates the arrayed "get requests" to variable arrays
+                # id, product, design, actual size, location, sample_image
+
+                $designs = $request->get('design');
+                $actual_sizes = $request->get('actual_size');
+                $locations = $request->get('location');
+                
+                if ($designs[0] !== null) {
+                    foreach ($designs as $key => $value) {
+                        $design = new Product_Design;
+                        
+                        $design->product = $id;
+                        $design->design = $designs[$key];
+                        $design->actual_size = $actual_sizes[$key];
+                        $design->location = $locations[$key];
+    
+                        $design->save();
+                    }
+                }//end if
+
+            });//end transactions
         
             $new = true;
             return redirect('products')->with('new', $new);
