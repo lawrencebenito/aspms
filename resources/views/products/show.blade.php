@@ -66,12 +66,14 @@
             <li> {{$fabric->segment_name}} - {{$fabric->color}} {{$fabric->pattern_name}} {{$fabric->type_name}} ({{$fabric->reference_num}})</li>
             @endforeach
           </ul>
+          @if(count($accessories)>0)
           <h5 style="background: #f5f5f5; font-weight:bold">Accessories</h5>
             <ul>
               @foreach($accessories as $accessory)
               <li> {{$accessory->color}} {{$accessory->type_name}}</li>
               @endforeach
             </ul>
+          @endif
           @if(count($designs)>0)
           <h5 style="background: #f5f5f5; font-weight:bold">Design</h5>
             <ul>

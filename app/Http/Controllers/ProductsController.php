@@ -24,7 +24,17 @@ class ProductsController extends Controller
                         ->join('garment','garment.id', '=','product.garment')
                         ->select('product.*', 'garment.name',
                                 DB::raw("
-                                    CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.')), ' of ', client.company_name) AS client_name
+                                CONCAT(client.last_name,
+                                ', ',
+                                client.first_name,
+                                ' ',
+                                IF(ISNULL(client.middle_name),
+                                    '',
+                                    CONCAT(LEFT(client.middle_name, 1), '.')),
+                                IF(ISNULL(client.company_name),
+                                    '',
+                                    CONCAT(' of ', client.company_name))
+                                ) AS client_name
                                 ")
                         )
                         ->get();
@@ -190,9 +200,20 @@ class ProductsController extends Controller
         $product = Product::join('client', 'client.id', '=', 'product.client')
             ->join('garment','garment.id', '=', 'product.garment')
             ->select('product.*','garment.name AS garment_type',
-                DB::raw("
-                    CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.')), ' of ', client.company_name) AS client_name
-                "))
+                        DB::raw("
+                        CONCAT(client.last_name,
+                        ', ',
+                        client.first_name,
+                        ' ',
+                        IF(ISNULL(client.middle_name),
+                            '',
+                            CONCAT(LEFT(client.middle_name, 1), '.')),
+                        IF(ISNULL(client.company_name),
+                            '',
+                            CONCAT(' of ', client.company_name))
+                        ) AS client_name
+                        ")
+                    )
             ->where('product.id', '=', $id)
             ->get();
             
