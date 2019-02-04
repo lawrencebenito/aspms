@@ -277,5 +277,44 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         //
-    }    
+    }
+
+    /**
+     * Get request with possible query
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_products(Request $request)
+    {
+        $client_id = $request->get('id');
+        
+        if ($request->has('q') && (strlen($request->input('q')) > 0)) {
+            $q = $request->input('q');
+
+            $product = Product::join('garment','garment.id', '=','product.garment')
+                        ->select('product.id',
+                                DB::raw("
+                                    CONCAT('(',product.style_number,') ',garment.name) AS text
+                                ")
+                        )
+                        ->where('product.client', '=', $client_id)
+                        ->where(function($query) use ($q){
+                            $query->where('product.style_number', 'like', "%$q%");
+                            $query->orWhere('garment.name', 'like', "%$q%");
+                        })
+                        ->get();
+        }else{
+            $product = Product::join('garment','garment.id', '=','product.garment')
+                        ->select('product.id',
+                                DB::raw("
+                                    CONCAT('(',product.style_number,') ',garment.name) AS text
+                                ")
+                        )
+                        ->where('product.client', '=', $client_id)
+                        ->get();
+        }
+        
+        return response()->json($product);
+    }
 }
