@@ -47,6 +47,22 @@ $(document).ready(function(){
 
         $('#address').text(response[0].address);
         $('#address_group').fadeIn(700);
+
+        $('.prod_start').each(function(){
+          $(this).nextUntil('tr.prod_start').fadeOut('slow', function() {
+            //console.log(this);
+            $(this).remove();
+          });
+          $(this).fadeOut('slow', function() {
+            $(this).remove();
+          });
+        });
+
+        $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_space}</tr>`);
+        $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
+        $('tbody').append(`${tr_prod_end}`);  
+        $('.product.select2').select2(initProductSelect()).on('select2:select', SelectProduct());
+        
       },
       error: function(xhr) {
         alert(xhr.responseText);
@@ -57,14 +73,14 @@ $(document).ready(function(){
   /*
   * THIS SECTION IF FOR MANIPULATING THE TABLE
   */ 
-  var td_product = '<td><select class="form-control product select2" name="product[]"style="width: 450px; font-weight: bold;" required></select></td>';
-   var td_delete = '<input class="btn btn-danger btn-sm row_delete" type="button" value="-" data-toggle="tooltip" title="Delete this row." />';
+  var td_product = '<td><select class="form-control product select2" name="product[]"style="width: 390px; font-weight: bold;" required></select></td>';
+  var td_delete = '<input class="btn btn-danger btn-sm row_delete" type="button" value="-" data-toggle="tooltip" title="Delete this row." />';
   var td_delete_product = '<td><input class="btn btn-danger btn-sm delete_product" type="button" data-toggle="tooltip" title="Delete Product Group" value="-" /></td>';
   var opt1 = `<td>${td_delete}</td>`;
-  var td_price = '<td><input type="number" class="form-control price" placeholder="Enter unit price" name="unit_price[]" required autocomplete="off" min=1 max=10000></td>';
+  var td_price = '<td><input type="text" class="form-control price" autocomplete="off" readonly value="Php 0.00"></td>';
   var td_space = '<td></td>';
   var tr_prod_end= '<tr class="prod_end" bgcolor="#f5f5f5"><td colspan="3"></td></tr>';
-  var td_desc = '<td colspan="2"><textarea rows="3" class="form-control" name="description[]" placeholder="(Optional) Enter product description here" maxlength="200" style="resize:none;"></textarea></td>';
+  var td_desc = '<td colspan="2"><textarea rows="10" class="form-control desc" name="description[]" placeholder="Product Description" style="resize:none; display:none;" readonly></textarea></td>';
 
   function initProductSelect() {
     return {
@@ -83,20 +99,42 @@ $(document).ready(function(){
     }//end of return
   }//end of function
 
+  function SelectProduct(){
+    return function (event) {
+      var product = event.params.data;
+      row = $(this).closest('.prod_start');
+      
+      $.ajax({
+        url: "../get_product_info",
+        type: "get",
+        data: { 
+          id: product.id
+        },
+        dataType: 'json',
+        success: function(response) {
+          $(row).find('input.price').hide().fadeIn(700).val(response.price);
+          $(row).next().find('textarea.desc').fadeIn(700).val(response.product_description);
+        },
+        error: function(xhr) {
+          alert(xhr.responseText + "Error! Please Reselect the Item.");
+        }
+      });
+    }
+  }
+
   /*
   * Initial Product
   */
   $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_space}</tr>`);
   $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
-  $('tbody').append(`${tr_prod_end}`);
-  
-  $('.product.select2').select2(initProductSelect());
+  $('tbody').append(`${tr_prod_end}`);  
+  $('.product.select2').select2(initProductSelect()).on('select2:select', SelectProduct());
   
   $('.row_add_product').click(function () {
     $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_delete_product}</tr>`);
     $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
     $('tbody').append(`${tr_prod_end}`);
-    $('.product.select2').select2(initProductSelect());
+    $('.product.select2').select2(initProductSelect()).on('select2:select', SelectProduct());
   });
 
   $('.row_add_desc').click(function () {
@@ -111,13 +149,11 @@ $(document).ready(function(){
     row = $(this).closest('.prod_start');
     
     $(row).nextUntil('tr.prod_start').fadeOut('slow', function() {
-      console.log(this);
+      //console.log(this);
       $(this).remove();
     });
     $(row).fadeOut('slow', function() {
       $(row).remove();
     });
-  })
-
-
+  })  
 }); //end of document.ready
