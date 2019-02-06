@@ -316,7 +316,7 @@ class ProductsController extends Controller
             $product = Product::join('garment','garment.id', '=','product.garment')
                         ->select('product.id',
                                 DB::raw("
-                                    CONCAT('(',product.style_number,') ',garment.name) AS text
+                                    CONCAT('(',product.style_number,') ',garment.name, ' - ', product.description) AS text
                                 ")
                         )
                         ->where('product.client', '=', $client_id)
@@ -329,7 +329,7 @@ class ProductsController extends Controller
             $product = Product::join('garment','garment.id', '=','product.garment')
                         ->select('product.id',
                                 DB::raw("
-                                    CONCAT('(',product.style_number,') ',garment.name) AS text
+                                    CONCAT('(',product.style_number,') ',garment.name, ' - ', product.description) AS text
                                 ")
                         )
                         ->where('product.client', '=', $client_id)
@@ -433,7 +433,7 @@ class ProductsController extends Controller
 
         //PHP Object to be converted to JSON
         $info = array("price"=>$price,
-                    "product_description"=>$prod_desc);
+                    "product_description"=>nl2br($prod_desc));
     
 
         return response()->json($info);

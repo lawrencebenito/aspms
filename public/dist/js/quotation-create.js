@@ -58,6 +58,10 @@ $(document).ready(function(){
           });
         });
 
+         /*
+          * Initial Product
+          */
+
         $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_space}</tr>`);
         $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
         $('tbody').append(`${tr_prod_end}`);  
@@ -77,10 +81,10 @@ $(document).ready(function(){
   var td_delete = '<input class="btn btn-danger btn-sm row_delete" type="button" value="-" data-toggle="tooltip" title="Delete this row." />';
   var td_delete_product = '<td><input class="btn btn-danger btn-sm delete_product" type="button" data-toggle="tooltip" title="Delete Product Group" value="-" /></td>';
   var opt1 = `<td>${td_delete}</td>`;
-  var td_price = '<td><input type="text" class="form-control price" autocomplete="off" readonly value="Php 0.00"></td>';
+  var td_price = '<td><input type="text" class="form-control price" name="price[]" autocomplete="off" readonly value="Php 0.00"></td>';
   var td_space = '<td></td>';
   var tr_prod_end= '<tr class="prod_end" bgcolor="#f5f5f5"><td colspan="3"></td></tr>';
-  var td_desc = '<td colspan="2"><textarea rows="10" class="form-control desc" name="description[]" placeholder="Product Description" style="resize:none; display:none;" readonly></textarea></td>';
+  var td_desc = '<td colspan="2"><textarea rows="10" class="form-control desc" name="description[]" style="resize:none; display:none; white-space: pre-wrap;" readonly></textarea></td>';
 
   function initProductSelect() {
     return {
@@ -113,7 +117,7 @@ $(document).ready(function(){
         dataType: 'json',
         success: function(response) {
           $(row).find('input.price').hide().fadeIn(700).val(response.price);
-          $(row).next().find('textarea.desc').fadeIn(700).val(response.product_description);
+          $(row).next().find('textarea.desc').fadeIn(700).html(response.product_description);
         },
         error: function(xhr) {
           alert(xhr.responseText + "Error! Please Reselect the Item.");
@@ -121,15 +125,7 @@ $(document).ready(function(){
       });
     }
   }
-
-  /*
-  * Initial Product
-  */
-  $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_space}</tr>`);
-  $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
-  $('tbody').append(`${tr_prod_end}`);  
-  $('.product.select2').select2(initProductSelect()).on('select2:select', SelectProduct());
-  
+    
   $('.row_add_product').click(function () {
     $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_delete_product}</tr>`);
     $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);

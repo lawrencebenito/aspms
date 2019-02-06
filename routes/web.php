@@ -103,3 +103,4 @@ Route::get('/accessories/{accessory}/delete', 'AccessoriesController@destroy');
 Route::get('/design_types/{design_type}/delete', 'DesignTypesController@destroy');
 Route::get('/design_sizes/{design_size}/delete', 'DesignTypesController@destroy');
 Route::get('/designs/{design}/delete', 'DesignsController@destroy');
+Route::get('/quotations/{quotation}/delete', 'QuotationsController@destroy');
