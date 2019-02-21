@@ -86,7 +86,12 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: btn_view + btn_edit + btn_delete,
+          defaultContent: "N/A",
+          "targets": 3
+        },
+        {
+
+          defaultContent: btn_view,
           sortable: false,
           "targets": -1
         }

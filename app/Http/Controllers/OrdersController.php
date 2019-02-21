@@ -77,17 +77,15 @@ class OrdersController extends Controller
     {
         try
         {
-            $client_name = $request->get('client_name');
+            DB::transaction(function()  use ($request) {
 
-            $order = new Order;
-            $order->date_ordered = $request->get('date_ordered');
-            $order->client = $request->get('client');
-            $order->po_number = $request->get('po_number');
-            $order->payment_terms = $request->get('payment_terms');
-            $order->remarks = $request->get('remarks');
-        
-            $products = DB::transaction(function()  use ($request, $order) {
-                
+                $order = new Order;
+                $order->date_ordered = $request->get('date_ordered');
+                $order->client = $request->get('client');
+                $order->po_number = $request->get('po_number');
+                $order->payment_terms = $request->get('payment_terms');
+                $order->remarks = $request->get('remarks');
+                            
                 $order->save();
                 $order_id = $order->id;
                 $products = $request->get('ordered_products');
@@ -101,8 +99,11 @@ class OrdersController extends Controller
                     $order_product->quantity = $request->get("quantities")[$key];
                     $order_product->save();
                 }
+
+                echo $order;
             }); //end of transaction
 
+            $client_name = $request->get('client_name');
             $new_order = "for $client_name on $order->date_ordered";
             return redirect('orders')->with('new_order', $new_order);
         }
@@ -135,18 +136,41 @@ class OrdersController extends Controller
             ->where('order.id', '=', $id)
             ->get();
 
-        $order_product = Order_Product::join('order', 'order.id', '=', 'order_product.order')
+
+
+        $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
             ->join('product', 'product.id', '=', 'order_product.product')
-            ->join('garment', 'garment.id', '=', 'product.garment')
-            ->join('fabric', 'fabric.id', '=', 'product.fabric')
-            ->select('order_product.quantity','order_product.size','product.unit_price',
-                    DB::raw("
-                        CONCAT(garment.name,' (',fabric.name,') ',IF( ISNULL(product.description),'', product.description)) AS description
-                    "))
+            ->join('client', 'client.id', '=', 'product.client')
+            ->join('garment','garment.id', '=', 'product.garment')
+            ->select('order_product.*','product.*','garment.name AS garment_type',
+                        DB::raw("
+                        CONCAT(client.last_name,
+                        ', ',
+                        client.first_name,
+                        ' ',
+                        IF(ISNULL(client.middle_name),
+                            '',
+                            CONCAT(LEFT(client.middle_name, 1), '.')),
+                        IF(ISNULL(client.company_name),
+                            '',
+                            CONCAT(' of ', client.company_name))
+                        ) AS client_name
+                        "),
+                        DB::raw("
+                        CONCAT('(',
+                        product.style_number,
+                        ') ',
+                        garment.name,
+                        IF(ISNULL(product.description),
+                            '',
+                            CONCAT(' - ', product.description)
+                        )) AS product_temp_name
+                        ")
+                    )
             ->where('order.id', '=', $id)
             ->get();
-            
-        return view('orders.show')->with('order', $order[0])->with('order_product',$order_product);
+
+        return view('orders.show')->with('order', $order[0])->with('order_products',$order_products);
     }
 
     /**
@@ -202,21 +226,52 @@ class OrdersController extends Controller
             ->where('order.id', '=', $id)
             ->get();
 
-        $order_product = Order_Product::join('order', 'order.id', '=', 'order_product.order')
+        $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
             ->join('product', 'product.id', '=', 'order_product.product')
-            ->join('garment', 'garment.id', '=', 'product.garment')
-            ->join('fabric', 'fabric.id', '=', 'product.fabric')
-            ->select('order_product.quantity','order_product.size','product.unit_price',
-                    DB::raw("
-                        CONCAT(garment.name,' (',fabric.name,') ',IF( ISNULL(product.description),'', product.description)) AS description
-                    "))
+            ->join('client', 'client.id', '=', 'product.client')
+            ->join('garment','garment.id', '=', 'product.garment')
+            ->select('order_product.*','product.*','garment.name AS garment_type',
+                        DB::raw("
+                        CONCAT(client.last_name,
+                        ', ',
+                        client.first_name,
+                        ' ',
+                        IF(ISNULL(client.middle_name),
+                            '',
+                            CONCAT(LEFT(client.middle_name, 1), '.')),
+                        IF(ISNULL(client.company_name),
+                            '',
+                            CONCAT(' of ', client.company_name))
+                        ) AS client_name
+                        "),
+                        DB::raw("
+                        CONCAT('(',
+                        product.style_number,
+                        ') ',
+                        garment.name,
+                        IF(ISNULL(product.description),
+                            '',
+                            CONCAT(' - ', product.description)
+                        )) AS product_temp_name
+                        ")
+                    )
             ->where('order.id', '=', $id)
             ->get();
 
+        $final_price = 0;
+        $computed_price = array();
+
+        foreach ($order_products as $key => $product) {
+            $result = (float) $product->quantity * (float)$product->total_price;
+            array_push($computed_price, $result);
+            
+            $final_price += $result;
+        }
+
         // Send data to the view using loadView function of PDF facade
-        $data = array('order'=>$order[0], 'order_product'=>$order_product);
+        $data = array('order'=>$order[0], 'order_product'=>$order_products, 'computed_price'=>$computed_price, 'final_price'=>$final_price);
         $pdf = PDF::loadView('orders.invoice', $data);
         return $pdf->stream("invoice.pdf", array("Attachment" => false));
-        //return $pdf->download('invoice.pdf');
+        //***** return $pdf->download('invoice.pdf');
     }
 }

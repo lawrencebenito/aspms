@@ -1,9 +1,14 @@
 $(document).ready(function(){
   
-  //Date picker
-  $('#datepicker').datepicker({
-    autoclose: true
-  });
+  //Date picker - use this code for jquery date picker
+  // $('#datepicker').datepicker({
+  //   autoclose: true
+  // });
+
+  //Initialize Today's date
+  var date = get_full_date();
+  $('#date').text(date.text);
+  $('#date_form').val(date.numeric);
 
   function calculateSum() {
 
@@ -13,7 +18,7 @@ $(document).ready(function(){
 
       var value = $(this).text();
       value = stripCommas(value);
-      value = parseInt(value,10);
+      value = parseFloat(value,10);
       // add only if the value is number
       if(!isNaN(value) && value.length != 0) {
           sum += parseFloat(value);
@@ -26,7 +31,7 @@ $(document).ready(function(){
     value = $(this).val();
 
     unit_price = $(this).closest('tr').find('.unit_price').html();
-    unit_price = parseInt(unit_price);
+    unit_price = parseFloat(unit_price.substring(4));
     total = value * unit_price;
 
     cell = $(this).closest('tr').find('.price');

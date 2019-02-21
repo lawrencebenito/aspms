@@ -10,7 +10,7 @@ $(document).ready(function(){
     placeholder: "Select Client",
     ajax: {
       method: 'get',
-      url: '../get_client_list',
+      url: '../../get_client_list',
       dataType: 'json',
       delay: 250,
       processResults: function (data) {
@@ -25,7 +25,7 @@ $(document).ready(function(){
     placeholder: "Select Garment",
     ajax: {
       method: 'get',
-      url: '../get_garment_list',
+      url: '../../get_garment_list',
       dataType: 'json',
       delay: 250,
       processResults: function (data) {
@@ -35,6 +35,20 @@ $(document).ready(function(){
       }
     }
   });
+
+  /*
+  * THIS SECTION INITIALIZE THE CLIENT INFORMATION
+  */
+  var json = JSON.parse($('#product').val());
+  var client_id = json.client;
+  var full_name = json.full_name;
+  var client_select = '#client';
+  console.log(json);
+
+  set_select_value(client_select,full_name,client_id);
+  set_select_value("#garment",json.garment_type,json.garment);
+
+
 
    /*
   * THIS SECTION IF FOR MANIPULATING THE TABLE
@@ -81,7 +95,7 @@ $(document).ready(function(){
       placeholder: "Select Segment",
       ajax: {
         method: 'get',
-        url: '../list_segments',
+        url: '../../list_segments',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
@@ -101,18 +115,46 @@ $(document).ready(function(){
       ${opt1} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
     </tr>`
   );
-  $('tbody#fabric_consumption').append(
-    `<tr>
-      ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
-    </tr>`
-  );
-  $('tbody#fabric_consumption').append(
-    `<tr>
-      ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
-    </tr>`
-  );
-    
+
+  var fabrics = JSON.parse($('#fabrics').val());
+  console.log(fabrics);
+  for (var i = 0; i < fabrics.length-1; i++) {
+    $('tbody#fabric_consumption').append(
+      `<tr>
+        ${opt2} ${td_segment} ${opt3} ${btn_fabric} ${td_length} ${td_width} ${td_pair} ${td_gsm} ${td_rqkp} ${td_allowance} ${td_rqkpwa} ${td_rqkdz} ${td_fabric_width} ${td_rqydz} ${td_fabric_price} ${opt4} ${td_consum_cost}
+      </tr>`
+    );
+  }    
   $('.segment.select2').select2(initSegmentSelect());
+
+  /** SEGMENTS **/
+  var index = 0;
+  $('#fabric_consumption .segment').each(function () {
+    set_select_value($(this),fabrics[index].segment_name,fabrics[index].segment);
+    index++;
+  });
+
+  var index = 0;
+  $('#fabric_consumption .length').each(function () {
+    $(this).val(fabrics[index].length);
+    index++;
+  });  
+
+  var index = 0;
+  $('#fabric_consumption .width').each(function () {
+    $(this).val(fabrics[index].width);
+    index++;
+  });  
+
+  var index = 0;
+  $('#fabric_consumption .pair').each(function () {
+    if(fabrics[index].is_pair == "1"){
+      $(this).attr("checked", true);
+    }
+    //compute($(this).closest('tr'));
+    index++;
+  });  
+
   
   
   //BUTTON ACTION LISTENERS
@@ -145,7 +187,7 @@ $(document).ready(function(){
   */
   var dtable_fabrics = $('#data_table_fabrics').DataTable( {
     "ajax": {
-      "url": "../list_fabrics",
+      "url": "../../list_fabrics",
       "dataSrc": ""
     },
     columns: [
@@ -202,6 +244,32 @@ $(document).ready(function(){
   $('#modal-fabrics').on('hide.bs.modal',function(e){
     dtable_fabrics.search('').columns().search( '' ).draw();
     //$('#modal-fabrics').attr('for-row', -1);
+  });
+
+  /** FABRIC DISPLAY **/
+  var index = 0;
+  $('#fabric_consumption .fabric_display').each(function () {
+    var row_index = index;
+    var find = 'tr[id=' + fabrics[index].fabric + "]";
+    var modal_data = dtable_fabrics.row('#row-2');
+
+    console.log(find);
+    // var display_fabric_text = `${modal_data.color} ${modal_data.pattern_name} ${modal_data.type_name} (${modal_data.reference_num})`;
+    console.log(modal_data);
+    // var row = $('#fabric_consumption tr').eq(row_index);
+    // $(row).find('td input.fabric_display').val(display_fabric_text);
+    // $(row).find('td input.fabric').val(modal_data.id);
+    // $(row).find('td input.gsm').val(modal_data.gsm);
+    // $(row).find('td input.fabric_width').val(modal_data.width);
+    // $(row).find('td input.fabric_price').val(modal_data.unit_price);
+    // $(row).find('td input.fabric_price_type').val(modal_data.measurement_type);
+
+    // if(modal_data.measurement_type == '0'){
+    //   $(row).find('td input.fabric_price_type_display').val('per kgs');
+    // }else{
+    //   $(row).find('td input.fabric_price_type_display').val('per yards');
+    // }
+    index++;
   });
 
   //* ============================================ COMPUTATION SCRIPTS =========================================*//

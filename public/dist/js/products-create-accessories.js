@@ -10,7 +10,7 @@ $(document).ready(function(){
   var btn_row_add_accessory = '<input class="btn btn-success btn-sm row_add_accessory" type="button" value="+" data-toggle="tooltip" title="Add row below.">';
 
   //input elements
-  var td_quantity = '<td><input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity" required autocomplete="off" min=1 max=100></td>';
+  var td_quantity = '<td><input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity" autocomplete="off" min=1 max=100></td>';
 
   //readonly textfields
   var td_accessory_display = '<input type="text" class="form-control accessory_display" value="Click the icon to choose a accessory" readonly style="width: 300px">';
@@ -21,7 +21,7 @@ $(document).ready(function(){
   
   //hidden forms
   var td_measurement_type = '<input type="hidden" class="form-control measurement_type" readonly>';
-  var td_accessory = '<input type="hidden" class="form-control accessory" name="accessory[]" required>';
+  var td_accessory = '<input type="hidden" class="form-control accessory" name="accessory[]">';
 
   //button groups (wraps buttons)
   var opt1 = `<td>${btn_row_add_accessory}</td>`;
@@ -110,6 +110,7 @@ $(document).ready(function(){
     var display_accessory_text = `${modal_data.color} ${modal_data.type_name} - ${modal_data.reference_num}`;
 
     var row = $('#table_accessories tr').eq(row_index);
+    $(row).find('td input.accessory').val(modal_data.id);
     $(row).find('td input.accessory_display').val(display_accessory_text);
     $(row).find('td input.accessory_price').val(modal_data.unit_price);
 

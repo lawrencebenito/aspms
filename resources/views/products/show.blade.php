@@ -1,16 +1,16 @@
 @extends('layouts.main')
 
 @section('page_header')
-  @include('quotations.header')
+  @include('products.header')
 @endsection
 
 @section('content')
 
-@if (session()->has('edited_quotation'))
+@if (session()->has('edit'))
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Editing Successful!</h4>
-    Changes made for this quotation: {{ session()->get('edited_quotation') }}.
+    Changes made for this product was saved.
   </div>
 @endif
 
@@ -18,62 +18,80 @@
   <div class="col-md-9">
     <div class="box box-success">
       <div class="box-header with-border">
-        <h3 class="box-title">View Quotation</h3>
+        <h3 class="box-title">Viewing Product Description for <b>{{$product->style_number}}</b></h3>
       </div>
       <!-- /.box-header -->
       <div class="box-body">
         <div class="row">
-          <div class="form-group col-lg-2">
-            <label>Date</label>
-            <p id="date"></p>
-            <input id="date_form" type="hidden" class="form-control" name="date_created" value="{{$quotation->date_created}}">
-          </div>
-          <div class="form-group col-lg-3">
-            <label>Client Name</label>
-            <p>{{$quotation->full_name}}</p>
-          </div>
-          @if (!is_null($quotation->company_name))
-            <div class="form-group col-lg-3" id="company_group">
-              <label>Company Name</label>
-              <p>{{$quotation->company_name}}</p>
+          <div class="col-sm-6">
+            <div class="col-sm-12 form-group">
+              <label>Date</label>
+              <p id="date"></p>
+              <input id="date_form" type="hidden" class="form-control" name="date_created" value="{{$product->date_created}}">
             </div>
-          @endif
-          @if (!is_null($quotation->company_name))
-            <div class="form-group col-lg-3" id="address_group">
-              <label>Client Address</label>
-              <p>{{$quotation->address}}</p>
+            <div class="col-sm-12 form-group">
+              <label>Client Name</label>
+              <p>{{$product->client_name}}</p>
             </div>
-          @endif
+            @if (!is_null($product->description))
+              <div class="col-sm-12 form-group">
+                <label>Product Description</label>
+                <p>{{$product->description}}</p>
+              </div>
+            @endif
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-6">
+            <div class="col-sm-12 form-group">
+              <label>Garment Type</label>
+              <p>{{$product->garment_type}}</p>
+            </div>
+            <div class="col-sm-12 form-group">
+              <label>Size Range</label>
+              <p>{{$product->min_range}} to {{$product->max_range}}</p>
+            </div>
+            <div class="col-sm-12 form-group">
+              <label>Consumption Size</label>
+              <p>{{$product->consumption_size}}</p>
+            </div>
+          </div>
+          <!-- /.col -->
         </div>
-        <div class="form-group"  width="75%">
-          <div id="myTable" class="table-responsive">
-            <table class="table table-bordered">
-              <tr bgcolor="#f5f5f5">
-                <th style="width: 20%">Product Description</th>
-                <th style="width: 25%">Unit Price</th>
-              </tr>
-              @foreach($products as $key => $product)
-                @if($key == 0 || ($key > 0 && $products[$key]->garment != $products[$key-1]->garment))
-                  <tr>
-                    <td style="font-weight:bold">{{$product->garment}}</td>
-                    <td></td>
-                  </tr>  
-                @endif
-                <tr>
-                  <td>{{$product->fabric}}</td>
-                  <td>{{$product->unit_price}}</td>
-                </tr>
-                @if(($key == count($products)-1 || ($key < count($products)-1 && $products[$key]->garment != $products[$key+1]->garment)) && !is_null($product->description))
-                  <tr><td colspan="2">{{$product->description}}</td></tr>
-                @endif
+        <!-- /.row -->
+        
+        <div class="col-sm-12 form-group">
+          <h5 style="background: #f5f5f5; font-weight:bold">Segments and Fabrics</h5>
+          <ul>
+            @foreach($fabrics as $fabric)
+            <li> {{$fabric->segment_name}} - {{$fabric->color}} {{$fabric->pattern_name}} {{$fabric->type_name}} ({{$fabric->reference_num}})</li>
+            @endforeach
+          </ul>
+          @if(count($accessories)>0)
+          <h5 style="background: #f5f5f5; font-weight:bold">Accessories</h5>
+            <ul>
+              @foreach($accessories as $accessory)
+              <li> {{$accessory->color}} {{$accessory->type_name}}</li>
               @endforeach
-            </table>
-          </div>
+            </ul>
+          @endif
+          @if(count($designs)>0)
+          <h5 style="background: #f5f5f5; font-weight:bold">Design</h5>
+            <ul>
+              @foreach($designs as $design)
+              <li> {{$design->type_name}} - {{$design->actual_size}} - {{$design->location}}</li>
+              @endforeach
+            </ul>
+          @endif
         </div>
+        <div class="col-sm-12 form-group">
+          <label>Total Product Cost</label>
+          <p style="color: green; font-weight:bold"> Php {{$product->total_price}}</p>
+          
+        </div>    
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-        <a type="button" class="btn btn-default" href="{{url('/quotations')}}">Back to List</a>
+        <a type="button" class="btn btn-default" href="{{url('/products')}}">Back to List</a>
       </div>
       <!-- /.box-footer -->
     </div>
@@ -89,8 +107,8 @@
           <div class="box-body">
             <div class="row">
               <div class="col-sm-12">
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./products')}}/{{$product->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./products')}}/{{$product->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
                 <a type="button" class="btn btn-success btn-block">Print</a>
               </div>
               <!-- /.col -->

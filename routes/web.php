@@ -62,9 +62,8 @@ Route::resource('orders', 'OrdersController');
 //** FOR PRODUCTION */
 
 
-//RESPONE CONTROLLERS FOR AJAX
+//RESPONE CONTROLLERS FOR AJAX - LIST ITEMS FOR DROPDOWNS
 Route::get('/get_client_list', 'ClientsController@get_client_list');
-Route::get('/get_client_info', 'ClientsController@get_client_info');
 Route::get('/get_fabric_type_list', 'FabricTypesController@get_fabric_type_list');
 Route::get('/get_accessory_type_list', 'AccessoryTypesController@get_accessory_type_list');
 Route::get('/get_fabric_pattern_list', 'FabricPatternsController@get_fabric_pattern_list');
@@ -75,6 +74,12 @@ Route::get('/list_design_types', 'DesignTypesController@list_design_types');
 Route::get('/list_fabrics', 'FabricsController@list_fabrics');
 Route::get('/list_accessories', 'AccessoriesController@list_accessories');
 Route::get('/list_designs', 'DesignsController@list_designs');
+Route::get('/list_products', 'ProductsController@list_products');
+
+//RESPONE CONTROLLERS FOR AJAX - GET INFO
+Route::get('/get_product_info', 'ProductsController@get_product_info');
+Route::get('/get_client_info', 'ClientsController@get_client_info');
+
 
 //CUSTOM LINKS THAT CAN'T BE HANDLE BY THE RESOURCE ROUTES
 Route::get('/quotations/{quotation}/order', 'QuotationsController@order');
@@ -98,3 +103,4 @@ Route::get('/accessories/{accessory}/delete', 'AccessoriesController@destroy');
 Route::get('/design_types/{design_type}/delete', 'DesignTypesController@destroy');
 Route::get('/design_sizes/{design_size}/delete', 'DesignTypesController@destroy');
 Route::get('/designs/{design}/delete', 'DesignsController@destroy');
+Route::get('/quotations/{quotation}/delete', 'QuotationsController@destroy');
