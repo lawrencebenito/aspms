@@ -48,6 +48,10 @@
             <a href="{{ route('designs.index') }}">
             <i class="ion ion-android-star"></i> <span> Designs </span></a>
           </li>
+          <li class="">
+            <a href="Company">
+            <i class="ion ion-android-star"></i> <span> Company </span></a>
+          </li>
         </ul>
       </li>
       <!-- Sales -->
@@ -73,6 +77,14 @@
           <li class="{{ Helper::is_active('orders') }}">
             <a href="{{ route('orders.index') }}">
             <i class="fa fa-shopping-cart"></i> <span>Orders</span></a>
+          </li>
+          <li>
+            <a href="{{url('/AllSalesOrders')}}">
+            <i class="fa fa-shopping-cart"></i> <span>All Sales Orders</span></a>
+          </li>
+          <li>
+            <a href="{{url('/CustPayment/index')}}">
+            <i class="fa fa-shopping-cart"></i> <span>Payments</span></a>
           </li>
         </ul>
       </li>
@@ -101,7 +113,7 @@
         </a>
         <ul class="treeview-menu">
           <li>
-            <a href="#">
+            <a href="SalesReport">
             <i class="glyphicon glyphicon-stats"></i> <span>Sales Report</span></a>
           </li>
           <li>
