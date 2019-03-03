@@ -26,7 +26,8 @@
               <div class="form-group col-lg-12 no-padding">
                 <label class="col-sm-4 control-label">Date Ordered</label>
                 <div class="col-sm-8">
-                  <input type="date" name="date_ordered" class="form-control" required>
+                  <p id="date"></p>
+                  <input id="date_form" type="hidden" class="form-control" name="date_ordered">
                 </div>
               </div>
               <div class="form-group col-lg-12 no-padding">
@@ -47,16 +48,7 @@
                 <div class="col-sm-8">
                   <p>{{$quotation->address}}</p>
                 </div>
-              </div>
-              @if (!is_null($quotation->tin))
-              <div class="form-group col-lg-12 no-padding">
-                <label class="col-sm-4 control-label">Client Tin</label>
-                <div class="col-sm-8">
-                  <p>{{$quotation->company_name}}</p>
-                </div>
-                </div>  
-              </div>
-              @endif                            
+              </div>                          
             </div>
             <!-- End of First Column -->
             <!-- Start of Second Column -->
@@ -112,10 +104,10 @@
                       </select>
                     </td>
                     <td style="width:1%;white-space:nowrap;vertical-align: middle">
-                      <input type="hidden" name="ordered_products[]" value="{{$product->id}}">  
-                      <b>{{$product->garment}}</b> ({{$product->fabric}}) <i>{{$product->description}}</i>
+                      <input type="hidden" name="ordered_products[]" value="{{$product->product}}">  
+                      {{$product->product_temp_name}}
                     </td>
-                    <td class="unit_price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">{{$product->unit_price}}</td>
+                    <td class="unit_price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">Php {{$product->price}}</td>
                     <td class="price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">0</td>
                   <tr>
                 @endforeach

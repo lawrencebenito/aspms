@@ -57,7 +57,11 @@
                   <td style="font-weight:bold;">{{$product->product_temp_name}}</td>
                   <td>Php {{$product->price}}</td>
                 </tr>  
-                  <tr><td colspan="2"><textarea rows="10" class="form-control desc" style="resize:none; white-space: pre-wrap;" readonly>{{$product->description}}</textarea></td></tr>
+                <tr>
+                  <td colspan="2">
+                    <textarea rows="10" class="form-control desc" style="resize:none; white-space: pre-wrap;" readonly>{{$product->description}}</textarea>
+                  </td>
+                </tr>
               @endforeach
             </table>
           </div>
@@ -81,7 +85,7 @@
           <div class="box-body">
             <div class="row">
               <div class="col-sm-12">
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/order"><i class="fa fa-shopping-cart"></i> Order</a>
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
                 <a type="button" class="btn btn-success btn-block">Print</a>
               </div>

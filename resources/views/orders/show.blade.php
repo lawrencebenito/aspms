@@ -91,14 +91,14 @@
                 <th style="width: 15%">Unit Price</th>
                 <th style="width: 15%">Price</th>
               </tr>
-              @foreach($order_product as $key => $product)
+              @foreach($order_products as $key => $product)
                 <tr>
                   <td class="quantity">{{$product->quantity}}</td>
                   <td>{{$product->size}}</td>
                   <td style="width:1%;white-space:nowrap;vertical-align: middle">
                     {{$product->description}}
                   </td>
-                  <td class="unit_price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">{{$product->unit_price}}</td>
+                  <td class="unit_price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">{{$product->total_price}}</td>
                   <td class="price" style="width:1%;white-space:nowrap;vertical-align: middle; text-align: right">0</td>
                 <tr>
               @endforeach
@@ -130,9 +130,10 @@
           <div class="box-body">
             <div class="row">
               <div class="col-sm-12">
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/edit"><i class="fa fa-edit"></i> Create Job Order</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/delete"><i class="fa fa-trash-o"></i> Void</a>
                 <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
+                <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print O.R.</a>
               </div>
               <!-- /.col -->
             </div> 

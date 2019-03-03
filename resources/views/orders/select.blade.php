@@ -42,7 +42,7 @@
               <p>{{$quotation->company_name}}</p>
             </div>
           @endif
-          @if (!is_null($quotation->company_name))
+          @if (!is_null($quotation->address))
             <div class="form-group col-lg-3" id="address_group">
               <label>Client Address</label>
               <p>{{$quotation->address}}</p>
@@ -58,21 +58,17 @@
                 <th style="width: 25%">Unit Price</th>
               </tr>
               @foreach($products as $key => $product)
-                @if($key == 0 || ($key > 0 && $products[$key]->garment != $products[$key-1]->garment))
-                  <tr>
-                    <td><input type="hidden" name="garments[]" value="{{$product->garment_id}}"></td>
-                    <td style="font-weight:bold">{{$product->garment}}</td>
-                    <td></td>
-                  </tr>  
-                @endif
                 <tr>
                   <td style="text-align:right"><input type="checkbox" name="choosen_products[]" value="{{$key}}"></td>
-                  <td>{{$product->fabric}}</td>
-                  <td>{{$product->unit_price}}</td>
+                  <td style="font-weight:bold">{{$product->product_temp_name}}</td>
+                  <td>Php {{$product->price}}</td>
                 </tr>
-                @if(($key == count($products)-1 || ($key < count($products)-1 && $products[$key]->garment != $products[$key+1]->garment)) && !is_null($product->description))
-                  <tr><td></td><td colspan="2">{{$product->description}}</td></tr>
-                @endif
+                <tr>
+                  <td></td>
+                  <td colspan="2">
+                    <textarea rows="6" class="form-control desc" style="resize:none; white-space: pre-wrap;" readonly>{{$product->description}}</textarea>
+                  </td>
+                </tr>
               @endforeach
             </table>
           </div>

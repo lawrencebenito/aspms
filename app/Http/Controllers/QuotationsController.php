@@ -107,7 +107,14 @@ class QuotationsController extends Controller
             ->join('garment','garment.id', '=','product.garment')
             ->select('quotation_product.*',
                     DB::raw("
-                        CONCAT('(',product.style_number,') ',garment.name, ' - ', product.description) AS product_temp_name
+                        CONCAT('(',
+                        product.style_number,
+                        ') ',
+                        garment.name,
+                        IF(ISNULL(product.description),
+                            '',
+                            CONCAT(' - ', product.description)
+                        )) AS product_temp_name
                     "))
             ->where('quotation_product.quotation', '=', $id)
             ->get();
@@ -163,7 +170,7 @@ class QuotationsController extends Controller
     {
         $id = $quotation->id;
         $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
-            ->select('quotation.*','client.tin',
+            ->select('quotation.*',
                     DB::raw("
                         CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
                         client.company_name,
@@ -172,11 +179,21 @@ class QuotationsController extends Controller
             ->where('quotation.id', '=', $id)
             ->get();
 
-            $products = Product::join('garment', 'garment.id', '=', 'product.garment')
-            ->join('fabric', 'fabric.id', '=', 'product.fabric')
-            ->select('product.id','product.garment as garment_id','garment.name as garment', 'product.fabric as fabric_id','fabric.name as fabric', 'product.unit_price', 'product.description')
-            ->where('product.quotation', '=', $id)
-            ->get();
+        $products = Quotation_Product::join('product', 'product.id', '=', 'quotation_product.product')
+        ->join('garment','garment.id', '=','product.garment')
+        ->select('quotation_product.*',
+                DB::raw("
+                    CONCAT('(',
+                    product.style_number,
+                    ') ',
+                    garment.name,
+                    IF(ISNULL(product.description),
+                        '',
+                        CONCAT(' - ', product.description)
+                    )) AS product_temp_name
+                "))
+        ->where('quotation_product.quotation', '=', $id)
+        ->get();
 
         return view('orders.select')->with('quotation', $quotation[0])->with('products',$products);
     }
