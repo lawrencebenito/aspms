@@ -30,6 +30,12 @@
     <h4><i class="icon fa fa-info"></i> Creating Order</h4>
     <p><b>Create</b> or <b>pick</b> a quotation from the list then <b>choose</b> the create order option.</p>  
   </div>
+@elseif (session()->has('deleted'))
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-check"></i> Delete Successful!</h4>
+    Quotation: {{ session()->get('deleted') }} has been removed to the list.
+  </div>
 @endif
 
 <div class="row">
@@ -92,7 +98,11 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: btn_view + btn_edit + btn_delete + btn_order,
+          defaultContent: "N/A",
+          "targets": 4
+        },
+        {
+          defaultContent: btn_view + btn_delete + btn_order,
           sortable: false,
           "targets": -1
         }
@@ -108,9 +118,10 @@ $(document).ready(function() {
   $('.btn_view').click(function(e){
     window.location.href = source_ref + $(this).closest('tr').attr('id');
   });
-  
-  $('.btn_edit').click(function(e){
-    window.location.href = source_ref + $(this).closest('tr').attr('id') + "/edit";
+
+  $('.btn_delete').click(function(e){
+    if(confirm_delete(this))
+      window.location.href = source_ref + $(this).closest('tr').attr('id') + "/delete";
   });
 
   $('.btn_order').click(function(e){

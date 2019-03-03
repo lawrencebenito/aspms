@@ -107,8 +107,7 @@
             <div class="col-sm-12">
               <a type="button" class="btn btn-primary btn-block" href="{{ url('./clients')}}/{{$client->id}}/edit"><i class="fa fa-edit"></i> Edit</a>
               <a type="button" class="btn btn-primary btn-block" href="{{ url('./clients')}}/{{$client->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
-              <a type="button" class="btn btn-primary btn-block"> View Contracts</a>
-              <a type="button" class="btn btn-primary btn-block"> View Quotations</a>
+              <a type="button" class="btn btn-primary btn-block"><i class="fa fa-search"></i> View Statement of Accounts</a>
             </div>
             <!-- /.col -->
           </div> 

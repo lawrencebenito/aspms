@@ -23,7 +23,7 @@
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-    New order, {{ session()->get('new_order') }} has been added to the list.
+    New order has been added to the list.
   </div>
 @endif
 
@@ -86,7 +86,12 @@ $(document).ready(function() {
       },
       "columnDefs": [
         {
-          defaultContent: btn_view + btn_edit + btn_delete,
+          defaultContent: "N/A",
+          "targets": 3
+        },
+        {
+
+          defaultContent: btn_view,
           sortable: false,
           "targets": -1
         }

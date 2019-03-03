@@ -59,7 +59,7 @@ function confirm_delete(form) {
 
 function set_select_value(selector, text, id){
   // Fetch the preselected item, and add to the control
-  var Select = $(selector).closest('select');
+  var Select = $(selector);
   
   // create the option and append to Select2
   var option = new Option(text, id, true, true);

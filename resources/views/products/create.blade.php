@@ -361,6 +361,8 @@
                   <th> </th>
                   <th>Design</th>
                   <th> </th>
+                  <th>Actual Size </th>
+                  <th>Location </th>
                   <th>Sample Image</th>
                   <th style="background-color: #fffcd3">Cost</th>
                 </thead>
@@ -432,8 +434,8 @@
               <input id="final_product" class="form-control" style="width: 100%;" value="0" readonly>
             </div>
             <div class="col-sm-12 form-group">
-              <label>Price Markup (%)</label>
-              <input id="markup" type="text" class="form-control" placeholder="Any description for this product" name="markup" value="20" autocomplete="off">
+              <label>Price Markup and Overhead (%)</label>
+              <input id="markup" type="text" class="form-control" placeholder="Any description for this product" name="markup" value="30" autocomplete="off">
             </div>
             <div class="col-sm-12 form-group">
               <label>Final Total Product Cost (with markup)</label>

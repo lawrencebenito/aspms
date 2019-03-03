@@ -47,6 +47,26 @@ $(document).ready(function(){
 
         $('#address').text(response[0].address);
         $('#address_group').fadeIn(700);
+
+        $('.prod_start').each(function(){
+          $(this).nextUntil('tr.prod_start').fadeOut('slow', function() {
+            //console.log(this);
+            $(this).remove();
+          });
+          $(this).fadeOut('slow', function() {
+            $(this).remove();
+          });
+        });
+
+         /*
+          * Initial Product
+          */
+
+        $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_space}</tr>`);
+        $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
+        $('tbody').append(`${tr_prod_end}`);  
+        $('.product.select2').select2(initProductSelect()).on('select2:select', SelectProduct());
+        
       },
       error: function(xhr) {
         alert(xhr.responseText);
@@ -57,26 +77,21 @@ $(document).ready(function(){
   /*
   * THIS SECTION IF FOR MANIPULATING THE TABLE
   */ 
-  var td_garment = '<td><select class="form-control garment select2" name="garment[]"style="width: 450px; font-weight: bold;" required></select></td>';
-  var td_fabric = '<td><select class="form-control fabric select2" name="fabric[]" style="width: 450px" required></select></td>';
+  var td_product = '<td><select class="form-control product select2" name="product[]"style="width: 390px; font-weight: bold;" required></select></td>';
   var td_delete = '<input class="btn btn-danger btn-sm row_delete" type="button" value="-" data-toggle="tooltip" title="Delete this row." />';
   var td_delete_product = '<td><input class="btn btn-danger btn-sm delete_product" type="button" data-toggle="tooltip" title="Delete Product Group" value="-" /></td>';
-  var td_add_fabric = '<input class="btn btn-success btn-sm row_add_fabric" type="button" value="+" data-toggle="tooltip" title="Add fabric row.">';
   var opt1 = `<td>${td_delete}</td>`;
-  var opt2 = `<td>${td_add_fabric} ${td_delete}</td>`;
-  var opt3 = `<td>${td_add_fabric}</td>`;
-  var td_price = '<td><input type="number" class="form-control price" placeholder="Enter unit price" name="unit_price[]" required autocomplete="off" min=1 max=10000></td>';
+  var td_price = '<td><input type="text" class="form-control price" name="price[]" autocomplete="off" readonly value="Php 0.00"></td>';
   var td_space = '<td></td>';
   var tr_prod_end= '<tr class="prod_end" bgcolor="#f5f5f5"><td colspan="3"></td></tr>';
-  var td_fabric_counter = '<td><input type="hidden" class="fabric_counter form-control" name="fabric_count[]" value="1"></td>';
-  var td_desc = '<td colspan="2"><textarea rows="3" class="form-control" name="description[]" placeholder="(Optional) Enter product description here" maxlength="200" style="resize:none;"></textarea></td>';
-  
-  function initFabricSelect() {
+  var td_desc = '<td colspan="2"><textarea rows="10" class="form-control desc" name="description[]" style="resize:none; display:none; white-space: pre-wrap;" readonly></textarea></td>';
+
+  function initProductSelect() {
     return {
-      placeholder: "Select or search a fabric",
+      placeholder: "Select a product for this client",
       ajax: {
         method: 'get',
-        url: '../get_fabric_list',
+        url: '../list_products?id='+document.getElementById("client").value,
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
@@ -88,76 +103,53 @@ $(document).ready(function(){
     }//end of return
   }//end of function
 
-  function initGarmentSelect() {
-    return {
-      placeholder: "Select or search a garment",
-      ajax: {
-        method: 'get',
-        url: '../get_garment_list',
+  function SelectProduct(){
+    return function (event) {
+      var product = event.params.data;
+      row = $(this).closest('.prod_start');
+      
+      $.ajax({
+        url: "../get_product_info",
+        type: "get",
+        data: { 
+          id: product.id
+        },
         dataType: 'json',
-        delay: 250,
-        processResults: function (data) {
-          return {
-            results: data
-          };
+        success: function(response) {
+          $(row).find('input.price').hide().fadeIn(700).val(response.price);
+          $(row).next().find('textarea.desc').fadeIn(700).html(response.product_description);
+        },
+        error: function(xhr) {
+          alert(xhr.responseText + "Error! Please Reselect the Item.");
         }
-      }
-    }//end of return
-  }//end of function
-
-  /*
-  * Initial Product
-  */
-  $('tbody').append(`<tr class="prod_start">${td_garment} ${td_fabric_counter} ${td_space}</tr>`);
-  $('tbody').append(`<tr>${td_fabric} ${td_price} ${opt3}</tr>`);
-  $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
-  $('tbody').append(`${tr_prod_end}`);
-  
-  $('.fabric.select2').select2(initFabricSelect());
-  $('.garment.select2').select2(initGarmentSelect());
-  
-  
+      });
+    }
+  }
+    
   $('.row_add_product').click(function () {
-    $('tbody').append(`<tr class="prod_start">${td_garment} ${td_fabric_counter} ${td_delete_product}</tr>`);
-    $('tbody').append(`<tr>${td_fabric} ${td_price} ${opt3}</tr>`);
+    $('tbody').append(`<tr class="prod_start">${td_product} ${td_price} ${td_delete_product}</tr>`);
     $('tbody').append(`<tr>${td_desc} ${td_space}</tr>`);
     $('tbody').append(`${tr_prod_end}`);
-    $('.fabric.select2').select2(initFabricSelect());
-    $('.garment.select2').select2(initGarmentSelect());
-  });
-
-  $('tbody').on('click','.row_add_fabric' ,function () {
-    fabric_row = $(this).parent().parent();
-    $(`<tr>${td_fabric} ${td_price} ${opt2}</tr>`).insertAfter(fabric_row);
-    
-    $('.fabric.select2').select2(initFabricSelect());
-    
-    fabric_counter = $(this).closest('tr').prevAll('.prod_start:first').find('.fabric_counter');
-    $(fabric_counter).val(parseInt($(fabric_counter).val()) + 1);
+    $('.product.select2').select2(initProductSelect()).on('select2:select', SelectProduct());
   });
 
   $('.row_add_desc').click(function () {
     $('tbody').append(`<tr>${td_desc} ${opt1}</tr>`);
   });
-
-  $('tbody').on('click','.row_delete', function () {
-    fabric_counter = $(this).closest('tr').prevAll('.prod_start:first').find('.fabric_counter');
-    $(fabric_counter).val(parseInt($(fabric_counter).val()) - 1);
-
-    $(this).closest('tr').remove();
-  });
+  
+  $('#client').on('change', function(){
+    $('.product.select2').select2(initProductSelect());
+  })
 
   $('tbody').on('click','.delete_product', function () {
     row = $(this).closest('.prod_start');
     
     $(row).nextUntil('tr.prod_start').fadeOut('slow', function() {
-      console.log(this);
+      //console.log(this);
       $(this).remove();
     });
     $(row).fadeOut('slow', function() {
       $(row).remove();
     });
-  })
-
-
+  })  
 }); //end of document.ready

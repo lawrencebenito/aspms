@@ -44,8 +44,8 @@
             <div id="myTable" class="table-responsive">
               <table class="table table-bordered">
                 <tr bgcolor="#f5f5f5">
-                  <th style="width: 1%">Product Description</th>
-                  <th style="width: 25%">Unit Price</th>
+                  <th style="width: 40%">Product Description</th>
+                  <th style="width: 40%">Unit Price</th>
                   <th style="width: 20%"> </th>
                 </tr>
               </table>
