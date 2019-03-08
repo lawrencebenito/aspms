@@ -57,4 +57,38 @@ class ReportsController extends Controller
 	    // Finally, you can download the file using download function
 	    return $pdf->download('Sales Report.pdf');
     }
+
+    public function printQuotation($quotationID)
+    {
+        $quotation = DB::table('quotation')->where('id','=',$quotationID)->first();
+        $company = Company::first();
+        $client = DB::table('client')->where('id','=',$quotation->client)->first();
+        $quotation_lines = DB::table('quotation_product')->where('quotation','=',$quotationID)->get();
+        $products = Product::all();
+        return view('salesorder.reports.quotation',[
+            'quotation'=>$quotation,
+            'client' => $client,
+            'quotationlines' => $quotation_lines,
+            'products' => $products,
+            'company' => $company
+        ]);
+    }
+    public function quotation_exportPDF($quotationID)
+    {
+        $quotation = DB::table('quotation')->where('id','=',$quotationID)->first();
+        $company = Company::first();
+        $client = DB::table('client')->where('id','=',$quotation->client)->first();
+        $quotation_lines = DB::table('quotation_product')->where('quotation','=',$quotationID)->get();
+        $products = Product::all();
+
+        $pdf = PDF::loadView('salesorder.reports.quotation_report',[
+            'quotation'=>$quotation,
+            'client' => $client,
+            'quotationlines' => $quotation_lines,
+            'products' => $products,
+            'company' => $company
+        ]);
+        
+        return $pdf->download('Sales Quatation.pdf');
+    }
 }

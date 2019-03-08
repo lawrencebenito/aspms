@@ -49,7 +49,7 @@
             <i class="ion ion-android-star"></i> <span> Designs </span></a>
           </li>
           <li class="">
-            <a href="Company">
+            <a href="/Company">
             <i class="ion ion-android-star"></i> <span> Company </span></a>
           </li>
         </ul>
@@ -83,7 +83,7 @@
             <i class="fa fa-shopping-cart"></i> <span>All Sales Orders</span></a>
           </li>
           <li>
-            <a href="{{url('/CustPayment/index')}}">
+            <a href="{{url('/SalesOrder/payment/index')}}">
             <i class="fa fa-shopping-cart"></i> <span>Payments</span></a>
           </li>
         </ul>

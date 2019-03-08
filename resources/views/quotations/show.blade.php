@@ -87,7 +87,7 @@
               <div class="col-sm-12">
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/order"><i class="fa fa-shopping-cart"></i> Order</a>
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./quotations')}}/{{$quotation->id}}/delete"><i class="fa fa-trash-o"></i> Delete</a>
-                <a type="button" class="btn btn-success btn-block">Print</a>
+                <a type="button" class="btn btn-success btn-block" href="/Quotation/print/{{$quotation->id}}">Print</a>
               </div>
               <!-- /.col -->
             </div> 

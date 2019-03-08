@@ -77,24 +77,25 @@
                 </thead>
                 <tbody id="salesline-table-body">
                   @foreach($saleslines as $salesline)
+                  <h1>jjjjj{{$salesline->recID}}</h1>
                     @foreach($products as $product)
                       @if($product->id == $salesline->product_id)
                         @break
                       @endif
                     @endforeach
-                  @php
-                    $hasSalesLines = 1;
-                  @endphp
-                  <tr id="row{{$ctr}}" class="linerow">
-                    <td id="td{{$ctr}}" data-id="{{$salesline->product_id}}" data-recid="{{$salesline->recID}}" class="salesline-recid">{{$salesline->product_id}}</td>
-                    <td id="productName{{$ctr}}" class="productName">{{$product->description}}</td>
-                    <td id ="productPrice{{$ctr}}" class="productPrice">{{$product->total_price}}</td>
-                    <td ><input type="number" class="form-control productQty" id="productQty{{$ctr}}" name="quantity" onchange="getNetAmount(this.value,'{{$ctr}}')" required placeholder="{{$salesline->quantity}}" disabled> </td>
-                    <td id="productNetAmount{{$ctr}}" class="productNetAmount">{{$salesline->netAmount}}</td>
-                  </tr>
-                  @php
-                    $ctr++;
-                  @endphp
+                    @php
+                      $hasSalesLines = 1;
+                    @endphp
+                    <tr id="row{{$ctr}}" class="linerow">
+                      <td id="td{{$ctr}}" data-id="{{$salesline->product_id}}" data-recid="{{$salesline->recID}}" class="salesline-recid">{{$salesline->product_id}}</td>
+                      <td id="productName{{$ctr}}" class="productName">{{$product->description}}</td>
+                      <td id ="productPrice{{$ctr}}" class="productPrice">{{$product->total_price}}</td>
+                      <td ><input type="number" class="form-control productQty" id="productQty{{$ctr}}" name="quantity" onchange="getNetAmount(this.value,'{{$ctr}}')" required placeholder="{{$salesline->quantity}}" disabled> </td>
+                      <td id="productNetAmount{{$ctr}}" class="productNetAmount">{{$salesline->netAmount}}</td>
+                    </tr>
+                    @php
+                      $ctr++;
+                    @endphp
                   @endforeach
                 </tbody>
               </table>

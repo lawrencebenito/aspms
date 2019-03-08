@@ -8,6 +8,8 @@ use App\Quotation;
 use App\Product;
 use DB;
 use PDF;
+use App\CustomerPayment;
+use App\PaymentLines;
 
 use Illuminate\Http\Request;
 
@@ -75,6 +77,7 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
+        $new_order = '';
         try
         {
             DB::transaction(function()  use ($request) {
@@ -88,6 +91,10 @@ class OrdersController extends Controller
                             
                 $order->save();
                 $order_id = $order->id;
+
+                $client_name = $request->get('client_name');
+                $new_order = "for $client_name on $order->date_ordered";
+
                 $products = $request->get('ordered_products');
                 
                 foreach ($products as $key => $product) {
@@ -100,11 +107,10 @@ class OrdersController extends Controller
                     $order_product->save();
                 }
 
-                echo $order;
+              //  echo $order;
             }); //end of transaction
 
-            $client_name = $request->get('client_name');
-            $new_order = "for $client_name on $order->date_ordered";
+            
             return redirect('orders')->with('new_order', $new_order);
         }
         catch( PDOException $e )
@@ -136,7 +142,21 @@ class OrdersController extends Controller
             ->where('order.id', '=', $id)
             ->get();
 
-
+        $payment_no = '';
+        $order2 = DB::table('order')->where('id','=',$id)->first();
+        $payment = DB::table('cust_payment')->where('client_id','=',$order2->client)->first();
+        
+        if($payment != null)
+        {
+            $paymentlines = DB::table('payment_lines')->where('payment_no','=',$payment->payment_no)->get();
+       
+            foreach ($paymentlines as $line) {
+                if($line->order_id == $id)
+                {
+                    $payment_no = $line->payment_no;
+                }
+            }
+        }
 
         $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
             ->join('product', 'product.id', '=', 'order_product.product')
@@ -170,7 +190,9 @@ class OrdersController extends Controller
             ->where('order.id', '=', $id)
             ->get();
 
-        return view('orders.show')->with('order', $order[0])->with('order_products',$order_products);
+        return view('orders.show')->with('order', $order[0])
+                                  ->with('order_products',$order_products)
+                                  ->with('payment_no',$payment_no);
     }
 
     /**

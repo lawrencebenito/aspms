@@ -77,8 +77,15 @@
               <div class="col-sm-8">
                 <p>{{$order->remarks}}</p>
               </div>
+            </div>  
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Status</label>
+              <div class="col-sm-8">
+                <p>{{$order->salesStatus}}</p>
+              </div>
             </div>              
           </div>
+
           <!-- End of Second Column -->
         </div>
         <div class="form-group">
@@ -132,8 +139,16 @@
               <div class="col-sm-12">
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/edit"><i class="fa fa-edit"></i> Create Job Order</a>
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/delete"><i class="fa fa-trash-o"></i> Void</a>
+                @if($order->salesStatus == "Delivered")
+                  <a type="button" class="btn btn-success btn-block" href="/SalesOrder/delivery/print/{{$order->id}}">Print Delivery Receipt</a>
+                @elseif($order->salesStatus == "Paid")
+                 <a type="button" class="btn btn-success btn-block" href="/SalesOrder/payment/printOR/{{$payment_no}}"> Print O.R.</a>
+                 <a type="button" class="btn btn-success btn-block" href="/SalesOrder/delivery/print/{{$order->id}}">Print Delivery Receipt</a>
+                @else
+                  <button type="button" class="btn btn-success btn-block" onclick="show_delivery_modal()"> Deliver</button>
+                @endif
                 <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print O.R.</a>
+                
               </div>
               <!-- /.col -->
             </div> 
@@ -150,8 +165,82 @@
     <!-- /.col -->
 </div>
 <!-- /.row -->
+<input type="hidden" id="salesID" value="{{$order->id}}">
+<!-- main modal -->
+<div class="modal fade" id="deliver" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="deliver-modal-body">
+
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('extra_scripts')
 <script src="{{ asset("dist/js/order-show.js")}}"></script>
+<script type="text/javascript">
+  
+  function show_delivery_modal()
+  {
+    $.ajaxSetup({
+     headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    }); 
+    $.ajax({
+      type : 'get',
+      url : '/SalesOrder/delivery/new',
+      data : {},
+      success : function(data){
+        $('#deliver-modal-body').html(data);
+        $('#deliver').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Deliver');
+      }
+    });
+  }
+
+  function deliver()
+  {
+    var deliveryID = $('#deliveryID').val();
+    var salesID = $('#salesID').val();
+    var delivery_mode = $('#deliveryMode').val();
+    var delivery_address = $('#deliveryAddress').val();
+
+    $.ajax({
+      type : 'post',
+      url : '/SalesOrder/delivery/save',
+      data : {
+        'deliveryID' : deliveryID,
+        'salesID' : salesID,
+        'delivery_mode' : delivery_mode,
+        'delivery_address' : delivery_address
+      },
+      success : function(data){
+        swal({
+          title: "Success!",
+          text: "Order has been delivered.",
+          icon: "success",
+          button: 'Ok',
+        })
+        .then((value) => {
+          if (value) {
+            $('#deliver').modal('hide');
+            window.location.reload();
+          } 
+        });
+      }
+    });
+  }
+
+</script>
+
 @endpush

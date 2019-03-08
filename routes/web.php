@@ -105,8 +105,8 @@ Route::get('/design_sizes/{design_size}/delete', 'DesignTypesController@destroy'
 Route::get('/designs/{design}/delete', 'DesignsController@destroy');
 Route::get('/quotations/{quotation}/delete', 'QuotationsController@destroy');
 
-
 //Earl
+/// ignore
 Route::get('AllSalesOrders','SalesOrderController@index');
 Route::get('SalesOrders/new','SalesOrderController@new');
 Route::get('SalesOrders/create','SalesOrderController@create');
@@ -126,6 +126,22 @@ Route::post('Company/update','CompanyController@update');
 
 Route::get('SalesReport','ReportsController@sales_report');
 Route::get('SalesReport/print','ReportsController@print_sales_report');
+/// end ignore
 
-Route::get('CustPayment/index','CustomerPaymentController@index');
+Route::get('Quotation/print/{quotationID}','ReportsController@printQuotation');
+Route::get('Quotation/exportPDF/{quotationID}','ReportsController@quotation_exportPDF');
 
+Route::get('SalesOrder/delivery/new','SalesDeliveryController@new');
+Route::post('SalesOrder/delivery/save','SalesDeliveryController@save');
+Route::get('SalesOrder/delivery/print/{salesID}','SalesDeliveryController@print_delivery_receipt');
+Route::get('SalesOrder/delivery/export/{salesID}','SalesDeliveryController@export_delivery_receipt');
+
+Route::get('SalesOrder/payment/index','CustomerPaymentController@index');
+Route::get('SalesOrder/payment/create','CustomerPaymentController@create');
+Route::post('SalesOrder/payment/save','CustomerPaymentController@save');
+Route::get('SalesOrder/payment/view','CustomerPaymentController@view');
+Route::post('SalesOrder/payment/settle','CustomerPaymentController@settle_payment');
+Route::get('SalesOrder/payment/clientorders','CustomerPaymentController@get_client_orders');
+Route::get('SalesOrder/payment/printOR/{payment_no}','CustomerPaymentController@print_OR');
+Route::get('SalesOrder/payment/exportOR/{payment_no}','CustomerPaymentController@export_OR');
+Route::get('SalesOrder/payment/delete/{payment_no}','CustomerPaymentController@delete');
