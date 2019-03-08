@@ -11,7 +11,8 @@ $(document).ready(function(){
   var btn_row_add_design = '<input class="btn btn-success btn-sm row_add_design" type="button" value="+" data-toggle="tooltip" title="Add row below.">';
 
   //input elements
-  var td_quantity = '<td><input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity" required autocomplete="off" min=1 max=100></td>';
+  var td_actual_size = '<td><input type="text" class="form-control actual_size" name="actual_size[]" placeholder="Actual Size" autocomplete="off" </td>';
+  var td_location = '<td><input type="text" class="form-control location" name="location[]" placeholder="Location" autocomplete="off" </td>';
 
   //readonly textfields
   var td_design_display = '<input type="text" class="form-control design_display" value="Click the icon to choose a design" readonly style="width: 300px">';
@@ -22,7 +23,7 @@ $(document).ready(function(){
   
   //hidden forms
   var td_measurement_type = '<input type="hidden" class="form-control measurement_type" readonly>';
-  var td_design = '<input type="hidden" class="form-control design" name="design[]" required>';
+  var td_design = '<input type="hidden" class="form-control design" name="design[]">';
 
   //button groups (wraps buttons)
   var opt1 = `<td>${btn_row_add_design}</td>`;
@@ -35,17 +36,15 @@ $(document).ready(function(){
   */
   var first_line = 
     `<tr>
-      ${opt1} ${opt3} ${btn_design} ${btn_upload} ${td_cost_per_piece}
+      ${opt1} ${opt3} ${btn_design} ${td_actual_size} ${td_location} ${btn_upload} ${td_cost_per_piece}
     </tr>`
   
   var dynamic_line =
     `<tr>
-      ${opt2} ${opt3} ${btn_design} ${btn_upload} ${td_cost_per_piece}
+      ${opt2} ${opt3} ${btn_design} ${td_actual_size} ${td_location} ${btn_upload} ${td_cost_per_piece}
     </tr>`
 
   $('tbody#table_design').append(first_line);
-  $('tbody#table_design').append(dynamic_line);
-  $('tbody#table_design').append(dynamic_line);
     
   //BUTTON ACTION LISTENERS
   $('tbody#table_design').on('click','.row_add_design' ,function () {
@@ -119,6 +118,7 @@ $(document).ready(function(){
     var display_design_text = `${modal_data.type_name} from ${modal_data.supplier}`;
 
     var row = $('#table_design tr').eq(row_index);
+    $(row).find('td input.design').val(modal_data.id);
     $(row).find('td input.design_display').val(display_design_text);
     $(row).find('td input.cost').val(modal_data.unit_price);
     

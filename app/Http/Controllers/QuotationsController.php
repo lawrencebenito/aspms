@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Quotation;
-use App\Product;
+use App\Quotation_Product;
 use Illuminate\Http\Request;
 
 class QuotationsController extends Controller
@@ -42,38 +42,32 @@ class QuotationsController extends Controller
     {
         try
         {
-            $quotation = new Quotation;
-            $quotation->client = $request->get('client');
-            $quotation->date_created = $request->get('date_created');
-            $quotation->product_count = count($request->get('garment'));
-        
-            $products = DB::transaction(function()  use ($request, $quotation) {
+            DB::transaction(function()  use ($request) {
+                
+                $quotation = new Quotation;
+                $quotation->client = $request->get('client');
+                $quotation->date_created = $request->get('date_created');
+                
+                $products = $request->get('product');
+                $prices = $request->get('price');
+                $descriptions = $request->get('description');
+                
+                $quotation->product_count = count($products);
                 
                 $quotation->save();
-                $quotation_id = $quotation->id;
 
-                $garment_index = 0;
-                for ($fabric_index = 0, $fcount_index = 0; 
-                    $fabric_index < count($request->get('fabric'));
-                    $fabric_index++, $fcount_index++) { 
+                
+                foreach ($products as $key => $value) {
+                    $product = new Quotation_Product;
+
+                    $product->quotation = $quotation->id;
+                    $product->product = $products[$key];
+                    $product->price = substr($prices[$key],4);
+                    $product->description = $descriptions[$key];
                     
-                    $product = new Product;
-                    $product->quotation = $quotation_id;
-                    $product->garment = $request->get('garment')[$garment_index];
-                    $product->fabric = $request->get('fabric')[$fabric_index];
-                    $product->unit_price = $request->get('unit_price')[$fabric_index];
-                    $product->description = $request->get('description')[$garment_index];
-                    
-                    $fcount = $request->get('fabric_count')[$garment_index];
                     $product->save();
-                    
-
-                    if($fcount_index == ((int)$fcount)- 1){
-                        $garment_index++;
-                        $fcount_index = -1;
-
-                    }
                 }
+
             }); //end of transaction
 
             $new_quotation = true;
@@ -108,10 +102,21 @@ class QuotationsController extends Controller
             ->where('quotation.id', '=', $id)
             ->get();
 
-        $products = Product::join('garment', 'garment.id', '=', 'product.garment')
-            ->join('fabric', 'fabric.id', '=', 'product.fabric')
-            ->select('product.id', 'garment.name as garment', 'fabric.name as fabric', 'product.unit_price', 'product.description')
-            ->where('product.quotation', '=', $id)
+        
+        $products = Quotation_Product::join('product', 'product.id', '=', 'quotation_product.product')
+            ->join('garment','garment.id', '=','product.garment')
+            ->select('quotation_product.*',
+                    DB::raw("
+                        CONCAT('(',
+                        product.style_number,
+                        ') ',
+                        garment.name,
+                        IF(ISNULL(product.description),
+                            '',
+                            CONCAT(' - ', product.description)
+                        )) AS product_temp_name
+                    "))
+            ->where('quotation_product.quotation', '=', $id)
             ->get();
 
         return view('quotations.show')->with('quotation', $quotation[0])->with('products',$products);
@@ -125,24 +130,7 @@ class QuotationsController extends Controller
      */
     public function edit(Quotation $quotation)
     {
-        $id = $quotation->id;
-        $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
-            ->select('quotation.*',
-                    DB::raw("
-                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
-                        client.company_name,
-                        CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
-                    "))
-            ->where('quotation.id', '=', $id)
-            ->get();
-
-        $products = Product::join('garment', 'garment.id', '=', 'product.garment')
-            ->join('fabric', 'fabric.id', '=', 'product.fabric')
-            ->select('product.garment as garment_id','garment.name as garment', 'product.fabric as fabric_id','fabric.name as fabric', 'product.unit_price', 'product.description')
-            ->where('product.quotation', '=', $id)
-            ->get();
-
-        return view('quotations.edit')->with('quotation', $quotation[0])->with('products',$products);
+        
     }
 
     /**
@@ -154,7 +142,7 @@ class QuotationsController extends Controller
      */
     public function update(Request $request, Quotation $quotation)
     {
-        return "trying to update the form";
+
     }
 
     /**
@@ -165,7 +153,11 @@ class QuotationsController extends Controller
      */
     public function destroy(Quotation $quotation)
     {
-        //
+        $deleted = "$quotation->id";
+        
+        $quotation->delete();
+
+        return redirect("quotations")->with('deleted', $deleted);
     }
 
     /**
@@ -178,7 +170,7 @@ class QuotationsController extends Controller
     {
         $id = $quotation->id;
         $quotation = Quotation::join('client', 'client.id', '=', 'quotation.client')
-            ->select('quotation.*','client.tin',
+            ->select('quotation.*',
                     DB::raw("
                         CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
                         client.company_name,
@@ -187,11 +179,21 @@ class QuotationsController extends Controller
             ->where('quotation.id', '=', $id)
             ->get();
 
-            $products = Product::join('garment', 'garment.id', '=', 'product.garment')
-            ->join('fabric', 'fabric.id', '=', 'product.fabric')
-            ->select('product.id','product.garment as garment_id','garment.name as garment', 'product.fabric as fabric_id','fabric.name as fabric', 'product.unit_price', 'product.description')
-            ->where('product.quotation', '=', $id)
-            ->get();
+        $products = Quotation_Product::join('product', 'product.id', '=', 'quotation_product.product')
+        ->join('garment','garment.id', '=','product.garment')
+        ->select('quotation_product.*',
+                DB::raw("
+                    CONCAT('(',
+                    product.style_number,
+                    ') ',
+                    garment.name,
+                    IF(ISNULL(product.description),
+                        '',
+                        CONCAT(' - ', product.description)
+                    )) AS product_temp_name
+                "))
+        ->where('quotation_product.quotation', '=', $id)
+        ->get();
 
         return view('orders.select')->with('quotation', $quotation[0])->with('products',$products);
     }
