@@ -21,18 +21,20 @@
 
 <div class="container-fluid">
   <div class="table table-responsive sales-table col-md-11">
-    <table class="table table-bordered" id="table">
-      <tr bgcolor="yellow">
-        <th width="150px">Payment No.</th>
-        <th width="150px">Customer Account</th>
-        <th>Customer Name</th>
-        <th>Payment Status</th>
-        <th class="text-center" width="220px">
-          <button class="create-modal btn btn-success btn-sm" onclick="create_payment_modal()">
-            <i class="glyphicon glyphicon-plus"></i>
-          </button>
-        </th>
-      </tr>
+    <table id="data_table" class="table table-bordered table-hover" id="table" data-toggle='tooltip' width="100%">
+      <thead>
+        <tr bgcolor="yellow">
+          <th width="150px">Payment No.</th>
+          <th width="150px">Customer Account</th>
+          <th>Customer Name</th>
+          <th>Payment Status</th>
+          <th class="text-center" width="220px">
+            <button class="create-modal btn btn-success btn-sm" onclick="create_payment_modal()">
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>
+          </th>
+        </tr>
+      </thead>
       <tbody id="payment-table-body">
       @foreach($cust_payments as $payment)
       <tr>
@@ -116,10 +118,14 @@
     </div>
   </div>
 </div>
+
 @endsection
 
 @push('extra_scripts')
+<script src="{{ asset("bower_components/datatables.net/js/jquery.dataTables.min.js")}}"></script>
+<script src="{{ asset("bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")}}"></script>
 <script type="text/javascript">
+   $('#table').DataTable( );
    $.ajaxSetup({
      headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
