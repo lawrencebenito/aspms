@@ -12,6 +12,7 @@ use App\CustomerPayment;
 use App\PaymentLines;
 use Carbon\Carbon;
 use App\SalesInvoice;
+use App\TransLog;
 
 use Illuminate\Http\Request;
 
@@ -333,6 +334,8 @@ class OrdersController extends Controller
                     'updated_at' => Carbon::now()
                 ]);
 
+                $order = DB::table('order')->where('id','=',$request->salesID)->first();
+
                 $sales_invoice = new SalesInvoice();
                 $sales_invoice->invoiceID = $request->invoiceID;
                 $sales_invoice->salesID = $request->salesID;
@@ -342,6 +345,18 @@ class OrdersController extends Controller
                 $sales_invoice->updated_at = Carbon::now();
 
                 $sales_invoice->save();
+
+                $translog = new TransLog();
+                $translog->transID = $request->invoiceID;
+                $translog->clientID = $order->client;
+                $translog->description = "Sales Invoice";
+                $translog->amount = $request->invoiceAmount;
+                $translog->payment = 0;
+                $translog->remaining = $request->invoiceAmount;
+                $translog->created_at = Carbon::now();
+                $translog->updated_at = Carbon::now();
+
+                $translog->save();
 
             } catch (Exception $e) {
                 $hasErrors = 1;

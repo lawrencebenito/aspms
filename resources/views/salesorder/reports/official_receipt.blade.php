@@ -54,6 +54,11 @@
               </th>
             </tr>
           </thead>
+          @php
+            $vatsales = $cust_payment->payment_amount * 0.12;
+            $grossdue = $cust_payment->payment_amount - $vatsales;
+          @endphp
+
           <tbody>
             <tr class="blank_row">
               <td></td> <td></td> <td></td>
@@ -80,31 +85,43 @@
               <td>Vatable Service</td> <td></td> <td></td>
             </tr>
             <tr>
-              <td>Value-Added Tax</td> <td></td> <td></td>
+              <td>Value-Added Tax</td> <td><b>{{$vatsales}}</b></td> <td></td>
             </tr>
             <tr>
-              <td>Gross Due PHP</td> <td></td> <td></td>
+              <td>Gross Due PHP</td> <td><b>{{$grossdue}}</b></td> <td></td>
             </tr>
             <tr>
               <td>Withholding Tax</td> <td></td> <td></td>
             </tr>
             <tr>
-              <td>Total Taxes</td> <td></td> <td></td>
+              <td>Total Taxes</td> <td><b>{{$grossdue}}</b></td> <td></td>
             </tr>
             <tr>
-              <td>Total Amount Due </td> <td></td> <td></td>
+              <td>Total Amount Due </td> <td><b>{{$cust_payment->payment_amount}}</b></td> <td></td>
             </tr>
             <tr>
               <td align="center" colspan="3">FORM OF PAYMENT</td>
             </tr>
             <tr>
-              <td   colspan="3">CASH</td>
+              <td   colspan="3">CASH 
+                @if($cust_payment->payment_mode == "Cash")
+                  <input type="checkbox" id="cash" align="center" checked>
+                @endif
+              </td>
             </tr>
             <tr>
-              <td   colspan="3">CHECK</td>
+              <td   colspan="3">CHECK 
+                 @if($cust_payment->payment_mode == "Check")
+                  <input type="checkbox" id="cash" align="center" checked>
+                @endif
+              </td>
             </tr>
             <tr>
-              <td   colspan="3">BANK</td>
+              <td   colspan="3">BANK 
+                 @if($cust_payment->payment_mode == "Bank")
+                  <input type="checkbox" id="cash" align="center" checked>
+                @endif
+              </td>
             </tr>
             <tr>
               <td   colspan="3">CHECK NO.</td>
@@ -113,11 +130,12 @@
               <td   colspan="3">CHECK DATE</td>
             </tr>
             <tr>
-              <td   colspan="3">AMOUNT</td>
+              <td   colspan="3">AMOUNT : {{$cust_payment->payment_amount}}</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <input type="hidden" id="payment_mode" value="{{$cust_payment->payment_mode}}">
       <div class="col-md-8">
         <div class="row" style="text-align: center;">
           <h3>{{$company->company_name}}</h3>
@@ -136,7 +154,7 @@
         </div>
         <div class="row" style="font-family:Arial, Helvetica, sans-serif; font-size: 18px;">
           RECEIVED from ____________________________________________ with TIn ___________
-          and address at _______________________________________________________ engaged in the business style of __________________________________ the sum of ________________________Pesos ___________________
+          and address at _______________________________________________________ engaged in the business style of __________________________________ the sum of _______<b><u>{{$cust_payment->payment_amount}}</u></b>_______Pesos ___________________
           in partial/full payment of __________________________________________________
         </div>
         <div class="row" style="margin-top: 30px;">
@@ -155,4 +173,5 @@
     </div>
 </div> 
 @endsection
+
 

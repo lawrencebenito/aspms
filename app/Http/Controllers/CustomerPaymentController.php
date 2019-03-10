@@ -14,6 +14,7 @@ use App\PaymentLines;
 use App\Company;
 use App\Order_Product;
 use Illuminate\Support\Facades\Input;
+use App\TransLog;
 use PDF;
 
 class CustomerPaymentController extends Controller
@@ -38,6 +39,7 @@ class CustomerPaymentController extends Controller
     public function save(Request $request)
     {
     	$hasErrors = 0;
+        $remaining_bal = 0;
     	if($request->ajax())
     	{
     		try {
@@ -67,6 +69,24 @@ class CustomerPaymentController extends Controller
     		    	$payment_lines->updated_at = Carbon::now();
                     $payment_lines->save();
     			}
+
+                $translogs = TransLog::all();
+
+                foreach ($translogs as $log) {
+                    $remaining_bal = $remaining_bal + $log->amount;
+                }
+
+                $translog = new TransLog();
+                $translog->transID = $request->payment_no;
+                $translog->clientID = $request->client_id;
+                $translog->description = "Customer Payment";
+                $translog->amount = 0;
+                $translog->payment = $request->payment_amount;
+                $translog->remaining =  $remaining_bal - $request->payment_amount;
+                $translog->created_at = Carbon::now();
+                $translog->updated_at = Carbon::now();
+
+                $translog->save();
 
     		} catch (Exception $e) {
     			$hasErrors = 1;
@@ -174,11 +194,12 @@ class CustomerPaymentController extends Controller
     {
     	$company = Company::first();
     	$now = Carbon::now();
-
+        $cust_payment = DB::table('cust_payment')->where('payment_no','=',$payment_no)->first();
     	$pdf = PDF::loadView('salesorder.reports.official_receipt_report',[
             'now'=>$now,
             'company' => $company,
-            'payment_no' => $payment_no
+            'payment_no' => $payment_no,
+            'cust_payment' => $cust_payment
         ])->setPaper('a4', 'landscape');
         
         return $pdf->download('Official Receipt.pdf');

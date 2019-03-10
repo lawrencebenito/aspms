@@ -157,7 +157,7 @@
         'payment_no' : payment_no,
         'client_id' : $('#custaccount').val(),
         'payment_mode' : $('#paymentMode').val(),
-        'payment_type' : 'Cash',
+        'payment_type' : 'Full',
         'payment_amount' : $('#paymentamount').val(),
         'allSalesID' : salesID_arry
       },

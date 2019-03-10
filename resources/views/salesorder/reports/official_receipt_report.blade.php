@@ -30,6 +30,10 @@
   </style>
 </head>
 <body>
+  @php
+    $vatsales = $cust_payment->payment_amount * 0.12;
+    $grossdue = $cust_payment->payment_amount - $vatsales;
+  @endphp
 <div style = "width: 35%; display: inline-block; float: left; margin-left: 5px;">
   <br/>
   <br/>
@@ -68,17 +72,12 @@
     </tr>
     <tr>
       <td style = "">Value-Added Tax</td>
-      <td style = ""><b></b></td>
+      <td style = ""><b>{{$vatsales}}</b></td>
       <td style = ""></td>
     </tr>
     <tr>
       <td style = "">Gross Due PHP</td>
-      <td style = ""><b></b></td>
-      <td style = ""></td>
-    </tr>
-    <tr>
-      <td style = "">Gross Due PHP</td>
-      <td style = ""><b></b></td>
+      <td style = ""><b>{{$grossdue}}</b></td>
       <td style = ""></td>
     </tr>
     <tr>
@@ -88,33 +87,42 @@
     </tr>
     <tr>
       <td style = "">Total Taxes</td>
-      <td style = ""><b></b></td>
+      <td style = ""><b>{{$vatsales}}</b></td>
       <td style = ""></td>
     </tr>
     <tr>
       <td style = "">Total Amount Due</td>
-      <td style = ""><b></b></td>
+      <td style = ""><b>{{$cust_payment->payment_amount}}</b></td>
       <td style = ""></td>
     </tr>
     <tr>
-      <td colspan="3" style="text-align: center;  >
+      <td colspan="3" style="text-align: center";  >
         FORM OF PAYMENT
       </td>
     </tr>
     <tr>
       <td colspan="3">
         CASH
+        @if($cust_payment->payment_mode == "Cash")
+          <input type="checkbox" id="cash" align="center" checked>
+        @endif
       </td>
     </tr>
     <tr>
       <td colspan="3">
-        CHECK
+        CHECK 
+        @if($cust_payment->payment_mode == "Check")
+          <input type="checkbox" id="cash" align="center" checked>
+        @endif
       </td>
     </tr>
 
     <tr>
       <td colspan="3">
-        BANK
+        BANK 
+        @if($cust_payment->payment_mode == "Bank")
+          <input type="checkbox" id="cash" align="center" checked>
+        @endif
       </td>
     </tr>
     <tr>
@@ -154,7 +162,7 @@
         </div>
         <div class="row" style="font-family:Arial, Helvetica, sans-serif; font-size: 12.5px;">
           RECEIVED from ____________________________________________ with TIn ___________
-          and address at _______________________________________________________ engaged in the business style of __________________________________ the sum of ________________________Pesos ___________________
+          and address at _______________________________________________________ engaged in the business style of __________________________________ the sum of ________<b><u>{{$cust_payment->payment_amount}}</u></b>______Pesos ___________________
           in partial/full payment of __________________________________________________
         </div>
         <div class="row" style="margin-top: 30px; font-size: 12.5px;">
