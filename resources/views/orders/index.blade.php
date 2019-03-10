@@ -23,7 +23,7 @@
   <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Adding Successful!</h4>
-    New order has been added to the list.
+    New order, {{ session()->get('new_order') }} has been added to the list.
   </div>
 @endif
 

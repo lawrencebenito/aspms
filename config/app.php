@@ -164,6 +164,7 @@ return [
          * Laravel DomPDF...
          */
         Barryvdh\DomPDF\ServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
     ],
 
@@ -179,7 +180,7 @@ return [
     */
 
     'aliases' => [
-
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -216,6 +217,7 @@ return [
         
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Helper' => App\Includes\Helper::class,
+        
 
     ],
 

@@ -8,6 +8,10 @@ use App\Quotation;
 use App\Product;
 use DB;
 use PDF;
+use App\CustomerPayment;
+use App\PaymentLines;
+use Carbon\Carbon;
+use App\SalesInvoice;
 
 use Illuminate\Http\Request;
 
@@ -75,6 +79,7 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
+        $new_order = '';
         try
         {
             DB::transaction(function()  use ($request) {
@@ -88,6 +93,10 @@ class OrdersController extends Controller
                             
                 $order->save();
                 $order_id = $order->id;
+
+                $client_name = $request->get('client_name');
+                $new_order = "for $client_name on $order->date_ordered";
+
                 $products = $request->get('ordered_products');
                 
                 foreach ($products as $key => $product) {
@@ -100,11 +109,10 @@ class OrdersController extends Controller
                     $order_product->save();
                 }
 
-                echo $order;
+              //  echo $order;
             }); //end of transaction
 
-            $client_name = $request->get('client_name');
-            $new_order = true;
+            
             return redirect('orders')->with('new_order', $new_order);
         }
         catch( PDOException $e )
@@ -136,7 +144,14 @@ class OrdersController extends Controller
             ->where('order.id', '=', $id)
             ->get();
 
-
+        $payment_no = '';
+        $order2 = DB::table('order')->where('id','=',$id)->first();
+        $payment = DB::table('cust_payment')->where('client_id','=',$order2->client)->first();
+        
+        if($payment != null)
+        {
+            $payment_no = $payment->payment_no;
+        }
 
         $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
             ->join('product', 'product.id', '=', 'order_product.product')
@@ -170,7 +185,9 @@ class OrdersController extends Controller
             ->where('order.id', '=', $id)
             ->get();
 
-        return view('orders.show')->with('order', $order[0])->with('order_products',$order_products);
+        return view('orders.show')->with('order', $order[0])
+                                  ->with('order_products',$order_products)
+                                  ->with('payment_no',$payment_no);
     }
 
     /**
@@ -273,5 +290,64 @@ class OrdersController extends Controller
         $pdf = PDF::loadView('orders.invoice', $data);
         return $pdf->stream("invoice.pdf", array("Attachment" => false));
         //***** return $pdf->download('invoice.pdf');
+    }
+
+    public function invoice(Request $request)
+    {   
+        $invoiceID = "INV0000".DB::table('sales_invoice')->count();
+        $invoiceAmount = 0;
+        $delivery = DB::table('sales_delivery')->where('salesID','=',$request->salesID)->first();
+        $order_products = DB::table('order_product')->where('order','=',$request->salesID)->get();
+        $products = Product::all();
+
+        foreach ($order_products as $line) {
+            foreach ($products as $product) {
+                if($product->id == $line->product)
+                {
+                    $invoiceAmount = $invoiceAmount + ($line->quantity * $product->total_price);
+                }
+            }
+        }
+
+        $ret = array();
+
+        if($request->ajax())
+        {
+            $ret[0] = $invoiceID;
+            $ret[1] = $delivery->deliveryID;
+            $ret[2] = $invoiceAmount;
+            return $ret;
+        }
+    }
+
+    public function save_invoice(Request $request)
+    {
+        $hasErrors = 0;
+
+        if($request->ajax())
+        {
+            try {
+
+                Order::findOrFail($request->salesID)->update([
+                    'salesStatus' => 'Invoiced',
+                    'updated_at' => Carbon::now()
+                ]);
+
+                $sales_invoice = new SalesInvoice();
+                $sales_invoice->invoiceID = $request->invoiceID;
+                $sales_invoice->salesID = $request->salesID;
+                $sales_invoice->payment_due_date = $request->paymentdue;
+                $sales_invoice->invoice_amount = $request->invoiceAmount;
+                $sales_invoice->created_at = Carbon::now();
+                $sales_invoice->updated_at = Carbon::now();
+
+                $sales_invoice->save();
+
+            } catch (Exception $e) {
+                $hasErrors = 1;
+            }
+        }
+
+        return $hasErrors;
     }
 }

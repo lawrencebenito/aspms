@@ -474,8 +474,7 @@
 <!-- Custom Scripts -->
 <script src="{{ asset("dist/js/products-update.js")}}"></script>
 <!-- <script src="{{ asset("dist/js/products-create-accessories.js")}}"></script>
-<script src="{{ asset("dist/js/products-create-design.js")}}"></script>
+<script src="{{ asset("dist/js/products-create-design.js")}}"></script> -->
 <script src="{{ asset("dist/js/products-create-operation.js")}}"></script>
- -->
- 
+
 @endpush

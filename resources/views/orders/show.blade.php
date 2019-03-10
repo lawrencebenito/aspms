@@ -77,8 +77,15 @@
               <div class="col-sm-8">
                 <p>{{$order->remarks}}</p>
               </div>
+            </div>  
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Status</label>
+              <div class="col-sm-8">
+                <p>{{$order->salesStatus}}</p>
+              </div>
             </div>              
           </div>
+
           <!-- End of Second Column -->
         </div>
         <div class="form-group">
@@ -132,8 +139,22 @@
               <div class="col-sm-12">
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/edit"><i class="fa fa-edit"></i> Create Job Order</a>
                 <a type="button" class="btn btn-success btn-block" href="{{ url('./orders')}}/{{$order->id}}/delete"><i class="fa fa-trash-o"></i> Void</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
-                <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print O.R.</a>
+                @if($order->salesStatus == "Delivered")
+                  <!-- <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a> -->
+                  <a type="button" class="btn btn-success btn-block" onclick="invoice('{{$order->id}}')"> Invoice</a>
+                
+                  <a type="button" class="btn btn-success btn-block" href="/SalesOrder/delivery/print/{{$order->id}}">Print Delivery Receipt</a>
+                @elseif($order->salesStatus == "Invoiced")
+                  <a type="button" class="btn btn-success btn-block" href="/SalesOrder/delivery/print/{{$order->id}}">Print Delivery Receipt</a>
+                  <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
+                @elseif($order->salesStatus == "Paid")
+                 <a type="button" class="btn btn-success btn-block" href="/SalesOrder/delivery/print/{{$order->id}}">Print Delivery Receipt</a>
+                 <a type="button" class="btn btn-success btn-block" href="{{ url('/export_invoice')}}/{{$order->id}}"> Print Invoice</a>
+                <a type="button" class="btn btn-success btn-block" href="/SalesOrder/payment/printOR/{{$payment_no}}"> Print O.R.</a>
+                @else
+                  <button type="button" class="btn btn-success btn-block" onclick="show_delivery_modal()"> Deliver</button>
+                @endif
+                
               </div>
               <!-- /.col -->
             </div> 
@@ -150,8 +171,204 @@
     <!-- /.col -->
 </div>
 <!-- /.row -->
+<input type="hidden" id="salesID" value="{{$order->id}}">
+<!-- main modal -->
+<div class="modal fade" id="deliver" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="deliver-modal-body">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="invoice" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Invoice</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="invoice-modal-body">
+         <div class="alert-danger" style="display:none"></div>
+        <div class="row">
+          <div class="col-md-4">Invoice No:</div>
+          <div class="col-md-8">
+            <input type="text" id="invoiceID" class="form-control" disabled style="margin-bottom: 10px;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Delivery ID:</div>
+          <div class="col-md-8">
+            <input type="text" id="deliveryID" class="form-control" disabled style="margin-bottom: 10px;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Sales ID:</div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" id="salesID" disabled value="{{$order->id}}" style="margin-bottom: 10px;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Invoice Amount:</div>
+          <div class="col-md-8">
+            <input type="number" class="form-control" id="invoiceAmount" name="" style="margin-bottom: 10px;" disabled>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Payment Due:</div>
+          <div class="col-md-8">
+            <input type="date" class="form-control" id="paymentdue" name="deliveryDate" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="save_invoice()">Save Invoice</button>
+        <button class="btn btn-warning" type="button" data-dismiss="modal">
+          <span class="glyphicon glyphicon-remove"></span> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('extra_scripts')
 <script src="{{ asset("dist/js/order-show.js")}}"></script>
+<script type="text/javascript">
+  var global_invoiceID;
+  function show_delivery_modal()
+  {
+    $.ajaxSetup({
+     headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    }); 
+    $.ajax({
+      type : 'get',
+      url : '/SalesOrder/delivery/new',
+      data : {},
+      success : function(data){
+        $('#deliver-modal-body').html(data);
+        $('#deliver').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Deliver');
+      }
+    });
+  }
+
+  function deliver()
+  {
+    var deliveryID = $('#deliveryID').val();
+    var salesID = $('#salesID').val();
+    var delivery_mode = $('#deliveryMode').val();
+    var delivery_address = $('#deliveryAddress').val();
+
+    $.ajax({
+      type : 'post',
+      url : '/SalesOrder/delivery/save',
+      data : {
+        'deliveryID' : deliveryID,
+        'salesID' : salesID,
+        'delivery_mode' : delivery_mode,
+        'delivery_address' : delivery_address
+      },
+      success : function(data){
+        swal({
+          title: "Success!",
+          text: "Order has been delivered.",
+          icon: "success",
+          button: 'Ok',
+        })
+        .then((value) => {
+          if (value) {
+            $('#deliver').modal('hide');
+            window.location.reload();
+          } 
+        });
+      }
+    });
+  }
+
+  function invoice(salesID)
+  {
+    $.ajax({
+      type : 'get',
+      url : '/SalesOrders/invoice',
+      data : {
+        'salesID' : salesID
+      },
+      success : function(data){
+        console.log(data);
+        $('#invoiceID').val(data[0]);
+        global_invoiceID = data[0];
+        $('#invoiceAmount').val(data[2]);
+        $('#deliveryID').val(data[1]);
+        $('#invoice').modal('show');
+        $('.form-horizontal').show();
+      }
+    });
+  }
+  
+  function save_invoice()
+  {
+    var invoice_amount = $('#invoiceAmount').val();
+    var paymentdue = $('#paymentdue').val();
+    var hasErrors = 0;
+    if(invoice_amount == "")
+    {
+      hasErrors = 1;
+      $('.alert-danger').text("Invoice amount is required.");
+    }
+    if(paymentdue == "")
+    {
+       hasErrors = 1;
+       $('.alert-danger').text("Payment due is required.");
+    }
+    
+    if(hasErrors == 1)
+    {
+      $('.alert-danger').show();
+    }
+    else
+    {
+      $.ajax({
+        type : 'get',
+        url : '/SalesOrders/invoice/save',
+        data : {
+          'invoiceID': $('#invoiceID').val(),
+          'salesID' : $('#salesID').val(),
+          'paymentdue' : $('#paymentdue').val(),
+          'invoiceAmount' : $('#invoiceAmount').val()
+        },
+        success : function(data){
+          if(data == 0)
+          {
+            swal({
+              title: "Success!",
+              text: "Order invoiced.",
+              icon: "success",
+              button: 'Ok',
+            })
+            .then((value) => {
+              if (value) {
+                window.location.reload();
+              } 
+            });
+          }
+        }
+      });
+    }
+  }
+</script>
+
 @endpush

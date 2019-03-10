@@ -32,6 +32,8 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{ asset("/dist/css/skin-red.css")}}">
+
+  <link rel="stylesheet" href="/dropify/dist/css/dropify.min.css">
   
 </head>
 
@@ -102,6 +104,9 @@
 <script src="{{ asset("/dist/js/set-active.js")}}"></script>
 <!-- Custom Scripts for global function-->
 <script src="{{ asset("/dist/js/helper-functions.js")}}"></script>
+
+<script type="text/javascript" src="/swal/sweetalert.min.js"></script>
+<script type="text/javascript" src="/dropify/dist/js/dropify.min.js"></script>
 
 @stack('extra_scripts')
 

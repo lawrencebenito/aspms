@@ -317,8 +317,7 @@ class ProductsController extends Controller
             ->join('fabric','fabric.id', '=', 'product_fabric.fabric')
             ->join('fabric_type', 'fabric_type.id', '=', 'fabric.type')
             ->join('fabric_pattern','fabric_pattern.id', '=','pattern')
-            ->join('fabric_price', 'fabric_price.fabric', '=', 'fabric.id')
-            ->select('product_fabric.*','segment.name AS segment_name', 'fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name','fabric_price.unit_price','fabric.width AS fabric_width', 'product_fabric.width AS width', 'fabric_price.measurement_type')
+            ->select('product_fabric.*','segment.name AS segment_name', 'fabric.*','fabric_type.name AS type_name','fabric_pattern.name AS pattern_name')
             ->where('product_fabric.product', '=', $id)
             ->get();
 
