@@ -28,19 +28,20 @@
 
 @section('content')
 <div class="container-fluid" style="margin-left: 100px; margin-right: 100px;">
+<a href="/Customer/SOA/{{$client->id}}" class="btn btn-primary">Export PDF</a>
   <div class="row">
     <center><h2><b>Statement of Account</b></h2></center>
   </div>
   <div class="row">
     <div class="col-md-6">
-        <h4>To:</h4>
+        <h4><b>To:</b></h4>
         <b>{{$client->company_name}}</b> <br>
         <b>{{$client->address_line}}, {{$client->address_municipality}}, {{$client->address_province}}</b> <br> <br>
         <b>Date: {{$now}}</b>
     </div>
     <div class="col-md-6" align="right">
       <div align="left">
-        <h4>From:</h4>
+        <h4><b>From:</b></h4>
         <b>{{$company->company_name}}</b> <br>
         <b>{{$company->company_address}}, {{$company->province}}, {{$company->city}}</b> <br>
         <b>Contact no: {{$company->contact_no}}</b> <br>
@@ -85,7 +86,7 @@
           <td></td>
           <td></td>
           <td></td>
-          <td><b>{{$totals}}</b></td>
+          <td align="right"><b>{{$totals}}</b></td>
         </tr>
       </tfoot>
     </table>

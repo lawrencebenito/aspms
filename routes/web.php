@@ -151,3 +151,4 @@ Route::get('SalesOrder/payment/exportOR/{payment_no}','CustomerPaymentController
 Route::get('SalesOrder/payment/delete','CustomerPaymentController@delete');
 
 Route::get('Customer/Transactions/{clientID}','CustomerTransLogController@index');
+Route::get('Customer/SOA/{clientID}','CustomerTransLogController@export_pdf');
