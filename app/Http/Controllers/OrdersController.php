@@ -12,7 +12,9 @@ use App\CustomerPayment;
 use App\PaymentLines;
 use Carbon\Carbon;
 use App\SalesInvoice;
+use App\SalesDelivery;
 use App\TransLog;
+use App\Company;
 
 use Illuminate\Http\Request;
 
@@ -154,6 +156,22 @@ class OrdersController extends Controller
             $payment_no = $payment->payment_no;
         }
 
+        $salesDelivery = DB::table('sales_delivery')->where('salesID','=',$id)->first();
+        $salesInvoice = DB::table('sales_invoice')->where('salesID','=',$id)->first();
+
+        $hasDelivery = 0;
+        $hasInvoice = 0;
+
+        if($salesDelivery == '')
+        {
+            $hasDelivery = 1;
+        }
+
+        if($salesInvoice == '')
+        {
+            $hasInvoice = 1;
+        }
+
         $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
             ->join('product', 'product.id', '=', 'order_product.product')
             ->join('client', 'client.id', '=', 'product.client')
@@ -188,7 +206,11 @@ class OrdersController extends Controller
 
         return view('orders.show')->with('order', $order[0])
                                   ->with('order_products',$order_products)
-                                  ->with('payment_no',$payment_no);
+                                  ->with('payment_no',$payment_no)
+                                  ->with('salesInvoice',$salesInvoice)
+                                  ->with('salesDelivery',$salesDelivery)
+                                  ->with('hasInvoice',$hasInvoice)
+                                  ->with('hasDelivery',$hasDelivery);
     }
 
     /**
@@ -233,64 +255,86 @@ class OrdersController extends Controller
      */
     public function export_invoice(Order $order)
     {
-        $id = $order->id;
-        $order = Order::join('client', 'client.id', '=', 'order.client')
-            ->select('order.*',
-                    DB::raw("
-                        CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
-                        client.company_name,
-                        CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
-                    "))
-            ->where('order.id', '=', $id)
-            ->get();
+         $salesID = $order->id;
+        // $order = Order::join('client', 'client.id', '=', 'order.client')
+        //     ->select('order.*',
+        //             DB::raw("
+        //                 CONCAT(client.last_name,', ',client.first_name,' ',IF( ISNULL(client.middle_name),'', CONCAT(LEFT(client.middle_name, 1),'.'))) AS full_name,
+        //                 client.company_name,
+        //                 CONCAT_WS(', ',address_line, address_municipality, address_province) AS address
+        //             "))
+        //     ->where('order.id', '=', $id)
+        //     ->get();
 
-        $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
-            ->join('product', 'product.id', '=', 'order_product.product')
-            ->join('client', 'client.id', '=', 'product.client')
-            ->join('garment','garment.id', '=', 'product.garment')
-            ->select('order_product.*','product.*','garment.name AS garment_type',
-                        DB::raw("
-                        CONCAT(client.last_name,
-                        ', ',
-                        client.first_name,
-                        ' ',
-                        IF(ISNULL(client.middle_name),
-                            '',
-                            CONCAT(LEFT(client.middle_name, 1), '.')),
-                        IF(ISNULL(client.company_name),
-                            '',
-                            CONCAT(' of ', client.company_name))
-                        ) AS client_name
-                        "),
-                        DB::raw("
-                        CONCAT('(',
-                        product.style_number,
-                        ') ',
-                        garment.name,
-                        IF(ISNULL(product.description),
-                            '',
-                            CONCAT(' - ', product.description)
-                        )) AS product_temp_name
-                        ")
-                    )
-            ->where('order.id', '=', $id)
-            ->get();
+        // $order_products = Order_Product::join('order', 'order.id', '=', 'order_product.order')
+        //     ->join('product', 'product.id', '=', 'order_product.product')
+        //     ->join('client', 'client.id', '=', 'product.client')
+        //     ->join('garment','garment.id', '=', 'product.garment')
+        //     ->select('order_product.*','product.*','garment.name AS garment_type',
+        //                 DB::raw("
+        //                 CONCAT(client.last_name,
+        //                 ', ',
+        //                 client.first_name,
+        //                 ' ',
+        //                 IF(ISNULL(client.middle_name),
+        //                     '',
+        //                     CONCAT(LEFT(client.middle_name, 1), '.')),
+        //                 IF(ISNULL(client.company_name),
+        //                     '',
+        //                     CONCAT(' of ', client.company_name))
+        //                 ) AS client_name
+        //                 "),
+        //                 DB::raw("
+        //                 CONCAT('(',
+        //                 product.style_number,
+        //                 ') ',
+        //                 garment.name,
+        //                 IF(ISNULL(product.description),
+        //                     '',
+        //                     CONCAT(' - ', product.description)
+        //                 )) AS product_temp_name
+        //                 ")
+        //             )
+        //     ->where('order.id', '=', $id)
+        //     ->get();
 
-        $final_price = 0;
-        $computed_price = array();
+        // $final_price = 0;
+        // $computed_price = array();
 
-        foreach ($order_products as $key => $product) {
-            $result = (float) $product->quantity * (float)$product->total_price;
-            array_push($computed_price, $result);
+        // foreach ($order_products as $key => $product) {
+        //     $result = (float) $product->quantity * (float)$product->total_price;
+        //     array_push($computed_price, $result);
             
-            $final_price += $result;
-        }
+        //     $final_price += $result;
+        // }
 
-        // Send data to the view using loadView function of PDF facade
-        $data = array('order'=>$order[0], 'order_product'=>$order_products, 'computed_price'=>$computed_price, 'final_price'=>$final_price);
-        $pdf = PDF::loadView('orders.invoice', $data);
-        return $pdf->stream("invoice.pdf", array("Attachment" => false));
-        //***** return $pdf->download('invoice.pdf');
+        // // Send data to the view using loadView function of PDF facade
+        // $data = array('order'=>$order[0], 'order_product'=>$order_products, 'computed_price'=>$computed_price, 'final_price'=>$final_price);
+        // $pdf = PDF::loadView('orders.invoice', $data);
+        // return $pdf->stream("invoice.pdf", array("Attachment" => false));
+        // //***** return $pdf->download('invoice.pdf');
+
+        $salesorder = DB::table('order')->where('id','=',$salesID)->first();
+        $company = Company::first();
+        $saleslines = DB::table('order_product')->where('order','=', $salesID)->get();
+        $products = Product::all();
+        $validFrom = Carbon::now();
+        $client = DB::table('client')->where('id','=',$salesorder->client)->first();
+        $salesinvoice = DB::table('sales_invoice')->where('salesID','=',$salesID)->first();;
+
+        $pdf = PDF::loadView('salesorder.reports.salesinvoice', [
+            'salesorder'=>$salesorder,
+            'company' => $company,
+            'saleslines' => $saleslines,
+            'products' => $products,
+            'validFrom' => $validFrom,
+            'client' => $client,
+            'salesinvoice' => $salesinvoice
+        ])->setPaper('a4', 'landscape');;
+        // If you want to store the generated pdf to the server then you can use the store function
+        //$pdf->save(storage_path().'_filename.pdf');
+        // Finally, you can download the file using download function
+        return $pdf->download('Sales Invoice.pdf');
     }
 
     public function invoice(Request $request)

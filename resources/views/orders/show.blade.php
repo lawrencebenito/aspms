@@ -83,7 +83,21 @@
               <div class="col-sm-8">
                 <p>{{$order->salesStatus}}</p>
               </div>
-            </div>              
+            </div>   
+            <div class="form-group">
+              <div class="row">
+                <label class="col-sm-4 control-label">Delivery ID:</label>
+                <div class="col-sm-8">
+                  
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-4 control-label">Invoice ID:</label>
+                <div class="col-sm-8">
+                  
+                </div>
+              </div>
+            </div>          
           </div>
 
           <!-- End of Second Column -->
@@ -188,6 +202,8 @@
     </div>
   </div>
 </div>
+
+<!--  -->
 
 <div class="modal fade" id="invoice" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -368,6 +384,15 @@
         }
       });
     }
+  }
+
+  function show_invoice($invoiceID)
+  {
+    $('#showinvoice_modal').modal('show');
+  }
+  function show_delivery()
+  {
+    $('#sahowdelivery_modal').modal('show');
   }
 </script>
 

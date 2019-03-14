@@ -32,7 +32,7 @@
 			</div>
 			<div style="text-align: left; display: inline-block; float: right">
 				
-				<b>Delivery Date:</b> {{$salesorder->updated_at}} <br>
+				<b>Delivery Date:</b> {{$salesorder->date_modified}} <br>
 				<b>Ship via:</b> <br>
 			</div>
 		</div>
@@ -65,10 +65,10 @@
 					$qtyTotal = $qtyTotal + $salesline->quantity;
 				@endphp
 				<tr>
-					<td><center>{{$salesline->product_id}}</center></td>
+					<td><center>{{$salesline->product}}</center></td>
 					<td style="text-align: left; padding: 5px;">
 						@foreach($products as $product)
-							@if($product->id == $salesline->product_id)
+							@if($product->id == $salesline->product)
 								{{$product->description}}
 							@endif
 						@endforeach
@@ -76,12 +76,12 @@
 					<td style="text-align: right; padding: 5px;">{{$salesline->quantity}}</td>
 					<td style="text-align: right; padding: 5px;">
 						@foreach($products as $product)
-							@if($product->id == $salesline->product_id)
+							@if($product->id == $salesline->product)
 								{{$product->total_price}}
 							@endif
 						@endforeach
 					</td>
-					<td style="text-align: center;">{{$salesline->salesID}}</td>
+					<td style="text-align: center;">{{$salesline->order}}</td>
 				</tr>
 				@endforeach
 				

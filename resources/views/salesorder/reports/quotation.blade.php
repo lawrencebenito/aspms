@@ -40,7 +40,7 @@
 			Phone: {{$client->contact_num}}
 		</div>
 		<div class="col-md-4">
-			<h2><b>Quoation</b></h2><br>
+			<h2><b>Quotation</b></h2><br>
 			<b>Date:</b> {{$quotation->date_created}} <br>
 			<b>Quotation ID:</b> {{$quotation->id}} <br>
 			<b>Customer ID:</b> {{$quotation->client}} <br> <br>

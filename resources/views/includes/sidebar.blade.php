@@ -113,7 +113,7 @@
         </a>
         <ul class="treeview-menu">
           <li>
-            <a href="SalesReport">
+            <a href="/SalesReport">
             <i class="glyphicon glyphicon-stats"></i> <span>Sales Report</span></a>
           </li>
           <li>
