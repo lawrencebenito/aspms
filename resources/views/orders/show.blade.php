@@ -84,11 +84,11 @@
                 <p>{{$order->salesStatus}}</p>
               </div>
             </div>   
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="row">
                 <label class="col-sm-4 control-label">Delivery ID:</label>
                 <div class="col-sm-8">
-                  
+                  <a onclick="show_delivery('{{$deliveryID}}')">{{$deliveryID}}</a>
                 </div>
               </div>
               <div class="row">
@@ -97,7 +97,7 @@
                   
                 </div>
               </div>
-            </div>          
+            </div>   -->        
           </div>
 
           <!-- End of Second Column -->
@@ -392,7 +392,11 @@
   }
   function show_delivery()
   {
-    $('#sahowdelivery_modal').modal('show');
+      $('#deliver-modal-body').html('data');
+        $('#deliver').modal('show');
+        $('.form-horizontal').show();
+        $('.modal-title').text('Deliver');
+    
   }
 </script>
 

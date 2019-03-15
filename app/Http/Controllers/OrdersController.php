@@ -162,12 +162,16 @@ class OrdersController extends Controller
         $hasDelivery = 0;
         $hasInvoice = 0;
 
-        if($salesDelivery == '')
+        $deliveryID = "";
+        $invoiceID = "";
+
+        if($salesDelivery != '')
         {
+            $deliveryID = $salesDelivery->deliveryID;
             $hasDelivery = 1;
         }
 
-        if($salesInvoice == '')
+        if($salesInvoice != '')
         {
             $hasInvoice = 1;
         }
@@ -210,7 +214,7 @@ class OrdersController extends Controller
                                   ->with('salesInvoice',$salesInvoice)
                                   ->with('salesDelivery',$salesDelivery)
                                   ->with('hasInvoice',$hasInvoice)
-                                  ->with('hasDelivery',$hasDelivery);
+                                  ->with('deliveryID',$deliveryID);
     }
 
     /**

@@ -78,10 +78,10 @@
             <a href="{{ route('orders.index') }}">
             <i class="fa fa-shopping-cart"></i> <span>Orders</span></a>
           </li>
-          <li>
+          <!-- <li>
             <a href="{{url('/AllSalesOrders')}}">
             <i class="fa fa-shopping-cart"></i> <span>All Sales Orders</span></a>
-          </li>
+          </li> -->
           <li>
             <a href="{{url('/SalesOrder/payment/index')}}">
             <i class="fa fa-shopping-cart"></i> <span>Payments</span></a>
